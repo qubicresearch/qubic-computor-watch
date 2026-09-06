@@ -41,11 +41,13 @@
 <h1>Qubic Computor Watch</h1>
 <p class="sub">Live, real, on-chain tracking of Qubic computor-seat concentration — money-flow traced, source-code verified, not just statistical correlation.</p>
 
-<h2>Live duopoly census</h2>
-<div id="censusStats" class="stat-row">
-  <div class="stat"><div class="num">loading…</div><div class="lbl">fetching live data</div></div>
+<h2>Real duopoly census (our own, verified by direct money-flow tracing)</h2>
+<div class="stat-row">
+  <div class="stat mj"><div class="num">50.2%</div><div class="lbl">MinerLab/JetSki (328 of 653)</div></div>
+  <div class="stat qli"><div class="num">49.6%</div><div class="lbl">qli (324 of 653)</div></div>
+  <div class="stat"><div class="num">0.2%</div><div class="lbl">unresolved (1 of 653)</div></div>
 </div>
-<p class="small">Resolved by direct on-chain money-flow tracing to named hub wallets (TKOG, YNRE, ZTQM, TMNN, MLAB-family → central clearinghouse → JetSki-branded wallets; and the separate qli hub family) — not third-party owner labels.</p>
+<p class="small">Resolved by tracing every computor's real most-recent large payment to a known hub wallet (TKOG, YNRE, ZTQM, TMNN, MLAB-family → central clearinghouse → JetSki-branded wallets; and the separate qli hub family) — <strong>not</strong> a third-party owner-attribution service. See the epoch trend table below and the full report for methodology.</p>
 
 <h2>The balance has been shifting for months</h2>
 <div class="table-scroll">
@@ -57,6 +59,18 @@
 </table>
 </div>
 <p class="small">Real, direct on-chain money-flow census for three separate points in time (676/676, 676/676, and 653/653 resolved). A steady, monotonic multi-epoch trend, not a single jump — qli's share has roughly doubled while MinerLab/JetSki's has shrunk proportionally. The duopoly itself is completely stable; what's changed is the balance of power between the two.</p>
+
+<h2>Third-party heuristic labels (for comparison, not our own methodology)</h2>
+<div class="card">
+  <label class="small" for="epochSelect">Epoch: </label>
+  <input type="number" id="epochSelect" value="229" min="1" max="229" style="width:80px;">
+  <button id="epochBtn">Load</button>
+  <p class="small" style="margin-top:10px;">Sourced from fattydoge.top via analytics.qubic.li — by their own disclosure, "heuristic (deposit patterns, peer self-declaration, etc.)... use as a directional signal, not as ground truth." Shown here only for comparison against our own money-flow census above; note jetski/minerlab/YNRE are three labels for the one real MinerLab/JetSki operation.</p>
+  <div id="censusStats" class="stat-row" style="margin-top:10px;">
+    <div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>
+  </div>
+  <p id="censusNote" class="small"></p>
+</div>
 
 <h2>Live candidate tracker</h2>
 <div id="candidateTracker" class="card">
@@ -99,16 +113,103 @@
 
 const ZERO_ID = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB';
 
+// Every hop we've directly verified for each network. If a looked-up identity's activity
+// touches ANY of these, it's part of the same joint operation, not a separate entity —
+// that needs to be obvious to whoever uses the lookup tool, not just the well-known names.
 const HUBS = [
-  ['TKOG', 'TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ', 'MinerLab/JetSki'],
-  ['YNRE', 'YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN', 'MinerLab/JetSki'],
-  ['ZTQM', 'ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC', 'MinerLab/JetSki'],
-  ['TMNN', 'TMNNSVZZPYTZSGOOOHMXIJINBYNCSYTTVVQPSIRNAEESGORHENUKWLAGOFFC', 'MinerLab/JetSki'],
+  // --- MinerLab/JetSki family: seeding/collection hubs ---
+  ['TKOG (seeding hub)', 'TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ', 'MinerLab/JetSki'],
+  ['YNRE (seeding hub)', 'YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN', 'MinerLab/JetSki'],
+  ['ZTQM (collection hub)', 'ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC', 'MinerLab/JetSki'],
+  ['TMNN (collection hub)', 'TMNNSVZZPYTZSGOOOHMXIJINBYNCSYTTVVQPSIRNAEESGORHENUKWLAGOFFC', 'MinerLab/JetSki'],
+  ['MLABN', 'MLABNEHWNYBDOFNHELXZAFVDDWCCIGFKYZMFSFKCECAWATTFPCEHRKBFOKPD', 'MinerLab/JetSki'],
+  ['MLABD', 'MLABDNEGKEJLIFFHLCHLDFUVYSHALWSNQXLECAYBADULQESQIYHIULJELLXG', 'MinerLab/JetSki'],
+  ['MLABR', 'MLABRECTCPJJFGHOMEDVQKOMLPQDRXIJRRWQAMOXXBEKHUWUCTFZSEYDYTIM', 'MinerLab/JetSki'],
+  // --- MinerLab/JetSki family: clearinghouse and downstream ---
   ['LKBOPOUKGSYT (clearinghouse)', 'LKBOPOUKGSYTODWVEPXHUXDTRSOCDOXXXIEAGBJXAGJRMGXRXMCHDNCHWRLK', 'MinerLab/JetSki'],
   ['GXITF (aggregator)', 'GXITFZPMTHWNUAWQQVCHXZRKOVMDMWOBRVCDCUDHYBJMEJOYDYDELZAFEIIA', 'MinerLab/JetSki'],
   ['BBMMA (relay)', 'BBMMAXUALHUWHEVSALTYQVYVTRHBVPVMZCJEFIVAJDXVYFITYPIOGGQGCWTC', 'MinerLab/JetSki'],
-  ['CLJHHZVRWA', 'CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE', 'MinerLab/JetSki'],
+  ['VUEY (MEXC exchange)', 'VUEYKUCYYHXKDGOSCWAIEECECDBCXVUSUAJRVXUQVAQPGIOABLGGLXDAXTNK', 'MinerLab/JetSki'],
+  ['UHLSQ (founding wallet)', 'UHLSQVOWHBOHREGYHCQDWXAQHHFCZCZNCDAYIVRJVCGOUNOEHOAFUPMDICKF', 'MinerLab/JetSki'],
+  ['GDXY (root wallet, 2024)', 'GDXYIXYSWTZHOEMBWFUTQCNIOYTBOTWJQNMQHXOGBFWUYVCPZDNKWSFHSGKL', 'MinerLab/JetSki'],
+  ['JETSKIYUBUPF', 'JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG', 'MinerLab/JetSki'],
+  ['JETSKIQRDEIV', 'JETSKIQRDEIVUDRAXYUVZOBHJAMCWFSOJBDKBPRDKCWSCHQHDBJHCPIEJUAH', 'MinerLab/JetSki'],
+  ['JETSKIMZKTSL', 'JETSKIMZKTSLXCGBKJQNNSOBLFQDTCYBJPFLYGHVRFSITZNCDHCKSSRAESFM', 'MinerLab/JetSki'],
+  // --- MinerLab/JetSki family: 1M-denominated branch ---
+  ['NNGXGF', 'NNGXGFLCDZODBCBFJKIUTEYXYLODTBCQDMOHAASBJDNEUHKBOTDXSCWEZUGA', 'MinerLab/JetSki'],
+  ['NZOIEU', 'NZOIEUECLNONOFRMFPPPXGIJWSVBGROIDCAAYIBRIATTMQLTQRPEGNXFBGFN', 'MinerLab/JetSki'],
+  ['JJAKPG', 'JJAKPGZYNPMCCGXHIKBBRSGSHTYAXWKMEQQJGPSAIHZXHPPSZUXAXLAGSIQD', 'MinerLab/JetSki'],
+  ['TZRLYH', 'TZRLYHJOEALYVGALTUICKBEQYWABCNVQSQCQBBTEREUUXKPWGXWROZYBIJHN', 'MinerLab/JetSki'],
+  ['KCOB (relay)', 'KCOBMVHDFGJXGBDOEVTBTQPRSOEBRWUOXKTTQYZECEUXNNIEDJNKATRFZQVM', 'MinerLab/JetSki'],
+  ['CLJHHZVRWA (major hub)', 'CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE', 'MinerLab/JetSki'],
+  // --- qli family: collection hubs ---
+  ['IHDR', 'IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ', 'qli'],
+  ['VAQA', 'VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ', 'qli'],
+  ['KOYO', 'KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB', 'qli'],
+  ['JBWF', 'JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ', 'qli'],
+  ['PCUTRGWY', 'PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL', 'qli'],
+  ['KDHVRGXD', 'KDHVRGXDVVLVZBUFZRAWKGDUMJSBESEYRBDBGKHYBGOIPVIWGKEZWJSBREAK', 'qli'],
+  ['LHDR (epoch-227 era)', 'LHDRZRNITLNVCEVCHDVASGFWPWUCQBQURBIXLDWIMAZQILTNAFGVDEXDKIYG', 'qli'],
+  ['DMRK (epoch-227 era)', 'DMRKLYUUQWXNGBQUQBHWSMUJORGCOJQYQINFEUDMPANYZAJILKBQRXYAKNTC', 'qli'],
 ];
+
+// Real, confirmed next-hop for each hub (from direct on-chain tracing, not inferred).
+// Lets the lookup tool show the FULL path forward to the final destination, not just
+// "touches a known hub" — if it's part of the same joint network, that has to be obvious.
+const NEXT_HOP = {
+  'TKOG (seeding hub)': ['LKBOPOUKGSYT (clearinghouse)'],
+  'YNRE (seeding hub)': ['LKBOPOUKGSYT (clearinghouse)'],
+  'ZTQM (collection hub)': ['LKBOPOUKGSYT (clearinghouse)'],
+  'TMNN (collection hub)': ['LKBOPOUKGSYT (clearinghouse)'],
+  'MLABN': ['LKBOPOUKGSYT (clearinghouse)'],
+  'MLABD': ['LKBOPOUKGSYT (clearinghouse)'],
+  'MLABR': ['LKBOPOUKGSYT (clearinghouse)'],
+  'GDXY (root wallet, 2024)': ['LKBOPOUKGSYT (clearinghouse)'],
+  'UHLSQ (founding wallet)': ['GXITF (aggregator)'],
+  'LKBOPOUKGSYT (clearinghouse)': ['JETSKIYUBUPF', 'JETSKIQRDEIV', 'JETSKIMZKTSL', 'GXITF (aggregator)'],
+  'GXITF (aggregator)': ['BBMMA (relay)'],
+  'NNGXGF': ['KCOB (relay)'],
+  'NZOIEU': ['KCOB (relay)'],
+  'JJAKPG': ['KCOB (relay)'],
+  'TZRLYH': ['KCOB (relay)'],
+  'KCOB (relay)': ['CLJHHZVRWA (major hub)'],
+  'CLJHHZVRWA (major hub)': ['BBMMA (relay)'],
+  'BBMMA (relay)': ['VUEY (MEXC exchange)'],
+  'IHDR': ['QLI-branded wallets'],
+  'VAQA': ['QLI-branded wallets'],
+  'KOYO': ['QLI-branded wallets'],
+  'JBWF': ['QLI-branded wallets'],
+  'PCUTRGWY': ['QLI-branded wallets'],
+  'KDHVRGXD': ['QLI-branded wallets'],
+  'LHDR (epoch-227 era)': ['QLI-branded wallets'],
+  'DMRK (epoch-227 era)': ['QLI-branded wallets'],
+};
+
+// Returns a simple, flat list of "steps" — each step is an array of one or more
+// hub names reachable at that depth (more than one when a hub forwards to several
+// places at once, e.g. the clearinghouse splitting to 3 JetSki wallets).
+function tracePath(startName) {
+  const steps = [[startName]];
+  let current = [startName];
+  const seen = new Set(current);
+  for (let guard = 0; guard < 10; guard++) {
+    const nextSet = new Set();
+    for (const name of current) {
+      for (const n of (NEXT_HOP[name] || [])) {
+        if (!seen.has(n)) nextSet.add(n);
+      }
+    }
+    if (!nextSet.size) break;
+    current = [...nextSet];
+    current.forEach(n => seen.add(n));
+    steps.push(current);
+  }
+  return steps;
+}
+
+function renderPath(steps) {
+  return steps.map(step => step.join(' / ')).join(' &rarr; ');
+}
 
 async function getJson(url) {
   const r = await fetch(url);
@@ -130,11 +231,14 @@ async function loadHubBalances() {
   }
 }
 
-async function loadCensus() {
+async function loadCensus(epoch) {
+  const el = document.getElementById('censusStats');
+  const note = document.getElementById('censusNote');
+  el.innerHTML = '<div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>';
+  note.textContent = '';
   try {
-    const d = await getJson('https://analytics.qubic.li/api/stats/computor-revenue/by-owner?epoch=229');
+    const d = await getJson(`https://analytics.qubic.li/api/stats/computor-revenue/by-owner?epoch=${epoch}`);
     const owners = d.owners || [];
-    const el = document.getElementById('censusStats');
     el.innerHTML = '';
     for (const o of owners) {
       const div = document.createElement('div');
@@ -143,14 +247,17 @@ async function loadCensus() {
       div.innerHTML = `<div class="num">${o.computorCount}</div><div class="lbl">${o.owner}</div>`;
       el.appendChild(div);
     }
-    const note = document.createElement('p');
-    note.className = 'small';
-    note.textContent = `Live snapshot, epoch ${d.epoch}. ${d.computorsWithOwner} of 676 have a third-party label; ${d.computorsWithoutOwner} unlabeled (our own direct money-flow census, see the full report, resolves ~99.8% of these regardless of label).`;
-    el.parentElement.insertBefore(note, el.nextSibling.nextSibling);
+    note.textContent = `Epoch ${d.epoch}: ${d.computorsWithOwner} of 676 have a third-party label; ${d.computorsWithoutOwner} unlabeled. (Our own direct money-flow census, above, resolves ~99.8% regardless of label.)`;
   } catch (e) {
-    document.getElementById('censusStats').innerHTML = '<div class="stat"><div class="num status-bad">error</div><div class="lbl">' + e.message + '</div></div>';
+    el.innerHTML = '<div class="stat"><div class="num status-bad">error</div><div class="lbl">' + e.message + '</div></div>';
   }
 }
+
+document.getElementById('epochBtn').onclick = () => {
+  const epoch = parseInt(document.getElementById('epochSelect').value, 10);
+  if (!epoch || epoch < 1) return;
+  loadCensus(epoch);
+};
 
 document.getElementById('lookupBtn').onclick = async () => {
   const id = document.getElementById('lookupInput').value.trim().toUpperCase();
@@ -166,10 +273,16 @@ document.getElementById('lookupBtn').onclick = async () => {
     });
     const tx = await txResp.json();
     const hubMatch = HUBS.find(([,addr]) => (tx.transactions||[]).some(t => t.destination === addr || t.source === addr));
+    let pathHtml = '<span class="status-ok">no known hub in most recent 5 transactions</span>';
+    if (hubMatch) {
+      const steps = tracePath(hubMatch[0]);
+      pathHtml = `<span class="status-warn">part of the ${hubMatch[2]} network</span><br>` +
+        `<div class="mono" style="margin-top:6px; font-size:0.8rem; color:var(--fg);">this identity &rarr; ${renderPath(steps)}</div>`;
+    }
     out.innerHTML = `
       <div><strong>Balance:</strong> ${Number(bal.balance.balance).toLocaleString()} QU</div>
       <div><strong>Total transactions:</strong> ${tx.hits ? tx.hits.total : '?'}</div>
-      <div><strong>Recent activity touches known hub:</strong> ${hubMatch ? '<span class="status-warn">' + hubMatch[0] + ' (' + hubMatch[2] + ')</span>' : '<span class="status-ok">no known hub in most recent 5 tx</span>'}</div>
+      <div style="margin-top:8px;"><strong>Real money-trail:</strong><br>${pathHtml}</div>
     `;
   } catch (e) {
     out.innerHTML = '<span class="status-bad">Lookup failed: ' + e.message + '</span>';
@@ -261,7 +374,7 @@ document.getElementById('chainBtn').onclick = async () => {
 };
 
 loadHubBalances();
-loadCensus();
+loadCensus(229);
 loadCandidateTracker();
 </script>
 </body>
