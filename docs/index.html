@@ -112,6 +112,16 @@
   <div id="lookupResult" class="small">Checks: real balance, real transaction count, and whether its most recent large payment routes to a known hub family.</div>
 </div>
 
+<h2>Your trace trail</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">Every identity you look up gets added here as the next hop. Click any earlier hop to rewind to it (drops everything after); click a funder address inside a result above to follow the money one more step. Saved in your browser only.</p>
+  <div id="trailView" class="mono" style="margin-top:8px; font-size:0.8rem; line-height:2;"><span class="small">Nothing traced yet — look up an identity above to start.</span></div>
+  <div style="margin-top:10px;">
+    <button id="trailBackBtn">&#9664; Back one step</button>
+    <button id="trailClearBtn">Clear trail</button>
+  </div>
+</div>
+
 <h2>Known hub wallets (live balances)</h2>
 <div class="table-scroll">
 <table id="hubTable">
@@ -301,8 +311,52 @@ document.getElementById('epochBtn').onclick = () => {
   loadCensus(epoch);
 };
 
-document.getElementById('lookupBtn').onclick = async () => {
-  const id = document.getElementById('lookupInput').value.trim().toUpperCase();
+// ---------- trace trail (click-to-extend breadcrumb, saved per-browser) ----------
+let trail = [];
+try { trail = JSON.parse(localStorage.getItem('traceTrail') || '[]'); } catch (e) { trail = []; }
+
+function saveTrail() { localStorage.setItem('traceTrail', JSON.stringify(trail)); }
+function shortId(id) { return id.slice(0, 8) + '&hellip;' + id.slice(-4); }
+
+function renderTrail() {
+  const el = document.getElementById('trailView');
+  if (!trail.length) { el.innerHTML = '<span class="small">Nothing traced yet — look up an identity above to start.</span>'; return; }
+  el.innerHTML = trail.map((id, i) => {
+    const isLast = i === trail.length - 1;
+    const label = `<span title="${id}" style="cursor:pointer; ${isLast ? 'color:var(--acc); font-weight:bold;' : 'color:var(--fg); text-decoration:underline;'}" data-trail-idx="${i}">${shortId(id)}</span>`;
+    return i === 0 ? label : ' &rarr; ' + label;
+  }).join('');
+  el.querySelectorAll('[data-trail-idx]').forEach(node => {
+    node.onclick = () => {
+      const idx = parseInt(node.getAttribute('data-trail-idx'), 10);
+      trail = trail.slice(0, idx + 1);
+      saveTrail();
+      renderTrail();
+      document.getElementById('lookupInput').value = trail[idx];
+      doLookup(trail[idx], false);
+    };
+  });
+}
+
+document.getElementById('trailBackBtn').onclick = () => {
+  if (trail.length <= 1) { trail = []; saveTrail(); renderTrail(); document.getElementById('lookupResult').textContent = 'Trail cleared.'; return; }
+  trail.pop();
+  saveTrail();
+  renderTrail();
+  const prev = trail[trail.length - 1];
+  document.getElementById('lookupInput').value = prev;
+  doLookup(prev, false);
+};
+
+document.getElementById('trailClearBtn').onclick = () => {
+  trail = [];
+  saveTrail();
+  renderTrail();
+};
+
+renderTrail();
+
+async function doLookup(id, appendToTrail = true) {
   const out = document.getElementById('lookupResult');
   if (!/^[A-Z]{60}$/.test(id)) { out.innerHTML = '<span class="status-bad">Identity must be 60 letters A-Z.</span>'; return; }
   out.textContent = 'Checking…';
@@ -323,14 +377,42 @@ document.getElementById('lookupBtn').onclick = async () => {
       pathHtml = `<span class="status-warn">part of the ${hubMatch[2]} network</span><br>` +
         `<div class="mono" style="margin-top:6px; font-size:0.8rem; color:var(--fg);">this identity &rarr; ${renderPath(steps)}</div>`;
     }
+    // The counterpart on this identity's very first transaction — whether or not it's
+    // a hub we've already named, following it one more hop is the manual-tracing move
+    // this whole investigation has been doing by hand all session. Make it one click.
+    const first = firstTxs[0];
+    let funderHtml = '<span class="small">no transactions at all</span>';
+    if (first) {
+      const counterpart = first.destId === id ? first.sourceId : first.destId;
+      const direction = first.destId === id ? 'received from' : 'sent to';
+      funderHtml = `${direction} <span class="mono">${counterpart}</span> (${Number(first.amount).toLocaleString()} QU, tick ${first.tickNumber}) ` +
+        `<button data-funder="${counterpart}" style="margin-left:8px; padding:2px 8px;">Trace this &rarr;</button>`;
+    }
     out.innerHTML = `
       <div><strong>Balance:</strong> ${Number(bal.balance.balance).toLocaleString()} QU</div>
       <div><strong>Total transactions:</strong> ${totalCount}</div>
       <div style="margin-top:8px;"><strong>Real money-trail:</strong><br>${pathHtml}</div>
+      <div style="margin-top:8px;"><strong>First-ever transaction:</strong><br>${funderHtml}</div>
     `;
+    const btn = out.querySelector('[data-funder]');
+    if (btn) btn.onclick = () => {
+      const next = btn.getAttribute('data-funder');
+      document.getElementById('lookupInput').value = next;
+      doLookup(next, true);
+    };
+    if (appendToTrail && (trail.length === 0 || trail[trail.length - 1] !== id)) {
+      trail.push(id);
+      saveTrail();
+      renderTrail();
+    }
   } catch (e) {
     out.innerHTML = '<span class="status-bad">Lookup failed: ' + e.message + '</span>';
   }
+}
+
+document.getElementById('lookupBtn').onclick = () => {
+  const id = document.getElementById('lookupInput').value.trim().toUpperCase();
+  doLookup(id, true);
 };
 
 // ---------- watchlist (any identity, saved per-browser, looked up against the full snapshot) ----------
