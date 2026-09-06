@@ -93,6 +93,37 @@
     </tr>
   </table>
   <p class="small" style="margin-top:10px;">Every computor seeded by TMNN, ZTQM, or any MLAB-family wallet ultimately routes its revenue through this same single clearinghouse (<span class="mono">LKBOPOUKGSYT</span>) before it's split back out — that's the concentration this whole census is measuring. Trace it yourself with the tools below: paste <span class="mono">LKBOPOUKGSYT...HWRLK</span> into "Look up any identity," open its full transaction history, and follow any hop into your own trail.</p>
+
+  <h3 style="margin:22px 0 8px; font-size:0.95rem; color:var(--acc);">Both labeled "families" converge before reaching a real exchange</h3>
+  <p class="small">"MinerLab" and "JetSki" are fattydoge's two separate third-party labels for computor operators. Here's a second real, current chain showing both labeled groups feeding the exact same wallet before it reaches an outside exchange:</p>
+  <table style="margin-top:10px;">
+    <tr><th>Step</th><th>What happened</th><th>Amount</th><th>Tick / time (UTC)</th></tr>
+    <tr>
+      <td class="num">1a</td>
+      <td><span class="mono">ZTQM</span> (MinerLab-labeled) sends directly to <span class="mono">GXITF</span></td>
+      <td class="num">24,063,279,218 QU</td>
+      <td>tick 73,873,493<br>2026-08-12 14:18 UTC</td>
+    </tr>
+    <tr>
+      <td class="num">1b</td>
+      <td><span class="mono">LKBOPOUKGSYT</span> (the same clearinghouse from the trace above, which also pays the JetSki-branded wallets directly) <em>also</em> sends to that same <span class="mono">GXITF</span></td>
+      <td class="num">19,000,050,001 QU</td>
+      <td>tick 75,268,875<br>2026-08-19 16:07 UTC</td>
+    </tr>
+    <tr>
+      <td class="num">2</td>
+      <td><span class="mono">GXITF</span> — now holding funds that trace back to both labeled groups — forwards to <span class="mono">BBMMA</span></td>
+      <td class="num">16,000,000,000 QU</td>
+      <td>tick 73,922,871<br>2026-08-12 19:46 UTC</td>
+    </tr>
+    <tr>
+      <td class="num">3</td>
+      <td><span class="mono">BBMMA</span> forwards on to <span class="mono">VUEY</span>, a real external exchange wallet — the <strong>exact same amount</strong>, within minutes. This isn't a one-off: it's happened this way <strong>7 separate times we found in the last month alone</strong> (Aug 3 through Sept 4, 2026), every single time an exact-amount pass-through.</td>
+      <td class="num">16,000,000,000 QU<br>(exact match)</td>
+      <td>tick 73,923,000-ish<br>2026-08-12 19:47 UTC</td>
+    </tr>
+  </table>
+  <p class="small" style="margin-top:10px;"><strong>What we can and can't say:</strong> the collection-hub-to-exchange half of this chain (steps 1-3) is fully verified, current, and repeats reliably. What we have <em>not</em> directly observed is the exact mechanism by which an individual computor's own earned revenue physically reaches these collection hubs in the first place — we checked 40 confirmed MinerLab/JetSki-seeded computors' own recent transactions and found no direct outgoing sweep to any known hub in that window. That first link (computor &rarr; collection hub) is the one open piece of this specific chain; everything from the collection hubs onward is directly confirmed.</p>
 </div>
 
 <h2>Third-party heuristic labels (for comparison, not our own methodology)</h2>
