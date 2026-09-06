@@ -58,14 +58,15 @@ jobs:
           current = {ident for ident, v in full.items() if v['isComputor']}
           newly_seated = [] if is_first_run else sorted(current - prev)
 
-          if newly_seated:
-              log_path = 'docs/new_seats_log.json'
-              log = json.load(open(log_path)) if os.path.exists(log_path) else []
-              for ident in newly_seated:
-                  log.append({'identity': ident, 'detected_at': now,
-                              'score': full[ident]['score'], 'rank': full[ident]['rank']})
-              log = log[-200:]  # keep it bounded
-              json.dump(log, open(log_path, 'w'), indent=2)
+          # Always write this file (even with zero new entries this run) so the
+          # commit step's `git add` never hits a file that doesn't exist yet.
+          log_path = 'docs/new_seats_log.json'
+          log = json.load(open(log_path)) if os.path.exists(log_path) else []
+          for ident in newly_seated:
+              log.append({'identity': ident, 'detected_at': now,
+                          'score': full[ident]['score'], 'rank': full[ident]['rank']})
+          log = log[-200:]  # keep it bounded
+          json.dump(log, open(log_path, 'w'), indent=2)
 
           json.dump(sorted(current), open(prev_path, 'w'))
           PYEOF
