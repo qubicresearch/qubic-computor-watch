@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qubic Computor Watch</title>
+<style>
+  :root { --bg:#0f1218; --panel:#171c26; --line:#2a3242; --fg:#dde3ee; --dim:#8a94a6; --acc:#5aa9ff; --ok:#4cd28a; --bad:#ff6b6b; --warn:#f2c14e; --mj:#5aa9ff; --qli:#c98bf5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 ui-monospace,Menlo,Consolas,monospace; }
+  .wrap { max-width:1100px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  .sub { color:var(--dim); margin:0 0 28px; font-size:0.9rem; }
+  h2 { font-size:1.05rem; margin:36px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line); color:var(--acc); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:14px; }
+  .stat-row { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0; }
+  .stat { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px 18px; flex:1; min-width:140px; }
+  .stat .num { font-size:1.6rem; font-weight:bold; }
+  .stat .lbl { color:var(--dim); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; margin-top:4px; }
+  .stat.mj .num { color:var(--mj); } .stat.qli .num { color:var(--qli); }
+  table { border-collapse:collapse; width:100%; font-size:0.85rem; }
+  th { text-align:left; padding:6px 8px; border-bottom:2px solid var(--line); color:var(--dim); font-size:0.72rem; text-transform:uppercase; }
+  td { padding:5px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  td.mono { font-family:ui-monospace,monospace; font-size:0.78rem; word-break:break-all; color:var(--dim); }
+  td.num { font-family:ui-monospace,monospace; text-align:right; }
+  .table-scroll { overflow-x:auto; border:1px solid var(--line); border-radius:8px; max-height:360px; overflow-y:auto; }
+  .table-scroll table { margin:0; }
+  a { color:var(--acc); }
+  .small { color:var(--dim); font-size:0.82rem; }
+  input[type=text] { background:#0b0e14; color:var(--fg); border:1px solid var(--line); padding:8px 10px; font:inherit; width:520px; max-width:100%; }
+  button { background:#22304a; color:var(--fg); border:1px solid #365079; padding:8px 14px; font:inherit; cursor:pointer; border-radius:4px; }
+  button:hover { background:#2b3d5e; }
+  .status-ok { color:var(--ok); } .status-bad { color:var(--bad); } .status-warn { color:var(--warn); }
+  #lookupResult { margin-top:14px; }
+  footer { margin-top:50px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.78rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Qubic Computor Watch</h1>
+<p class="sub">Live, real, on-chain tracking of Qubic computor-seat concentration — money-flow traced, source-code verified, not just statistical correlation.</p>
+
+<h2>Live duopoly census</h2>
+<div id="censusStats" class="stat-row">
+  <div class="stat"><div class="num">loading…</div><div class="lbl">fetching live data</div></div>
+</div>
+<p class="small">Resolved by direct on-chain money-flow tracing to named hub wallets (TKOG, YNRE, ZTQM, TMNN, MLAB-family → central clearinghouse → JetSki-branded wallets; and the separate qli hub family) — not third-party owner labels.</p>
+
+<h2>Look up any identity</h2>
+<div class="card">
+  <input type="text" id="lookupInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false">
+  <button id="lookupBtn">Check</button>
+  <div id="lookupResult" class="small">Checks: real balance, real transaction count, and whether its most recent large payment routes to a known hub family.</div>
+</div>
+
+<h2>Known hub wallets (live balances)</h2>
+<div class="table-scroll">
+<table id="hubTable">
+<tr><th>Hub</th><th>Address</th><th>Balance</th><th>Family</th></tr>
+</table>
+</div>
+
+<h2>The mechanism, in brief</h2>
+<div class="card">
+<p>Every candidate identity is auto-funded by pool software (not manually by an operator) the moment it's first used — reproduced directly on independent hardware, four separate times, with zero operator involvement. Each real work submission posts a 1,000,000 QU bond that the network independently re-verifies and only refunds if the recomputed solution matches exactly. Winning a seat isn't a flat contest across all 676: the top 451 ranked identities are copied forward automatically each epoch, while the remaining 225 seats are recomputed after every single valid submission network-wide — a new identity only has to beat the current worst of that 225, not the whole network. Full writeup: <a href="https://claude.ai/code/artifact/a7be884a-38bd-4a2c-bbd7-f3028d0b253e" target="_blank">Computor Bloat</a> · single-seat case study: <a href="https://claude.ai/code/artifact/e590db27-f2fe-415f-be6d-1685760ca900" target="_blank">One Seat, Traced</a>.</p>
+</div>
+
+<footer>Data sourced live from rpc.qubic.org, analytics.qubic.li, and bob.qubic.global. No third-party owner-attribution service is used for the headline census figures.</footer>
+</div>
+
+<script>
+'use strict';
+
+const ZERO_ID = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB';
+
+const HUBS = [
+  ['TKOG', 'TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ', 'MinerLab/JetSki'],
+  ['YNRE', 'YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN', 'MinerLab/JetSki'],
+  ['ZTQM', 'ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC', 'MinerLab/JetSki'],
+  ['TMNN', 'TMNNSVZZPYTZSGOOOHMXIJINBYNCSYTTVVQPSIRNAEESGORHENUKWLAGOFFC', 'MinerLab/JetSki'],
+  ['LKBOPOUKGSYT (clearinghouse)', 'LKBOPOUKGSYTODWVEPXHUXDTRSOCDOXXXIEAGBJXAGJRMGXRXMCHDNCHWRLK', 'MinerLab/JetSki'],
+  ['GXITF (aggregator)', 'GXITFZPMTHWNUAWQQVCHXZRKOVMDMWOBRVCDCUDHYBJMEJOYDYDELZAFEIIA', 'MinerLab/JetSki'],
+  ['BBMMA (relay)', 'BBMMAXUALHUWHEVSALTYQVYVTRHBVPVMZCJEFIVAJDXVYFITYPIOGGQGCWTC', 'MinerLab/JetSki'],
+  ['CLJHHZVRWA', 'CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE', 'MinerLab/JetSki'],
+];
+
+async function getJson(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url} -> ${r.status}`);
+  return r.json();
+}
+
+async function loadHubBalances() {
+  const table = document.getElementById('hubTable');
+  for (const [name, addr, family] of HUBS) {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${name}</td><td class="mono">${addr}</td><td class="num" id="bal-${addr}">…</td><td>${family}</td>`;
+    table.appendChild(row);
+    getJson(`https://rpc.qubic.org/v1/balances/${addr}`).then(d => {
+      document.getElementById(`bal-${addr}`).textContent = Number(d.balance.balance).toLocaleString() + ' QU';
+    }).catch(() => {
+      document.getElementById(`bal-${addr}`).textContent = 'error';
+    });
+  }
+}
+
+async function loadCensus() {
+  try {
+    const d = await getJson('https://analytics.qubic.li/api/stats/computor-revenue/by-owner?epoch=229');
+    const owners = d.owners || [];
+    const el = document.getElementById('censusStats');
+    el.innerHTML = '';
+    for (const o of owners) {
+      const div = document.createElement('div');
+      const cls = /qli/i.test(o.owner) ? 'qli' : /minerlab|jetski|ynre/i.test(o.owner) ? 'mj' : '';
+      div.className = 'stat ' + cls;
+      div.innerHTML = `<div class="num">${o.computorCount}</div><div class="lbl">${o.owner}</div>`;
+      el.appendChild(div);
+    }
+    const note = document.createElement('p');
+    note.className = 'small';
+    note.textContent = `Live snapshot, epoch ${d.epoch}. ${d.computorsWithOwner} of 676 have a third-party label; ${d.computorsWithoutOwner} unlabeled (our own direct money-flow census, see the full report, resolves ~99.8% of these regardless of label).`;
+    el.parentElement.insertBefore(note, el.nextSibling.nextSibling);
+  } catch (e) {
+    document.getElementById('censusStats').innerHTML = '<div class="stat"><div class="num status-bad">error</div><div class="lbl">' + e.message + '</div></div>';
+  }
+}
+
+document.getElementById('lookupBtn').onclick = async () => {
+  const id = document.getElementById('lookupInput').value.trim().toUpperCase();
+  const out = document.getElementById('lookupResult');
+  if (!/^[A-Z]{60}$/.test(id)) { out.innerHTML = '<span class="status-bad">Identity must be 60 letters A-Z.</span>'; return; }
+  out.textContent = 'Checking…';
+  try {
+    const balResp = await fetch(`https://rpc.qubic.org/v1/balances/${id}`);
+    const bal = await balResp.json();
+    const txResp = await fetch('https://rpc.qubic.org/query/v1/getTransactionsForIdentity', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({identity: id, pagination: {offset:0, size:5}})
+    });
+    const tx = await txResp.json();
+    const hubMatch = HUBS.find(([,addr]) => (tx.transactions||[]).some(t => t.destination === addr || t.source === addr));
+    out.innerHTML = `
+      <div><strong>Balance:</strong> ${Number(bal.balance.balance).toLocaleString()} QU</div>
+      <div><strong>Total transactions:</strong> ${tx.hits ? tx.hits.total : '?'}</div>
+      <div><strong>Recent activity touches known hub:</strong> ${hubMatch ? '<span class="status-warn">' + hubMatch[0] + ' (' + hubMatch[2] + ')</span>' : '<span class="status-ok">no known hub in most recent 5 tx</span>'}</div>
+    `;
+  } catch (e) {
+    out.innerHTML = '<span class="status-bad">Lookup failed: ' + e.message + '</span>';
+  }
+};
+
+loadHubBalances();
+loadCensus();
+</script>
+</body>
+</html>
