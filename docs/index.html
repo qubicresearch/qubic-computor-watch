@@ -469,7 +469,7 @@ async function loadHistoryPage(page) {
   table.innerHTML = '<tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr><tr><td colspan="5" class="small">Loading…</td></tr>';
   try {
     const d = await getJson(`https://rpc.qubic.org/v2/identities/${currentLookupId}/transfers?desc=true&pageSize=${HISTORY_PAGE_SIZE}&page=${page}`);
-    const rows = (d.transactions || []).map(t => t.transactions[0].transaction);
+    const rows = (d.transactions || []).map(t => ({ ...t.transactions[0].transaction, timestamp: t.transactions[0].timestamp }));
     table.innerHTML = '<tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr>';
     if (!rows.length) {
       table.innerHTML += '<tr><td colspan="5" class="small">No transactions on this page.</td></tr>';
