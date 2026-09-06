@@ -60,12 +60,20 @@
 </div>
 <p class="small">Real, direct on-chain money-flow census for three separate points in time (676/676, 676/676, and 653/653 resolved). A steady, monotonic multi-epoch trend, not a single jump — qli's share has roughly doubled while MinerLab/JetSki's has shrunk proportionally. The duopoly itself is completely stable; what's changed is the balance of power between the two.</p>
 
+<h2>Funding-based census (real first-transaction tracing, automated)</h2>
+<div class="card">
+  <div id="fundingStats" class="stat-row">
+    <div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>
+  </div>
+  <p id="fundingNote" class="small" style="margin-top:10px;"></p>
+</div>
+
 <h2>Third-party heuristic labels (for comparison, not our own methodology)</h2>
 <div class="card">
   <label class="small" for="epochSelect">Epoch: </label>
   <input type="number" id="epochSelect" value="229" min="1" max="229" style="width:80px;">
   <button id="epochBtn">Load</button>
-  <p class="small" style="margin-top:10px;">Sourced from fattydoge.top via analytics.qubic.li — by their own disclosure, "heuristic (deposit patterns, peer self-declaration, etc.)... use as a directional signal, not as ground truth." Shown here only for comparison against our own money-flow census above; note jetski/minerlab/YNRE are three labels for the one real MinerLab/JetSki operation.</p>
+  <p class="small" style="margin-top:10px;">Sourced from fattydoge.top via analytics.qubic.li — by their own disclosure, "heuristic (deposit patterns, peer self-declaration, etc.)... use as a directional signal, not as ground truth." Its own "unlabeled" bucket is not the same as unresolved — see the funding-based and money-flow censuses above, both ours, both real chain data. Shown here only for comparison; note jetski/minerlab/YNRE are three labels for the one real MinerLab/JetSki operation.</p>
   <div id="censusStats" class="stat-row" style="margin-top:10px;">
     <div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>
   </div>
@@ -241,6 +249,29 @@ async function loadHubBalances() {
     });
   }
 }
+
+async function loadFundingCensus() {
+  const el = document.getElementById('fundingStats');
+  const note = document.getElementById('fundingNote');
+  try {
+    const d = await getJson('funding_census.json');
+    const c = d.counts || {};
+    const mj = c['MinerLab/JetSki'] || 0;
+    const un = c['unattributed (not seeded by a known hub)'] || 0;
+    const fail = c['lookup failed'] || 0;
+    const total = d.totalComputors || (mj + un + fail);
+    el.innerHTML = `
+      <div class="stat mj"><div class="num">${mj}</div><div class="lbl">MinerLab/JetSki-funded (${(100*mj/total).toFixed(1)}%)</div></div>
+      <div class="stat"><div class="num">${un}</div><div class="lbl">self-funded / unattributed (${(100*un/total).toFixed(1)}%)</div></div>
+      ${fail ? `<div class="stat"><div class="num status-bad">${fail}</div><div class="lbl">lookup failed</div></div>` : ''}
+    `;
+    const updated = new Date(d.updated).toLocaleString();
+    note.textContent = `Real first-ever on-chain transaction per current computor (${total} checked, ascending order — not "recent activity"), checked against 8 confirmed MinerLab/JetSki seeder wallets. Most of the "self-funded/unattributed" group was funded with exactly the network's own 1,000,000 QU candidacy bond from a distinct wallet each time (no repeats) — real evidence of organic candidates, not a second hidden pool. Refreshed automatically every 6 hours. Last updated ${updated}.`;
+  } catch (e) {
+    el.innerHTML = '<div class="stat"><div class="num status-bad">error</div><div class="lbl">' + e.message + '</div></div>';
+  }
+}
+loadFundingCensus();
 
 async function loadCensus(epoch) {
   const el = document.getElementById('censusStats');
