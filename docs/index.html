@@ -110,6 +110,17 @@
   <input type="text" id="lookupInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false">
   <button id="lookupBtn">Check</button>
   <div id="lookupResult" class="small">Checks: real balance, real transaction count, and whether its most recent large payment routes to a known hub family.</div>
+  <div id="historySection" style="display:none; margin-top:14px;">
+    <button id="historyBtn">Show full transaction history</button>
+    <div id="historyControls" style="display:none; margin-top:10px;">
+      <button id="historyPrevBtn">&#9664; Newer</button>
+      <span id="historyPageLbl" class="small" style="margin:0 10px;"></span>
+      <button id="historyNextBtn">Older &#9654;</button>
+    </div>
+    <div class="table-scroll" style="margin-top:10px;">
+      <table id="historyTable"><tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr></table>
+    </div>
+  </div>
 </div>
 
 <h2>Trace from the real explorer</h2>
@@ -437,10 +448,72 @@ async function doLookup(id, appendToTrail = true) {
       saveTrail();
       renderTrail();
     }
+    currentLookupId = id;
+    document.getElementById('historySection').style.display = 'block';
+    document.getElementById('historyControls').style.display = 'none';
+    document.getElementById('historyTable').innerHTML = '<tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr>';
+    document.getElementById('historyBtn').textContent = 'Show full transaction history';
   } catch (e) {
     out.innerHTML = '<span class="status-bad">Lookup failed: ' + e.message + '</span>';
   }
 }
+
+// ---------- full paginated transaction history, most recent first, every counterparty clickable ----------
+let currentLookupId = null;
+let historyPage = 0;
+const HISTORY_PAGE_SIZE = 25;
+
+async function loadHistoryPage(page) {
+  const table = document.getElementById('historyTable');
+  const lbl = document.getElementById('historyPageLbl');
+  table.innerHTML = '<tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr><tr><td colspan="5" class="small">Loading…</td></tr>';
+  try {
+    const d = await getJson(`https://rpc.qubic.org/v2/identities/${currentLookupId}/transfers?desc=true&pageSize=${HISTORY_PAGE_SIZE}&page=${page}`);
+    const rows = (d.transactions || []).map(t => t.transactions[0].transaction);
+    table.innerHTML = '<tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr>';
+    if (!rows.length) {
+      table.innerHTML += '<tr><td colspan="5" class="small">No transactions on this page.</td></tr>';
+    }
+    for (const tx of rows) {
+      const isOut = tx.sourceId === currentLookupId;
+      const counterparty = isOut ? tx.destId : tx.sourceId;
+      const date = new Date(Number(tx.timestamp || 0)).toISOString().slice(0, 10);
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td class="small">${date}</td>
+        <td class="num">${tx.tickNumber}</td>
+        <td>${isOut ? '<span class="status-bad">out</span>' : '<span class="status-ok">in</span>'}</td>
+        <td class="num">${Number(tx.amount).toLocaleString()}</td>
+        <td class="mono" style="cursor:pointer; text-decoration:underline;" data-trace="${counterparty}" title="Click to trace this address">${counterparty}</td>
+      `;
+      table.appendChild(row);
+    }
+    table.querySelectorAll('[data-trace]').forEach(cell => {
+      cell.onclick = () => {
+        const addr = cell.getAttribute('data-trace');
+        document.getElementById('lookupInput').value = addr;
+        doLookup(addr, true);
+        window.scrollTo({ top: document.getElementById('lookupInput').getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' });
+      };
+    });
+    const total = d.pagination ? d.pagination.totalRecords : rows.length;
+    const totalPages = Math.max(1, Math.ceil(total / HISTORY_PAGE_SIZE));
+    lbl.textContent = `page ${page + 1} of ${totalPages} (${total} total transactions, newest first)`;
+    document.getElementById('historyPrevBtn').disabled = page === 0;
+    document.getElementById('historyNextBtn').disabled = page + 1 >= totalPages;
+  } catch (e) {
+    table.innerHTML = '<tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr><tr><td colspan="5" class="status-bad">Failed to load: ' + e.message + '</td></tr>';
+  }
+}
+
+document.getElementById('historyBtn').onclick = () => {
+  historyPage = 0;
+  document.getElementById('historyControls').style.display = 'block';
+  document.getElementById('historyBtn').textContent = 'Refresh transaction history';
+  loadHistoryPage(historyPage);
+};
+document.getElementById('historyPrevBtn').onclick = () => { if (historyPage > 0) { historyPage--; loadHistoryPage(historyPage); } };
+document.getElementById('historyNextBtn').onclick = () => { historyPage++; loadHistoryPage(historyPage); };
 
 document.getElementById('lookupBtn').onclick = () => {
   const id = document.getElementById('lookupInput').value.trim().toUpperCase();
