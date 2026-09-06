@@ -112,6 +112,18 @@
   <div id="lookupResult" class="small">Checks: real balance, real transaction count, and whether its most recent large payment routes to a known hub family.</div>
 </div>
 
+<h2>Trace from the real explorer</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">A page can't watch what you click on a different site — that's a browser security boundary, nothing we can route around. This gets you most of the way there with one extra click per address instead:</p>
+  <ol class="small" style="margin:8px 0 14px 20px; padding:0;">
+    <li>If you don't see a row of saved links under your browser's address bar, turn it on first — <span class="mono">Ctrl+Shift+B</span> on Chrome/Edge/Brave, <span class="mono">Ctrl+Shift+B</span> on Firefox too (Mac: <span class="mono">Cmd+Shift+B</span>).</li>
+    <li>Drag the button below onto that bar. It saves as a bookmark named "Add to trail" — clicking it directly here does nothing useful, it only works from step 3.</li>
+    <li>Go browse <a href="https://explorer.qubic.org/" target="_blank">explorer.qubic.org</a> normally. Whenever you land on an address page there, click your new "Add to trail" bookmark.</li>
+    <li>This tab (or a new one, reused every time after) jumps to that address here automatically — balance, first-transaction, and trail all update on their own.</li>
+  </ol>
+  <p style="margin:14px 0;"><a id="bookmarkletLink" href="#" style="display:inline-block; background:#22304a; color:var(--fg); border:1px solid #365079; padding:8px 14px; border-radius:4px; text-decoration:none; cursor:grab;">&#128279; Add to trail</a> <span class="small">&larr; drag this to your bookmarks bar</span></p>
+</div>
+
 <h2>Your trace trail</h2>
 <div class="card">
   <p class="small" style="margin-top:0;">Every identity you look up gets added here as the next hop. Click any earlier hop to rewind to it (drops everything after); click a funder address inside a result above to follow the money one more step. Saved in your browser only.</p>
@@ -355,6 +367,26 @@ document.getElementById('trailClearBtn').onclick = () => {
 };
 
 renderTrail();
+
+// ---------- bookmarklet: reads the address off an explorer.qubic.org address-page URL ----------
+(function setupBookmarklet() {
+  const base = location.origin + location.pathname;
+  const code = `javascript:(function(){var m=location.pathname.match(/address\\/([A-Za-z]{60})/);var a=m?m[1].toUpperCase():null;if(!a){alert('No 60-letter Qubic address found in this page URL. Make sure you are on an explorer.qubic.org address page.');return;}window.open('${base}?add='+a,'qubicTrail');})();`;
+  document.getElementById('bookmarkletLink').setAttribute('href', code);
+})();
+
+// If we were opened/navigated via the bookmarklet (?add=ADDRESS), pick it up, add it to
+// the trail, look it up immediately, and strip it from the URL so a refresh doesn't re-add it.
+(function handleIncomingAdd() {
+  const params = new URLSearchParams(location.search);
+  const add = (params.get('add') || '').trim().toUpperCase();
+  if (/^[A-Z]{60}$/.test(add)) {
+    history.replaceState({}, '', location.pathname);
+    document.getElementById('lookupInput').value = add;
+    window.addEventListener('DOMContentLoaded', () => doLookup(add, true));
+    if (document.readyState !== 'loading') doLookup(add, true);
+  }
+})();
 
 async function doLookup(id, appendToTrail = true) {
   const out = document.getElementById('lookupResult');
