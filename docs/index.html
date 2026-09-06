@@ -47,6 +47,31 @@
 </div>
 <p class="small">Resolved by direct on-chain money-flow tracing to named hub wallets (TKOG, YNRE, ZTQM, TMNN, MLAB-family → central clearinghouse → JetSki-branded wallets; and the separate qli hub family) — not third-party owner labels.</p>
 
+<h2>The balance has been shifting for months</h2>
+<div class="table-scroll">
+<table>
+<tr><th></th><th>Epoch 227</th><th>Epoch 228</th><th>Live (epoch 229)</th></tr>
+<tr><td>MinerLab/JetSki</td><td style="color:var(--mj)">75.5%</td><td style="color:var(--mj)">57.4%</td><td style="color:var(--mj)">50.2%</td></tr>
+<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">49.6%</td></tr>
+<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>0.2%</td></tr>
+</table>
+</div>
+<p class="small">Real, direct on-chain money-flow census for three separate points in time (676/676, 676/676, and 653/653 resolved). A steady, monotonic multi-epoch trend, not a single jump — qli's share has roughly doubled while MinerLab/JetSki's has shrunk proportionally. The duopoly itself is completely stable; what's changed is the balance of power between the two.</p>
+
+<h2>Live candidate tracker</h2>
+<div id="candidateTracker" class="card">
+  <p class="small">Loading live candidate-lifecycle data…</p>
+</div>
+<p class="small">Refreshed periodically by a scheduled job (server-side, since qubic.jetskipool.ai's tracker API doesn't allow direct browser access). Shows real identities we generated ourselves this investigation, tracked from first submission through to (eventually) winning a real seat.</p>
+
+<h2>Ant Colony solution chain viewer</h2>
+<div class="card">
+  <input type="text" id="chainInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false" value="ZDYGMLCBCDYEHAZPWMNHJMPJIJXBRCSPQONYJOMEEBMNXIZKHRLGYCCCXSZA">
+  <button id="chainBtn">Load chain</button>
+  <div id="chainStatus" class="small" style="margin-top:8px;">Pulls the identity's real Ant Colony solution tree directly from bob.qubic.global (the same public node behind krypdkat.github.io/bpp9kviewer) — parent/child refs, claimed vs. recomputed score, refund status.</div>
+  <div id="chainResult" style="margin-top:12px;"></div>
+</div>
+
 <h2>Look up any identity</h2>
 <div class="card">
   <input type="text" id="lookupInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false">
@@ -151,8 +176,93 @@ document.getElementById('lookupBtn').onclick = async () => {
   }
 };
 
+// ---------- live candidate tracker (reads a static JSON file kept fresh by a scheduled GitHub Action) ----------
+async function loadCandidateTracker() {
+  const el = document.getElementById('candidateTracker');
+  try {
+    const d = await getJson('./candidates.json?t=' + Date.now());
+    let rows = d.candidates.map(c => `<tr><td>${c.label}</td><td class="mono">${c.identity}</td><td class="num">${c.score}</td><td class="num">${c.rank}</td><td>${c.isComputor ? '<span class="status-ok">COMPUTOR</span>' : 'candidate'}</td></tr>`).join('');
+    el.innerHTML = `<div class="table-scroll"><table><tr><th>Label</th><th>Identity</th><th>Score</th><th>Rank</th><th>Status</th></tr>${rows}</table></div><p class="small">Last updated: ${d.updated}</p>`;
+  } catch (e) {
+    el.innerHTML = '<p class="small status-warn">Live data not published yet (candidates.json missing) — this feature needs the scheduled GitHub Action to run at least once. See README.</p>';
+  }
+}
+
+// ---------- Ant Colony chain viewer (real data from bob.qubic.global) ----------
+const ANT_INPUT_TYPE = 12;
+const ANT_MAGIC_HEX = '414e545f534f4c55';
+const RESULT_NAMES = ['Valid','ValidNotStored','RejectParentNotRegistered','RejectStale','RejectWrongTree',
+  'RejectBelowThreshold','RejectLeParent','RejectMaxChildrenPerParent','RejectTickOutOfRange','RejectReplay',
+  'RejectDedupFull','RejectMinerIndexFull','RejectNonCanonicalNonce'];
+const BOB = 'https://bob.qubic.global';
+
+function unhex(h) { return Uint8Array.from(h.match(/../g).map(x => parseInt(x, 16))); }
+function u32le(b, o) { return (b[o] | b[o+1]<<8 | b[o+2]<<16 | b[o+3]<<24) >>> 0; }
+function hexstr(b) { return Array.from(b, x => x.toString(16).padStart(2,'0')).join(''); }
+function parseTxInput(inputHex) {
+  const b = unhex(inputHex);
+  return { parentTick: u32le(b,0), parentIdx: u32le(b,4), anchorTick: u32le(b,8), claimedScore: u32le(b,12) };
+}
+function parseAntLog(bodyHex) {
+  const b = unhex(bodyHex);
+  return { score: u32le(b,84), result: u32le(b,88) };
+}
+function rpcWs(method, params) {
+  return new Promise((resolve, reject) => {
+    const ws = new WebSocket(BOB.replace(/^http/, 'ws') + '/ws/qubic');
+    ws.onopen = () => ws.send(JSON.stringify({ jsonrpc: '2.0', method, params, id: 1 }));
+    ws.onmessage = e => { ws.close(); const m = JSON.parse(e.data); m.error ? reject(new Error(JSON.stringify(m.error))) : resolve(m.result); };
+    ws.onerror = () => reject(new Error('websocket error — bob.qubic.global unreachable'));
+  });
+}
+
+document.getElementById('chainBtn').onclick = async () => {
+  const id = document.getElementById('chainInput').value.trim().toUpperCase();
+  const status = document.getElementById('chainStatus');
+  const result = document.getElementById('chainResult');
+  result.innerHTML = '';
+  if (!/^[A-Z]{60}$/.test(id)) { status.innerHTML = '<span class="status-bad">Identity must be 60 letters A-Z.</span>'; return; }
+  try {
+    status.textContent = 'Connecting to bob.qubic.global…';
+    const st = await getJson(`${BOB}/status`);
+    const epoch = st.currentProcessingEpoch, fromTick = st.initialTick, toTick = st.currentIndexingTick;
+    status.textContent = `Searching epoch ${epoch} (ticks ${fromTick}-${toTick})…`;
+    const ticks = await rpcWs('qubic_findLogIds', [{ scIndex: 0, logType: 0, fromTick, toTick, topic1: id, topic2: ZERO_ID, topic3: ZERO_ID }]);
+    status.textContent = `Found ${ticks.length} candidate ticks, fetching details…`;
+    const sols = [];
+    for (const tick of ticks) {
+      const td = (await getJson(`${BOB}/tick/${tick}`)).tickdata;
+      const digests = (td && td.transactionDigests) || [];
+      for (const h of digests) {
+        const tx = await getJson(`${BOB}/tx/${h}`);
+        if (tx.from !== id || tx.inputType !== ANT_INPUT_TYPE) continue;
+        const inp = parseTxInput(tx.inputData);
+        const s = { tick: tx.tick, ...inp, log: null };
+        if (tx.logIdFrom !== undefined && tx.logIdTo >= tx.logIdFrom) {
+          const logs = await getJson(`${BOB}/log/${epoch}/${tx.logIdFrom}/${tx.logIdTo}`);
+          for (const l of logs) {
+            if (l.type === 255 && l.body?.hex?.startsWith(ANT_MAGIC_HEX)) s.log = parseAntLog(l.body.hex);
+          }
+        }
+        sols.push(s);
+      }
+    }
+    sols.sort((a,b) => a.tick - b.tick);
+    if (!sols.length) {
+      status.innerHTML = `No real Ant Colony (type12) submissions found for this identity in epoch ${epoch}.`;
+      return;
+    }
+    status.textContent = `${sols.length} real submissions found, epoch ${epoch}:`;
+    const rows = sols.map(s => `<tr><td class="num">${s.tick}</td><td class="num">${s.parentTick}:${s.parentIdx}</td><td class="num">${s.anchorTick}</td><td class="num">${s.claimedScore}</td><td class="num">${s.log ? s.log.score : '?'}</td><td>${s.log ? RESULT_NAMES[s.log.result] : 'no log'}</td></tr>`).join('');
+    result.innerHTML = `<div class="table-scroll"><table><tr><th>Tick</th><th>Parent</th><th>Anchor</th><th>Claimed</th><th>Real score</th><th>Result</th></tr>${rows}</table></div>`;
+  } catch (e) {
+    status.innerHTML = '<span class="status-bad">' + e.message + '</span>';
+  }
+};
+
 loadHubBalances();
 loadCensus();
+loadCandidateTracker();
 </script>
 </body>
 </html>
