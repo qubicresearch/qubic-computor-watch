@@ -72,11 +72,15 @@
   <p id="censusNote" class="small"></p>
 </div>
 
-<h2>Live candidate tracker</h2>
-<div id="candidateTracker" class="card">
-  <p class="small">Loading live candidate-lifecycle data…</p>
+<h2>Watchlist — track any identity's live seat status</h2>
+<div class="card">
+  <input type="text" id="watchInput" placeholder="Paste a 60-character Qubic identity to watch…" spellcheck="false">
+  <button id="watchBtn">Add</button>
+  <div id="candidateTracker" style="margin-top:12px;">
+    <p class="small">Loading live candidate-lifecycle data…</p>
+  </div>
 </div>
-<p class="small">Refreshed periodically by a scheduled job (server-side, since qubic.jetskipool.ai's tracker API doesn't allow direct browser access). Shows real identities we generated ourselves this investigation, tracked from first submission through to (eventually) winning a real seat.</p>
+<p class="small">Refreshed every 15 minutes by a scheduled job (server-side, since qubic.jetskipool.ai's tracker doesn't allow direct browser access — <a href="all_ids.json" target="_blank">raw snapshot</a>, ~1,552 tracked identities). Saved in your own browser only (localStorage) — nothing you add here is sent anywhere. Pre-loaded with the 3 identities we generated ourselves this investigation, tracked from first submission through to (eventually) winning a real seat.</p>
 
 <h2>Ant Colony solution chain viewer</h2>
 <div class="card">
@@ -291,17 +295,57 @@ document.getElementById('lookupBtn').onclick = async () => {
   }
 };
 
-// ---------- live candidate tracker (reads a static JSON file kept fresh by a scheduled GitHub Action) ----------
+// ---------- watchlist (any identity, saved per-browser, looked up against the full snapshot) ----------
+const DEFAULT_WATCH = {
+  'BJKDBKIOOTKIXGAMLGRYMLTXMGFDUOYSTFASIFHVCGMPLCUGXEVIXXKHILSC': '79783',
+  'OWGQOIHHUQWTPAKGVVWGOETVOUNAJEFXHHYLBYUVECKCTRYSPTNEENACBBNM': 'wallet-test',
+  'UIHUSNMLSGUKPGIZCVZEIZWMSEHAGOJPNYBSYIEAZFLVJUODQWYGPZCGVUWN': '9950X',
+};
+function getWatchlist() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('watchlist') || 'null');
+    return saved || { ...DEFAULT_WATCH };
+  } catch (e) { return { ...DEFAULT_WATCH }; }
+}
+function saveWatchlist(w) {
+  try { localStorage.setItem('watchlist', JSON.stringify(w)); } catch (e) {}
+}
+
 async function loadCandidateTracker() {
   const el = document.getElementById('candidateTracker');
   try {
-    const d = await getJson('./candidates.json?t=' + Date.now());
-    let rows = d.candidates.map(c => `<tr><td>${c.label}</td><td class="mono">${c.identity}</td><td class="num">${c.score}</td><td class="num">${c.rank}</td><td>${c.isComputor ? '<span class="status-ok">COMPUTOR</span>' : 'candidate'}</td></tr>`).join('');
-    el.innerHTML = `<div class="table-scroll"><table><tr><th>Label</th><th>Identity</th><th>Score</th><th>Rank</th><th>Status</th></tr>${rows}</table></div><p class="small">Last updated: ${d.updated}</p>`;
+    const d = await getJson('./all_ids.json?t=' + Date.now());
+    const watch = getWatchlist();
+    const entries = Object.entries(watch);
+    if (!entries.length) { el.innerHTML = '<p class="small">Watchlist is empty — add an identity above.</p>'; return; }
+    const rows = entries.map(([ident, label]) => {
+      const info = d.ids[ident];
+      if (!info) return `<tr><td>${label}</td><td class="mono">${ident}</td><td colspan="3" class="status-bad">not found in live tracker</td><td></td></tr>`;
+      return `<tr><td>${label}</td><td class="mono">${ident}</td><td class="num">${info.score}</td><td class="num">${info.rank}</td><td>${info.isComputor ? '<span class="status-ok">COMPUTOR</span>' : 'candidate'}</td><td><button data-remove="${ident}" style="padding:3px 8px;">remove</button></td></tr>`;
+    }).join('');
+    el.innerHTML = `<div class="table-scroll"><table><tr><th>Label</th><th>Identity</th><th>Score</th><th>Rank</th><th>Status</th><th></th></tr>${rows}</table></div><p class="small">Live snapshot updated: ${d.updated}</p>`;
+    el.querySelectorAll('button[data-remove]').forEach(btn => {
+      btn.onclick = () => {
+        const w = getWatchlist();
+        delete w[btn.dataset.remove];
+        saveWatchlist(w);
+        loadCandidateTracker();
+      };
+    });
   } catch (e) {
-    el.innerHTML = '<p class="small status-warn">Live data not published yet (candidates.json missing) — this feature needs the scheduled GitHub Action to run at least once. See README.</p>';
+    el.innerHTML = '<p class="small status-warn">Live data not published yet (all_ids.json missing) — this feature needs the scheduled GitHub Action to run at least once.</p>';
   }
 }
+
+document.getElementById('watchBtn').onclick = () => {
+  const id = document.getElementById('watchInput').value.trim().toUpperCase();
+  if (!/^[A-Z]{60}$/.test(id)) { alert('Identity must be 60 letters A-Z.'); return; }
+  const w = getWatchlist();
+  w[id] = id.slice(0, 8) + '…';
+  saveWatchlist(w);
+  document.getElementById('watchInput').value = '';
+  loadCandidateTracker();
+};
 
 // ---------- Ant Colony chain viewer (real data from bob.qubic.global) ----------
 const ANT_INPUT_TYPE = 12;
