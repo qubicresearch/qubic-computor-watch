@@ -90,6 +90,13 @@
   <div id="chainResult" style="margin-top:12px;"></div>
 </div>
 
+<h2>Find a full address from a partial one</h2>
+<div class="card">
+  <input type="text" id="partialInput" placeholder="Paste whatever's shown — e.g. BJKDBK...KHILSC, or just BJKDBK, or KHILSC" spellcheck="false">
+  <button id="partialBtn">Search</button>
+  <div id="partialResult" class="small" style="margin-top:8px;">Some tools (qli's own client, for one) only ever show a truncated identity. This searches the full 1,552-identity live snapshot for anything matching — something the public block explorer can't do.</div>
+</div>
+
 <h2>Look up any identity</h2>
 <div class="card">
   <input type="text" id="lookupInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false">
@@ -345,6 +352,37 @@ document.getElementById('watchBtn').onclick = () => {
   saveWatchlist(w);
   document.getElementById('watchInput').value = '';
   loadCandidateTracker();
+};
+
+// ---------- partial-address search (against the full live snapshot) ----------
+document.getElementById('partialBtn').onclick = async () => {
+  const out = document.getElementById('partialResult');
+  let raw = document.getElementById('partialInput').value.trim().toUpperCase();
+  if (!raw) { out.innerHTML = '<span class="status-bad">Enter something first.</span>'; return; }
+  out.textContent = 'Searching…';
+  try {
+    const d = await getJson('./all_ids.json?t=' + Date.now());
+    const allIds = Object.keys(d.ids);
+    let matches;
+    if (raw.includes('...') || raw.includes('…')) {
+      const [pre, post] = raw.split(/\.\.\.|…/).map(s => s.trim());
+      matches = allIds.filter(id => (!pre || id.startsWith(pre)) && (!post || id.endsWith(post)));
+    } else {
+      matches = allIds.filter(id => id.startsWith(raw) || id.endsWith(raw));
+    }
+    if (!matches.length) {
+      out.innerHTML = `<span class="status-bad">No match in the ${allIds.length}-identity snapshot.</span> This identity may not currently be tracked, or the snapshot may be a few minutes stale.`;
+    } else if (matches.length > 5) {
+      out.innerHTML = `<span class="status-warn">${matches.length} matches</span> — too ambiguous, add more characters.`;
+    } else {
+      out.innerHTML = matches.map(id => {
+        const info = d.ids[id];
+        return `<div class="mono" style="margin-top:4px;">${id} <span class="small">(score ${info.score}, rank ${info.rank}${info.isComputor ? ', <span class="status-ok">COMPUTOR</span>' : ''})</span></div>`;
+      }).join('');
+    }
+  } catch (e) {
+    out.innerHTML = '<span class="status-bad">Search failed: ' + e.message + '</span>';
+  }
 };
 
 // ---------- Ant Colony chain viewer (real data from bob.qubic.global) ----------
