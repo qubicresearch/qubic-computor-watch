@@ -1,0 +1,111 @@
+name: Funding-based census (real seeding source, not recent destination)
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check every current computor's real first-ever transaction
+        run: |
+          set -e
+          mkdir -p /tmp/firsttx
+
+          curl -s "https://qubic.jetskipool.ai/api/qubic_data.json" -o /tmp/qubic_data.json
+          python3 -c "
+          import json
+          d = json.load(open('/tmp/qubic_data.json'))
+          ids = d.get('tracker', {}).get('allIds', d.get('allIds', []))
+          computors = [row.get('identity') or row.get('id') for row in ids if row.get('isComputor')]
+          with open('/tmp/computor_list.txt', 'w') as f:
+              f.write(chr(10).join(computors))
+          print(len(computors), 'current computors to check')
+          "
+
+          # Fetch each identity's real first-ever transaction (ascending order).
+          # Modest concurrency + a real check for empty/failed responses, since
+          # this investigation has repeatedly found that high concurrency against
+          # these APIs silently drops results rather than erroring.
+          check_one() {
+            addr="$1"
+            out="/tmp/firsttx/$addr.json"
+            for attempt in 1 2 3; do
+              curl -s --max-time 15 "https://rpc.qubic.org/v2/identities/$addr/transfers?desc=false&pageSize=1&page=0" -o "$out"
+              if python3 -c "import json,sys; json.load(open('$out'))" 2>/dev/null; then
+                break
+              fi
+              sleep 1
+            done
+          }
+          export -f check_one
+          cat /tmp/computor_list.txt | xargs -P 6 -I{} bash -c 'check_one "$@"' _ {}
+
+          python3 - <<'PYEOF'
+          import json, os, datetime
+
+          # Every seeder wallet directly confirmed this investigation (real first-
+          # transaction checks, not inference). All fold into one operator, but the
+          # per-identity 'seededBy' field below keeps which specific wallet did it.
+          SEEDERS = {
+              'TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ': 'MinerLab/JetSki',  # TKOG
+              'YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN': 'MinerLab/JetSki',  # YNRE
+              'ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC': 'MinerLab/JetSki',  # ZTQM
+              'MLABGELELEHTSGAVZVMTWEGARDGBSJXFLAQTAJWTXEKDUPAKSSLLNKDGPIUB': 'MinerLab/JetSki',  # MLABG
+              'JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG': 'MinerLab/JetSki',  # JETSKIYUBUPF
+              'JETSKIQRDEIVUDRAXYUVZOBHJAMCWFSOJBDKBPRDKCWSCHQHDBJHCPIEJUAH': 'MinerLab/JetSki',  # JETSKIQRDEIV
+              'JETSKIMZKTSLXCGBKJQNNSOBLFQDTCYBJPFLYGHVRFSITZNCDHCKSSRAESFM': 'MinerLab/JetSki',  # JETSKIMZKTSL
+              'TMNNSVZZPYTZSGOOOHMXIJINBYNCSYTTVVQPSIRNAEESGORHENUKWLAGOFFC': 'MinerLab/JetSki',  # TMNN
+          }
+
+          computors = open('/tmp/computor_list.txt').read().splitlines()
+          results = {}
+          counts = {'MinerLab/JetSki': 0, 'unattributed (not seeded by a known hub)': 0, 'lookup failed': 0}
+
+          for addr in computors:
+              path = f'/tmp/firsttx/{addr}.json'
+              try:
+                  d = json.load(open(path))
+                  txs = d.get('transactions', [])
+                  if not txs:
+                      results[addr] = {'family': 'unattributed (not seeded by a known hub)', 'firstTx': None}
+                      counts['unattributed (not seeded by a known hub)'] += 1
+                      continue
+                  tx = txs[0]['transactions'][0]['transaction']
+                  source = tx['sourceId']
+                  family = SEEDERS.get(source, 'unattributed (not seeded by a known hub)')
+                  results[addr] = {
+                      'family': family, 'seededBy': source,
+                      'amount': tx['amount'], 'tick': tx['tickNumber'],
+                  }
+                  counts[family] = counts.get(family, 0) + 1
+              except Exception:
+                  results[addr] = {'family': 'lookup failed', 'firstTx': None}
+                  counts['lookup failed'] += 1
+
+          out = {
+              'updated': datetime.datetime.now(datetime.UTC).isoformat(),
+              'method': 'Real first-ever transaction per current computor, checked against known seeder wallets. Not a heuristic.',
+              'totalComputors': len(computors),
+              'counts': counts,
+              'byIdentity': results,
+          }
+          json.dump(out, open('docs/funding_census.json', 'w'), indent=2)
+          print(json.dumps(counts, indent=2))
+          PYEOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name "qubicresearch-bot"
+          git config user.email "qubicresearch@proton.me"
+          git add docs/funding_census.json
+          git diff --cached --quiet || git commit -m "Update funding-based census [automated]"
+          git pull --rebase origin main
+          git push
