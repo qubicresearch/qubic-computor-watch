@@ -14,11 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch live tracker data and build candidates.json
+      - name: Fetch live tracker data, build candidates.json + full snapshot, detect new seats
         run: |
           curl -s "https://qubic.jetskipool.ai/api/qubic_data.json" -o /tmp/qubic_data.json
           python3 - <<'PYEOF'
-          import json, datetime
+          import json, datetime, os
 
           targets = {
               'UIHUSNMLSGUKPGIZCVZEIZWMSEHAGOJPNYBSYIEAZFLVJUODQWYGPZCGVUWN': '9950X',
@@ -28,31 +28,52 @@ jobs:
 
           d = json.load(open('/tmp/qubic_data.json'))
           ids = d.get('tracker', {}).get('allIds', d.get('allIds', []))
+          now = datetime.datetime.now(datetime.UTC).isoformat()
 
+          # Our own tracked test identities (small, dedicated view)
           candidates = []
           for row in ids:
               ident = row.get('identity') or row.get('id')
               if ident in targets:
                   candidates.append({
-                      'label': targets[ident],
-                      'identity': ident,
-                      'score': row.get('score'),
-                      'rank': row.get('rank'),
+                      'label': targets[ident], 'identity': ident,
+                      'score': row.get('score'), 'rank': row.get('rank'),
                       'isComputor': row.get('isComputor'),
                   })
+          json.dump({'updated': now, 'candidates': candidates}, open('docs/candidates.json', 'w'), indent=2)
 
-          out = {
-              'updated': datetime.datetime.now(datetime.UTC).isoformat(),
-              'candidates': candidates,
-          }
-          with open('docs/candidates.json', 'w') as f:
-              json.dump(out, f, indent=2)
+          # Full snapshot: every real tracked identity, minimal fields, for the
+          # personal watchlist feature (client-side lookup against this file).
+          full = {row.get('identity') or row.get('id'): {
+                      'score': row.get('score'), 'rank': row.get('rank'),
+                      'isComputor': bool(row.get('isComputor')),
+                  } for row in ids if row.get('identity') or row.get('id')}
+          json.dump({'updated': now, 'ids': full}, open('docs/all_ids.json', 'w'))
+
+          # New-seat detection: diff current isComputor:true set against the last
+          # snapshot we committed, log anything that's newly true.
+          prev_path = 'docs/prev_computors.json'
+          is_first_run = not os.path.exists(prev_path)
+          prev = set(json.load(open(prev_path))) if not is_first_run else set()
+          current = {ident for ident, v in full.items() if v['isComputor']}
+          newly_seated = [] if is_first_run else sorted(current - prev)
+
+          if newly_seated:
+              log_path = 'docs/new_seats_log.json'
+              log = json.load(open(log_path)) if os.path.exists(log_path) else []
+              for ident in newly_seated:
+                  log.append({'identity': ident, 'detected_at': now,
+                              'score': full[ident]['score'], 'rank': full[ident]['rank']})
+              log = log[-200:]  # keep it bounded
+              json.dump(log, open(log_path, 'w'), indent=2)
+
+          json.dump(sorted(current), open(prev_path, 'w'))
           PYEOF
 
       - name: Commit if changed
         run: |
           git config user.name "qubicresearch-bot"
           git config user.email "qubicresearch@proton.me"
-          git add docs/candidates.json
-          git diff --cached --quiet || git commit -m "Update candidate tracker data [automated]"
+          git add docs/candidates.json docs/all_ids.json docs/prev_computors.json docs/new_seats_log.json
+          git diff --cached --quiet || git commit -m "Update candidate/full/new-seat tracker data [automated]"
           git push

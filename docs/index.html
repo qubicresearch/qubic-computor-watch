@@ -267,13 +267,15 @@ document.getElementById('lookupBtn').onclick = async () => {
   try {
     const balResp = await fetch(`https://rpc.qubic.org/v1/balances/${id}`);
     const bal = await balResp.json();
-    const txResp = await fetch('https://rpc.qubic.org/query/v1/getTransactionsForIdentity', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({identity: id, pagination: {offset:0, size:5}})
-    });
-    const tx = await txResp.json();
-    const hubMatch = HUBS.find(([,addr]) => (tx.transactions||[]).some(t => t.destination === addr || t.source === addr));
-    let pathHtml = '<span class="status-ok">no known hub in most recent 5 transactions</span>';
+    // Check the FIRST 5 transactions (ascending), not the most recent — seeding is
+    // almost always an identity's very first transaction ever, so this is both
+    // lighter and more targeted than pulling a large recent-N window.
+    const txResp = await fetch(`https://rpc.qubic.org/v2/identities/${id}/transfers?desc=false&pageSize=5&page=0`);
+    const txData = await txResp.json();
+    const totalCount = txData.pagination ? txData.pagination.totalRecords : 0;
+    const firstTxs = (txData.transactions || []).map(t => t.transactions[0].transaction);
+    const hubMatch = HUBS.find(([,addr]) => firstTxs.some(t => t.destId === addr || t.sourceId === addr));
+    let pathHtml = `<span class="status-ok">no known hub in the first ${firstTxs.length} of ${totalCount} transactions</span>`;
     if (hubMatch) {
       const steps = tracePath(hubMatch[0]);
       pathHtml = `<span class="status-warn">part of the ${hubMatch[2]} network</span><br>` +
@@ -281,7 +283,7 @@ document.getElementById('lookupBtn').onclick = async () => {
     }
     out.innerHTML = `
       <div><strong>Balance:</strong> ${Number(bal.balance.balance).toLocaleString()} QU</div>
-      <div><strong>Total transactions:</strong> ${tx.hits ? tx.hits.total : '?'}</div>
+      <div><strong>Total transactions:</strong> ${totalCount}</div>
       <div style="margin-top:8px;"><strong>Real money-trail:</strong><br>${pathHtml}</div>
     `;
   } catch (e) {
