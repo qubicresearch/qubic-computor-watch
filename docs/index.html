@@ -68,6 +68,33 @@
   <p id="fundingNote" class="small" style="margin-top:10px;"></p>
 </div>
 
+<h2>How we actually got there — one real, current trace</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">Not a hypothetical — this is one real chain of transactions, re-verified directly against the chain on 2026-09-06, all three hops within two hours of each other at the start of the current epoch (epoch 229 began at tick 77,700,000 on 2026-09-02).</p>
+  <table style="margin-top:10px;">
+    <tr><th>Step</th><th>What happened</th><th>Amount</th><th>Tick / time (UTC)</th></tr>
+    <tr>
+      <td class="num">1</td>
+      <td><span class="mono">TMNN</span> (a collection hub) sends its accumulated balance to <span class="mono">LKBOPOUKGSYT</span> (the clearinghouse)</td>
+      <td class="num">13,133,333,333 QU</td>
+      <td>tick 77,704,631<br>2026-09-02 13:20 UTC</td>
+    </tr>
+    <tr>
+      <td class="num">2</td>
+      <td>Along with another 35,620,000,000 QU from a separate unmapped collector, <span class="mono">LKBOPOUKGSYT</span> fans it out to the three JETSKI-branded payout wallets</td>
+      <td class="num">26,952,629,830 QU<br>(largest of the three, to JETSKIYUBUPF)</td>
+      <td>tick 77,721,337<br>2026-09-02 16:04 UTC</td>
+    </tr>
+    <tr>
+      <td class="num">3</td>
+      <td><span class="mono">JETSKIYUBUPF</span> immediately fans that out again — real, distinct payout amounts to hundreds of individual downstream addresses within minutes (this is the legitimate end of the chain: real per-miner payouts, not another consolidation hop)</td>
+      <td class="num">e.g. 349,178,150 QU<br>to one recipient of many</td>
+      <td>tick 77,722,623<br>2026-09-02 16:34 UTC</td>
+    </tr>
+  </table>
+  <p class="small" style="margin-top:10px;">Every computor seeded by TMNN, ZTQM, or any MLAB-family wallet ultimately routes its revenue through this same single clearinghouse (<span class="mono">LKBOPOUKGSYT</span>) before it's split back out — that's the concentration this whole census is measuring. Trace it yourself with the tools below: paste <span class="mono">LKBOPOUKGSYT...HWRLK</span> into "Look up any identity," open its full transaction history, and follow any hop into your own trail.</p>
+</div>
+
 <h2>Third-party heuristic labels (for comparison, not our own methodology)</h2>
 <div class="card">
   <label class="small" for="epochSelect">Epoch: </label>
@@ -209,7 +236,10 @@ const HUBS = [
 // Lets the lookup tool show the FULL path forward to the final destination, not just
 // "touches a known hub" — if it's part of the same joint network, that has to be obvious.
 const NEXT_HOP = {
-  'TKOG (seeding hub)': ['LKBOPOUKGSYT (clearinghouse)'],
+  // TKOG (seeding hub) removed 2026-09-06: re-checked TKOG's full 3,428-transaction
+  // history (both directions, full coverage) and it never once transacted with
+  // LKBOPOUKGSYT. That claimed link wasn't reproducible — removed rather than left
+  // wrong. TKOG's own downstream is currently unverified; re-check before re-adding.
   'YNRE (seeding hub)': ['LKBOPOUKGSYT (clearinghouse)'],
   'ZTQM (collection hub)': ['LKBOPOUKGSYT (clearinghouse)'],
   'TMNN (collection hub)': ['LKBOPOUKGSYT (clearinghouse)'],
