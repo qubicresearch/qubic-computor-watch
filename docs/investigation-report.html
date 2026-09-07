@@ -591,11 +591,10 @@ async function runTrace(id) {
   let fanOutCount = 0;
   let hadPayout = false;
   try {
+    // Step 0 (method: ascending-order first transaction): who first funded this
+    // identity. Shown BEFORE the computor itself, since chronologically the
+    // funding happened first.
     status.textContent = 'Method: checking real first-ever transaction (funding source)...';
-    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
-    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null, stage: 'Computor' });
-
-    // Step 1 (method: ascending-order first transaction): who first funded this identity.
     const firstTx = await getJson(`https://rpc.qubic.org/v2/identities/${id}/transfers?desc=false&pageSize=1&page=0`);
     const first = firstTx.transactions && firstTx.transactions[0] ? firstTx.transactions[0].transactions[0].transaction : null;
     if (first) {
@@ -604,6 +603,9 @@ async function runTrace(id) {
       const lbl = labelFor(src);
       steps.push({ title: src, sub: `Method: real first-ever transaction on record &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text, stage: 'Fund wallet' });
     }
+
+    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
+    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null, stage: 'Computor' });
 
     // Step 2 (method: getEventLogs, destination=id, source=null-protocol-address, amount
     // filtered): the identity's own largest real epoch revenue payout, if any on record.
