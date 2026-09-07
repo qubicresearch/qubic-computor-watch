@@ -618,28 +618,26 @@ async function runTrace(id) {
       steps.push({ title: src, sub: `Method: real first-ever transaction on record &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text, stage: 'Fund wallet' });
     }
 
+    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
+    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null, stage: 'Computor' });
+
     // Step 2 (method: getEventLogs, destination=id, source=null-protocol-address, amount
-    // filtered): the identity's own largest real epoch revenue payout, if any on record.
-    // This is informational only (confirms the seat is real and earning) — it is NOT a
-    // hop in the fund-flow chain, so it's folded into the computor box below rather than
-    // shown as its own trace step.
+    // filtered): the identity's own largest REAL epoch revenue payout, if any on record.
+    // Floor is 100,000,000 QU (real epoch payouts run ~200M-1B+) specifically to exclude
+    // small incidental transfers from the null address that aren't the actual epoch payout.
     status.textContent = 'Method: checking largest real epoch payout from the protocol...';
-    let payoutNote2 = '';
     try {
       const payoutRes = await getJson(`https://rpc.qubic.org/query/v1/getEventLogs`, {
         method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({filters:{source:NULL_ADDR, destination:id}, ranges:{amount:{gte:"1000000"}}, pagination:{offset:0,size:20}})
+        body: JSON.stringify({filters:{source:NULL_ADDR, destination:id}, ranges:{amount:{gte:"100000000"}}, pagination:{offset:0,size:20}})
       });
       const payoutLogs = payoutRes.eventLogs || [];
       if (payoutLogs.length) {
         hadPayout = true;
         const biggestPayout = payoutLogs.reduce((a,b) => Number(a.quTransfer.amount) > Number(b.quTransfer.amount) ? a : b);
-        payoutNote2 = ` &middot; real epoch payout on record: ${Number(biggestPayout.quTransfer.amount).toLocaleString()} QU (tick ${biggestPayout.tickNumber})`;
+        steps.push({ title: id, sub: `Method: largest incoming transfer (&ge;100,000,000 QU) from the protocol/null address &middot; tick ${biggestPayout.tickNumber}`, role: 'computor', amt: biggestPayout.quTransfer.amount, tag: 'real epoch payout', stage: 'Payout' });
       }
     } catch (e) { /* payout lookup is best-effort; walk continues without it */ }
-
-    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
-    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU${payoutNote2}`, role: 'computor', amt: null, stage: 'Computor' });
 
     // Steps 3..N (method: getEventLogs, source=cursor, amount>=2,000,000, take the
     // largest destination): walk the COMPUTOR'S OWN money forward, hop by hop, through
