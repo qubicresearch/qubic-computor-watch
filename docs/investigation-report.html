@@ -206,7 +206,7 @@
         <tr><td>228</td><td class="num">34.3%</td><td class="num">60.8%</td><td class="num mj-cell">66.4%</td><td class="num qli-cell">28.7%</td><td class="num">0%</td></tr>
       </table>
     </div>
-    <p class="divider-note">228's corrected columns are current (recount complete, zero unexplained). 226 and 227's corrected columns reflect the narrower hub list this investigation had at the time and are now stale &mdash; both epochs are also fully resolved to zero unexplained as of 2026-09-07, but the exact MJ/qli split hasn't been recounted with the full current hub list yet; see the <a href="#epoch-tables">full epoch tables</a> for the current state. Epoch 229 (in progress at time of writing) is omitted from this table pending a final reconciliation pass — see <a href="#caveats">What we can't say</a>.</p>
+    <p class="divider-note">228's corrected columns are current (recount complete, zero unexplained). 226 and 227's corrected columns reflect the narrower hub list this investigation had at the time and are now stale &mdash; both epochs are also fully resolved to zero unexplained as of 2026-09-07, but the exact MinerLab/JetSki-vs-qli split hasn't been recounted with the full current hub list yet; see the <a href="#epoch-tables">full epoch tables</a> for the current state. Epoch 229 (in progress at time of writing) is omitted from this table pending a final reconciliation pass — see <a href="#caveats">What we can't say</a>.</p>
 
     <div class="callout warn">
       <div class="label">This overturns an earlier reading of the data</div>
@@ -258,7 +258,7 @@
       <span class="node mj">MLABN / MLABZ / MLABD / MLABR / ZTQMS</span>
     </div>
     <p><code>PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG</code> receives its real epoch payout directly from the protocol address and forwards it, almost without exception the exact same amount, to whichever MLAB-family hub is collecting that week — 537,403,847 QU to <code>YNRE</code> at epoch 227's start, 516,936,318 QU to <code>MLABN</code>, 535,304,613 QU to <code>MLABR</code>, repeating weekly across more than a year of continuous activity. Same structural signature as the qli side: real payout in, near-identical amount out within the same window, to a rotating cast of confirmed hub wallets rather than one fixed address. <code>BCGI</code>, <code>LIRS</code>, and <code>UYIG</code> (see the hub catalog and <a href="network-map.html">network map</a>) show the same pattern from the receiving hub's side — fed directly and repeatedly by multiple confirmed MLAB wallets at once.</p>
-    <p class="divider-note">Update, 2026-09-07: the "eight hubs" figure for the qli side describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger network on both sides — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and multiple confirmed MJ collection wallets (BCGI, LIRS, UYIG, IXAY) fed directly by the MLAB family — see the <a href="network-map.html">full network map</a> for the current picture.</p>
+    <p class="divider-note">Update, 2026-09-07: the "eight hubs" figure for the qli side describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger network on both sides — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and multiple confirmed MinerLab/JetSki collection wallets (BCGI, LIRS, UYIG, IXAY) fed directly by the MLAB family — see the <a href="network-map.html">full network map</a> for the current picture.</p>
 
     <h2 id="bugs">Real bugs hit along the way</h2>
     <p>Worth documenting plainly, because each one produced a real false negative before it was caught:</p>
@@ -343,7 +343,7 @@
     <p>Raw counts behind the percentages above, all 676-computor epochs.</p>
     <div class="table-scroll">
       <table>
-        <tr><th>Epoch</th><th>Direct MJ-seeded</th><th>MJ via secondary funder reveal</th><th>Total MJ</th><th>qli (revealed)</th><th>Other</th><th>Unexplained</th></tr>
+        <tr><th>Epoch</th><th>Direct MinerLab/JetSki-seeded</th><th>MinerLab/JetSki via secondary funder reveal</th><th>Total MinerLab/JetSki</th><th>qli (revealed)</th><th>Other</th><th>Unexplained</th></tr>
         <tr><td>226</td><td class="num">363</td><td class="num">10</td><td class="num mj-cell">373&dagger;</td><td class="num qli-cell">133&dagger;</td><td class="num">79&dagger;</td><td class="num">0</td></tr>
         <tr><td>227</td><td class="num">368</td><td class="num">13</td><td class="num mj-cell">381&dagger;</td><td class="num qli-cell">202&dagger;</td><td class="num">53&dagger;</td><td class="num">0</td></tr>
         <tr><td>228</td><td class="num">232</td><td class="num">217</td><td class="num mj-cell">449</td><td class="num qli-cell">194</td><td class="num">33</td><td class="num">0</td></tr>
@@ -426,8 +426,8 @@ const KNOWN = {
   'XQCLNHCEHTKQZDBAHJFVVTRMWFACMAZOBAEDQHEITGGEWZDIBRAIYWPGEONG': ['role','early/high-value wallet, sends 85B QU to VCPN (family NOT confirmed)'],
   'QLIMMIFYFPADADYAJNZLKAMTMSNATYFDJLQNRRAMKGDOLPKBSCAGIZDBCTGD': ['qli','qli-family wallet, fed by UUSJ'],
   'FEDMXOKLYWDCIFRGLZRXPZJJZYUBQYSDPGTTDYTRUCFKQQCLZTEUSWSDNJCK': ['qli','legacy computor, feeds OJFS, round-trips with XLEKS/SCAUF'],
-  'PYIAVTFIMSCLGCFWQXKZEINRNFADCWXMFMVGEGHVXCSSCHHJXEIEUYDBYQDD': ['mj','collection hub, 537.4M QU signature converges here; feeds HUHH which feeds confirmed MJ wallet BCGI'],
-  'HUHHXVNAPQIRDCIAYRLMFMOKCSODZFCITHVVJWGQQFEDHJODDSSQMGWAWAXF': ['mj','sends 1.22B QU directly to BCGI (confirmed MJ collection wallet)'],
+  'PYIAVTFIMSCLGCFWQXKZEINRNFADCWXMFMVGEGHVXCSSCHHJXEIEUYDBYQDD': ['mj','collection hub, 537.4M QU signature converges here; feeds HUHH which feeds confirmed MinerLab/JetSki wallet BCGI'],
+  'HUHHXVNAPQIRDCIAYRLMFMOKCSODZFCITHVVJWGQQFEDHJODDSSQMGWAWAXF': ['mj','sends 1.22B QU directly to BCGI (confirmed MinerLab/JetSki collection wallet)'],
   'BCGIBHMQOAQRYEHXWDBQQMWVHUPDEXCPJHZETAGHMDAOJYMOPVDMNIXCUKSC': ['mj','major collection wallet, fed directly and repeatedly by MLABG/MLABN/MLABR/MLABZ, forwards to Gate.io'],
   'IXAYOJUAPPCKEGTCHLSZUHKXQVJAZBTMAYVSYOIAMDVAJQXNKRKBLKCGBFRJ': ['mj','fed 62x by HUHH (44.2B QU total), 100% of outgoing goes to Gate.io'],
   'ONIQMOTNHJRYGHDISYMDVMEDRKGCAELQKCAVYTUWCEPWRTCFWHYBIDGFTJMJ': ['qli','fed by OJFS (4.14B QU), sends 47B QU to POOLX vanity wallet, legit QEARN/QUTIL contract interactions'],
@@ -442,11 +442,11 @@ const KNOWN = {
   'DAMBYPVCONUQPENIZAZFLJZMKQHABQGLPSCBYIIUEAZJWBQSXSYZNMUGYMTC': ['qli','fed by WXTO (38.7B QU), not yet checked further'],
   'TOXMGLKRNFLFKAKSJDERZTWTTHLAUTLXLEBVKTKNDHRKJRXKGJHIRSKFRIDL': ['qli','small relay between ONIQM/PGIYM and a minor wallet'],
   'POOLXOQVKAZSBEGWJBFDUDNZZOKCJAWRDTJFJYAUKFBYAVYROCBVMABDQUIO': ['qli','real POOL-branded wallet, fed by both ONIQM (47B QU) and OKRZA (5.6B QU); originally PYEUX real first funder'],
-  'QSOLVBIOJJSZRCTMQBGNAESBCGCDQHQITQODMZMGGELXDLLNOAFMIECCYSUO': ['role','real QSOL/QubicSolutions brand wallet, 2024-era, 1152 tx; feeds VJGR, but VJGR also has a SEPARATE confirmed-MJ funder (LIRS) - QSOL/ZOXX itself has no direct MJ link, only a shared downstream relay (JGCN) with LIRS, which is not valid evidence'],
+  'QSOLVBIOJJSZRCTMQBGNAESBCGCDQHQITQODMZMGGELXDLLNOAFMIECCYSUO': ['role','real QSOL/QubicSolutions brand wallet, 2024-era, 1152 tx; feeds VJGR, but VJGR also has a SEPARATE confirmed MinerLab/JetSki funder (LIRS) - QSOL/ZOXX itself has no direct MinerLab/JetSki link, only a shared downstream relay (JGCN) with LIRS, which is not valid evidence'],
   'ZOXXIDCZIMGCECCFAXDDCMBBXCDAQJIHGOOATAFPSBFIOFOYECFKUFPBEMWC': ['role','feeds VJGR alongside QSOL; per Kevin ran/founded the QSOL Discord (not on-chain-verifiable); family not independently confirmed, see QSOL note'],
-  'JGCNMWPIWDIZABLHXTPSCLVZREABDQAMYVSLQQJWFCGNYHRAPLCXPPRCJIXE': ['role','100% of outgoing (49.5B QU) goes to Gate.io; fed by BOTH a confirmed-MJ path (LIRS) and an unconfirmed QSOL/ZOXX path (VJGR) - a shared downstream relay does not prove VJGR/QSOL/ZOXX are MJ'],
-  'VJGRLXHNFFMHFGEQILVEIZRHSTXBTSCENPYDULUGDBFTOVONXQGYOQMBPAQN': ['role','fed directly by QSOL, ZOXX, and 4 more QSOL-prefixed wallets; feeds JGCN alongside (but separately from) confirmed-MJ LIRS - no direct MJ link of its own'],
-  'LIRSHZJPCRSAZAXWOWTVYWBVZTBAXXHKEVERACEFXAIGKEKAHJZCEVMFQQME': ['mj','fed directly by HUHH and 3 confirmed MLAB hubs (MLABN/MLABG/MLABZ) - airtight MJ link, independent of the VJGR/QSOL/ZOXX leg'],
+  'JGCNMWPIWDIZABLHXTPSCLVZREABDQAMYVSLQQJWFCGNYHRAPLCXPPRCJIXE': ['role','100% of outgoing (49.5B QU) goes to Gate.io; fed by BOTH a confirmed MinerLab/JetSki path (LIRS) and an unconfirmed QSOL/ZOXX path (VJGR) - a shared downstream relay does not prove VJGR/QSOL/ZOXX are MinerLab/JetSki'],
+  'VJGRLXHNFFMHFGEQILVEIZRHSTXBTSCENPYDULUGDBFTOVONXQGYOQMBPAQN': ['role','fed directly by QSOL, ZOXX, and 4 more QSOL-prefixed wallets; feeds JGCN alongside (but separately from) confirmed MinerLab/JetSki wallet LIRS - no direct MinerLab/JetSki link of its own'],
+  'LIRSHZJPCRSAZAXWOWTVYWBVZTBAXXHKEVERACEFXAIGKEKAHJZCEVMFQQME': ['mj','fed directly by HUHH and 3 confirmed MLAB hubs (MLABN/MLABG/MLABZ) - airtight MinerLab/JetSki link, independent of the VJGR/QSOL/ZOXX leg'],
   'OGVYPSNNWMJCIHSNCZNEWXJTLJVCOUBZIUKSLDCRWDSVCCGYLOOETAQAIBXL': ['role','feeds JGCN (1.16B QU) alongside VJGR/LIRS; own family not independently checked'],
   'OKRZANWEXYAUCCTKHGTAGLERMGHAVOMNJJICCRQXVFMIKKQILTBRPCQDIWUH': ['qli','collection point, fed by OJFS and OSFB, 100% of outgoing (5.6B QU) goes to POOLX'],
   'GPXRUGMCDVTWVGUESIXDKXOCICSDHSTIJLZDPFKLKDCQUYYGSUTMENTFEJUF': ['qli','major relay, sends 407B+ QU across 6 QLI-branded wallets (QLIN/QLIMM/QLIMF/QLID/QLIR/QLIKK)'],
@@ -489,7 +489,7 @@ const FEATURED = [
     addr: 'PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG',
     family: 'mj',
     label: 'Typical MinerLab/JetSki computor',
-    desc: 'Seeded by a confirmed MJ funder, then sweeps its real epoch revenue to whichever MLAB-family hub is collecting that week, on a repeating weekly cadence — the ordinary shape most MJ seats follow.',
+    desc: 'Seeded by a confirmed MinerLab/JetSki funder, then sweeps its real epoch revenue to whichever MLAB-family hub is collecting that week, on a repeating weekly cadence — the ordinary shape most MinerLab/JetSki seats follow.',
   },
 ];
 
