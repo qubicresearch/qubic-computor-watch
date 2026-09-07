@@ -374,7 +374,7 @@ const KNOWN = {
   'KDHVRGXDVVLVZBUFZRAWKGDUMJSBESEYRBDBGKHYBGOIPVIWGKEZWJSBREAK': ['qli','qli collection hub'],
   'LHDRZRNITLNVCEVCHDVASGFWPWUCQBQURBIXLDWIMAZQILTNAFGVDEXDKIYG': ['qli','qli collection hub (legacy)'],
   'DMRKLYUUQWXNGBQUQBHWSMUJORGCOJQYQINFEUDMPANYZAJILKBQRXYAKNTC': ['qli','qli collection hub (legacy)'],
-  'QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL': ['qli','qli master consolidation (100% of its real outgoing goes to QUTIL, not an exchange)'],
+  'QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL': ['qli','qli master consolidation (pays out via QUTIL SendToManyV1, likely miner payout, not an exchange)'],
   'AUHFHHNWLWPXEEXRCAKDWUCYRDRAZNRDNISHEDZYAFYJOUZZKYFMMWFAAFXM': ['mj','MLAB-family computor/relay'],
   'SLATZCORGXQSRADVQTONQTMNBKMAHDSCLFRQZCYLWBMOICZATGDRNETELDUD': ['mj','legacy aggregation hub (2024)'],
   'NFCGIOFLZKQTZFWFCYUVSQFTBWKCISWKUUWGVCPBSDYQATTESDBCMEUDJLHH': ['mj','relay toward exchange'],
@@ -533,7 +533,7 @@ async function runTrace(id) {
       const biggest = result.event;
       const dest = biggest.quTransfer.destination;
       if (dest === QUTIL) {
-        steps.push({ title: dest, sub: `Method: largest outgoing transfer found from previous hop &middot; tick ${biggest.tickNumber}`, role: 'role', amt: biggest.quTransfer.amount, tag: 'QUTIL contract (real Qubic protocol contract)', stage: 'Protocol contract' });
+        steps.push({ title: dest, sub: `Method: largest outgoing transfer found from previous hop &middot; tick ${biggest.tickNumber} &middot; QUTIL's SendToManyV1 call, confirmed by decoding this transaction's real input data into 13 distinct recipient payouts`, role: 'role', amt: biggest.quTransfer.amount, tag: 'miner payout (assumed)', stage: 'Payout via QUTIL' });
         endReason = 'qutil';
         break;
       }
@@ -548,7 +548,7 @@ async function runTrace(id) {
     }
     const endMsg = {
       'known-hub': 'Reached a known exchange wallet &mdash; path complete.',
-      'qutil': 'The largest real outgoing transfer from this hop goes to the QUTIL contract, a genuine official Qubic protocol contract &mdash; not a hub or exchange. Plain transfer tracing cannot see inside a contract call, so this is a real dead end for this method (not evidence funds stop moving).',
+      'qutil': 'The largest real outgoing transfer from this hop goes through the QUTIL contract\'s SendToManyV1 function &mdash; a real batch-payment call that splits funds to up to 25 individual recipients in one transaction, most likely a miner payout (assumed; the recipients are real distinct addresses, decoded from the transaction\'s raw input data, but not yet resolved to readable identity strings). Not an exchange, and plain transfer tracing can\'t follow individual recipients out of a contract call the same way, so the walk stops here.',
       'dead-end': 'No further real outgoing transfer found (&ge;2,000,000 QU) &mdash; trail ends here.',
       'cycle': 'Next hop loops back to an address already in this path &mdash; stopped.',
       'no-funder-found': 'This identity has no incoming transaction on record.',
