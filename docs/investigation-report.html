@@ -374,7 +374,7 @@ const KNOWN = {
   'KDHVRGXDVVLVZBUFZRAWKGDUMJSBESEYRBDBGKHYBGOIPVIWGKEZWJSBREAK': ['qli','qli collection hub'],
   'LHDRZRNITLNVCEVCHDVASGFWPWUCQBQURBIXLDWIMAZQILTNAFGVDEXDKIYG': ['qli','qli collection hub (legacy)'],
   'DMRKLYUUQWXNGBQUQBHWSMUJORGCOJQYQINFEUDMPANYZAJILKBQRXYAKNTC': ['qli','qli collection hub (legacy)'],
-  'QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL': ['qli','qli master consolidation'],
+  'QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL': ['qli','qli master consolidation (100% of its real outgoing goes to QUTIL, not an exchange)'],
   'AUHFHHNWLWPXEEXRCAKDWUCYRDRAZNRDNISHEDZYAFYJOUZZKYFMMWFAAFXM': ['mj','MLAB-family computor/relay'],
   'SLATZCORGXQSRADVQTONQTMNBKMAHDSCLFRQZCYLWBMOICZATGDRNETELDUD': ['mj','legacy aggregation hub (2024)'],
   'NFCGIOFLZKQTZFWFCYUVSQFTBWKCISWKUUWGVCPBSDYQATTESDBCMEUDJLHH': ['mj','relay toward exchange'],
@@ -454,7 +454,7 @@ async function largestOutgoing(id) {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({filters:{source:id}, ranges:{amount:{gte:"2000000"}}, pagination:{offset:0,size:20}})
   });
-  const logs = (bigTx.eventLogs || []).filter(e => e.quTransfer && e.quTransfer.destination !== NULL_ADDR && e.quTransfer.destination !== QUTIL && e.quTransfer.destination !== id);
+  const logs = (bigTx.eventLogs || []).filter(e => e.quTransfer && e.quTransfer.destination !== NULL_ADDR && e.quTransfer.destination !== id);
   if (!logs.length) return null;
   const biggest = logs.reduce((a,b) => Number(a.quTransfer.amount) > Number(b.quTransfer.amount) ? a : b);
   const maxAmt = Number(biggest.quTransfer.amount);
@@ -532,6 +532,11 @@ async function runTrace(id) {
       }
       const biggest = result.event;
       const dest = biggest.quTransfer.destination;
+      if (dest === QUTIL) {
+        steps.push({ title: dest, sub: `Method: largest outgoing transfer found from previous hop &middot; tick ${biggest.tickNumber}`, role: 'role', amt: biggest.quTransfer.amount, tag: 'QUTIL contract (real Qubic protocol contract)', stage: 'Protocol contract' });
+        endReason = 'qutil';
+        break;
+      }
       if (visited.has(dest)) { endReason = 'cycle'; break; }
       const lbl = labelFor(dest);
       const stage = lbl.text ? lbl.text : (stageNames[hubHop] || `Relay hop ${hubHop + 1}`);
@@ -543,6 +548,7 @@ async function runTrace(id) {
     }
     const endMsg = {
       'known-hub': 'Reached a known exchange wallet &mdash; path complete.',
+      'qutil': 'The largest real outgoing transfer from this hop goes to the QUTIL contract, a genuine official Qubic protocol contract &mdash; not a hub or exchange. Plain transfer tracing cannot see inside a contract call, so this is a real dead end for this method (not evidence funds stop moving).',
       'dead-end': 'No further real outgoing transfer found (&ge;2,000,000 QU) &mdash; trail ends here.',
       'cycle': 'Next hop loops back to an address already in this path &mdash; stopped.',
       'no-funder-found': 'This identity has no incoming transaction on record.',
