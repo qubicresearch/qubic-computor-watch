@@ -126,6 +126,13 @@
   .trace-step .role-badge.exch { background: rgba(242,193,78,0.15); color: var(--warn); }
   .trace-step .role-badge.computor { background: rgba(76,210,138,0.15); color: var(--ok); }
   .trace-arrow-v { color: var(--dimmer); align-self: center; font-size: 1.1rem; }
+  .amt-bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; margin: 2px 0 8px; }
+  .amt-bar-fill { height: 100%; border-radius: 3px; min-width: 3px; }
+  .amt-bar-fill.mj { background: var(--mj); }
+  .amt-bar-fill.qli { background: var(--qli); }
+  .amt-bar-fill.exch { background: var(--warn); }
+  .amt-bar-fill.computor { background: var(--ok); }
+  .amt-bar-fill.role { background: var(--accent); }
   .verify-link { font-size: 0.7rem; margin-top: 8px; display: inline-block; color: var(--accent); text-decoration: none; }
   .verify-link:hover { text-decoration: underline; }
 
@@ -360,7 +367,16 @@ const KNOWN = {
   'LHDRZRNITLNVCEVCHDVASGFWPWUCQBQURBIXLDWIMAZQILTNAFGVDEXDKIYG': ['qli','qli collection hub (legacy)'],
   'DMRKLYUUQWXNGBQUQBHWSMUJORGCOJQYQINFEUDMPANYZAJILKBQRXYAKNTC': ['qli','qli collection hub (legacy)'],
   'QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL': ['qli','qli master consolidation'],
+  'AUHFHHNWLWPXEEXRCAKDWUCYRDRAZNRDNISHEDZYAFYJOUZZKYFMMWFAAFXM': ['mj','MLAB-family computor/relay'],
+  'SLATZCORGXQSRADVQTONQTMNBKMAHDSCLFRQZCYLWBMOICZATGDRNETELDUD': ['mj','legacy aggregation hub (2024)'],
+  'NFCGIOFLZKQTZFWFCYUVSQFTBWKCISWKUUWGVCPBSDYQATTESDBCMEUDJLHH': ['mj','relay toward exchange'],
+  'VAFYBTBFWTOOFAWQEMXLBMNJHVIAEKIPMTZMSRUWPESTTYFLEHMMEDXECDVB': ['mj','relay toward exchange'],
+  'BYBYFUMBVLPUCANXEXTSKVMGFCJBMTLPPOFVPNSATABMWDGTMFXPLZLBCXJL': ['exch','Gate.io exchange wallet'],
+  'PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG': ['mj','MLAB-family computor'],
+  'UHLSQVOWHBOHREGYHCQDWXAQHHFCZCZNCDAYIVRJVCGOUNOEHOAFUPMDICKF': ['mj','MinerLab/JetSki funder'],
 };
+
+const MAX_TRACE_HOPS = 8;
 
 const EXAMPLES = [
   ['VOHIKSGRSTXMGFYUQBIFGDIKZPLAAFFXWMNKFNSNHDUCFPEUXOIYNAMFYVOC', 'MLABG-seeded, current computor'],
@@ -400,51 +416,99 @@ function renderExamples() {
   });
 }
 
+function renderSteps(steps) {
+  const amts = steps.filter(s => s.amt).map(s => Number(s.amt));
+  const maxAmt = amts.length ? Math.max(...amts) : 0;
+  return steps.map((s, i) => {
+    const pct = (s.amt && maxAmt > 0) ? Math.max(4, (Math.log10(Number(s.amt) + 1) / Math.log10(maxAmt + 1)) * 100) : 0;
+    return `
+      ${i > 0 ? '<div class="trace-arrow-v">&rarr;</div>' : ''}
+      <div class="trace-step">
+        ${s.role ? `<span class="role-badge ${s.role}">${s.tag || s.role}</span><br>` : ''}
+        <span class="addr">${s.title}</span>
+        ${s.amt ? `<div class="amt">${Number(s.amt).toLocaleString()} QU</div><div class="amt-bar"><div class="amt-bar-fill ${s.role || 'role'}" style="width:${pct}%"></div></div>` : ''}
+        <div class="meta">${s.sub}</div>
+        <a class="verify-link" href="https://explorer.qubic.org/network/address/${s.title}" target="_blank">Verify on explorer &rarr;</a>
+      </div>
+    `;
+  }).join('');
+}
+
+async function largestOutgoing(id) {
+  const bigTx = await getJson(`https://rpc.qubic.org/query/v1/getEventLogs`, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({filters:{source:id}, ranges:{amount:{gte:"2000000"}}, pagination:{offset:0,size:20}})
+  });
+  const logs = (bigTx.eventLogs || []).filter(e => e.quTransfer && e.quTransfer.destination !== NULL_ADDR && e.quTransfer.destination !== QUTIL && e.quTransfer.destination !== id);
+  if (!logs.length) return null;
+  return logs.reduce((a,b) => Number(a.quTransfer.amount) > Number(b.quTransfer.amount) ? a : b);
+}
+
 async function runTrace(id) {
   const status = document.getElementById('tracerStatus');
   const path = document.getElementById('tracerPath');
   if (!/^[A-Z]{60}$/.test(id)) { status.innerHTML = '<span style="color:var(--bad)">Identity must be 60 letters A-Z.</span>'; return; }
-  status.textContent = 'Fetching real transaction history from rpc.qubic.org...';
   path.innerHTML = '';
+  const steps = [];
+  const visited = new Set([id]);
+  let endReason = 'max-depth';
   try {
-    const [firstTx, bigTx, balance] = await Promise.all([
-      getJson(`https://rpc.qubic.org/v2/identities/${id}/transfers?desc=false&pageSize=1&page=0`),
-      getJson(`https://rpc.qubic.org/query/v1/getEventLogs`, {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({filters:{source:id}, ranges:{amount:{gte:"2000000"}}, pagination:{offset:0,size:20}})
-      }),
-      getJson(`https://rpc.qubic.org/v1/balances/${id}`)
-    ]);
-
-    const steps = [];
-    const first = firstTx.transactions && firstTx.transactions[0] ? firstTx.transactions[0].transactions[0].transaction : null;
+    status.textContent = 'Fetching real transaction history from rpc.qubic.org...';
+    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
     steps.push({ title: id, sub: `balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null });
+
+    // Hop 1: who first funded this identity (upstream).
+    const firstTx = await getJson(`https://rpc.qubic.org/v2/identities/${id}/transfers?desc=false&pageSize=1&page=0`);
+    const first = firstTx.transactions && firstTx.transactions[0] ? firstTx.transactions[0].transactions[0].transaction : null;
+    let cursor = id;
     if (first) {
       const src = first.sourceId === id ? first.destId : first.sourceId;
       const dir = first.sourceId === id ? 'sent to' : 'received from';
       const lbl = labelFor(src);
       steps.push({ title: src, sub: `first transaction &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text });
-    }
-    const logs = (bigTx.eventLogs || []).filter(e => e.quTransfer && e.quTransfer.destination !== NULL_ADDR && e.quTransfer.destination !== QUTIL);
-    if (logs.length) {
-      const biggest = logs.reduce((a,b) => Number(a.quTransfer.amount) > Number(b.quTransfer.amount) ? a : b);
-      const lbl = labelFor(biggest.quTransfer.destination);
-      steps.push({ title: biggest.quTransfer.destination, sub: `largest outgoing found &middot; tick ${biggest.tickNumber}`, role: lbl.cls, amt: biggest.quTransfer.amount, tag: lbl.text });
+      if (KNOWN[src]) { endReason = 'known-hub'; }
+      cursor = src;
+      visited.add(src);
+    } else {
+      endReason = 'no-funder-found';
     }
 
-    status.textContent = `Real data, fetched live just now. ${bigTx.hits ? bigTx.hits.total : 0} total events checked for this identity.`;
-    path.innerHTML = steps.map((s, i) => `
-      ${i > 0 ? '<div class="trace-arrow-v">&rarr;</div>' : ''}
-      <div class="trace-step">
-        ${s.role ? `<span class="role-badge ${s.role}">${s.tag || s.role}</span><br>` : ''}
-        <span class="addr">${s.title}</span>
-        ${s.amt ? `<div class="amt">${Number(s.amt).toLocaleString()} QU</div>` : ''}
-        <div class="meta">${s.sub}</div>
-        <a class="verify-link" href="https://explorer.qubic.org/network/address/${s.title}" target="_blank">Verify on explorer &rarr;</a>
-      </div>
-    `).join('');
+    // Hops 2..N: keep following each address's own largest real outgoing transfer
+    // (the same reverse-mapping technique used manually throughout this investigation)
+    // until we land on a known/labeled hub, hit a dead end, a cycle, or the hop cap.
+    while (endReason !== 'known-hub' && endReason !== 'no-funder-found' && steps.length - 1 < MAX_TRACE_HOPS) {
+      status.textContent = `Following the trail... checked ${steps.length} hops so far, now querying ${cursor.slice(0,10)}...`;
+      let biggest;
+      try {
+        biggest = await largestOutgoing(cursor);
+      } catch (e) {
+        endReason = 'lookup-error';
+        break;
+      }
+      if (!biggest) { endReason = 'dead-end'; break; }
+      const dest = biggest.quTransfer.destination;
+      if (visited.has(dest)) { endReason = 'cycle'; break; }
+      const lbl = labelFor(dest);
+      steps.push({ title: dest, sub: `largest outgoing from previous hop &middot; tick ${biggest.tickNumber}`, role: lbl.cls, amt: biggest.quTransfer.amount, tag: lbl.text });
+      visited.add(dest);
+      cursor = dest;
+      if (KNOWN[dest]) { endReason = 'known-hub'; break; }
+    }
+    if (endReason === 'max-depth' || steps.length - 1 >= MAX_TRACE_HOPS) endReason = 'max-depth';
+
+    const endMsg = {
+      'known-hub': 'Reached a known/labeled hub &mdash; path complete.',
+      'dead-end': 'No further real outgoing transfer found (&ge;2,000,000 QU) &mdash; trail ends here.',
+      'cycle': 'Next hop loops back to an address already in this path &mdash; stopped.',
+      'no-funder-found': 'This identity has no incoming transaction on record.',
+      'lookup-error': 'A lookup failed partway through &mdash; showing the path found so far.',
+      'max-depth': `Stopped after ${MAX_TRACE_HOPS} hops (display cap) &mdash; the real chain may continue further.`,
+    }[endReason];
+    status.innerHTML = `Real data, fetched live just now, ${steps.length - 1} hop${steps.length - 1 === 1 ? '' : 's'} walked. ${endMsg}`;
+    path.innerHTML = renderSteps(steps);
   } catch (e) {
     status.innerHTML = `<span style="color:var(--bad)">Lookup failed: ${e.message}</span>`;
+    if (steps.length) path.innerHTML = renderSteps(steps);
   }
 }
 
