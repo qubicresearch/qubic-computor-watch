@@ -448,7 +448,7 @@ const KNOWN = {
   'WXTOYHEMGVGTIAFVQNYUMFJJDTXBUJLRJYCUGOSPODFAFMBBQJNJUNVGTSLO': ['qli','substantial hub (674 tx), fed by 7 wallets 5-9B QU each, feeds DAMB/SFMW/PGIYM'],
   'DAMBYPVCONUQPENIZAZFLJZMKQHABQGLPSCBYIIUEAZJWBQSXSYZNMUGYMTC': ['qli','fed by WXTO (38.7B QU), not yet checked further'],
   'TOXMGLKRNFLFKAKSJDERZTWTTHLAUTLXLEBVKTKNDHRKJRXKGJHIRSKFRIDL': ['qli','small relay between ONIQM/PGIYM and a minor wallet'],
-  'POOLXOQVKAZSBEGWJBFDUDNZZOKCJAWRDTJFJYAUKFBYAVYROCBVMABDQUIO': ['qli','real POOL-branded wallet, fed by both ONIQM (47B QU) and OKRZA (5.6B QU); originally PYEUX real first funder'],
+  'POOLXOQVKAZSBEGWJBFDUDNZZOKCJAWRDTJFJYAUKFBYAVYROCBVMABDQUIO': ['qli','real POOL-branded wallet, fed by both ONIQM (47B QU) and OKRZA (5.6B QU)'],
   'QSOLVBIOJJSZRCTMQBGNAESBCGCDQHQITQODMZMGGELXDLLNOAFMIECCYSUO': ['role','real QSOL/QubicSolutions brand wallet, 2024-era, 1152 tx; feeds VJGR, but VJGR also has a SEPARATE confirmed MinerLab/JetSki funder (LIRS) - QSOL/ZOXX itself has no direct MinerLab/JetSki link, only a shared downstream relay (JGCN) with LIRS, which is not valid evidence'],
   'ZOXXIDCZIMGCECCFAXDDCMBBXCDAQJIHGOOATAFPSBFIOFOYECFKUFPBEMWC': ['role','feeds VJGR alongside QSOL; per Kevin ran/founded the QSOL Discord (not on-chain-verifiable); family not independently confirmed, see QSOL note'],
   'JGCNMWPIWDIZABLHXTPSCLVZREABDQAMYVSLQQJWFCGNYHRAPLCXPPRCJIXE': ['role','100% of outgoing (49.5B QU) goes to Gate.io; fed by BOTH a confirmed MinerLab/JetSki path (LIRS) and an unconfirmed QSOL/ZOXX path (VJGR) - a shared downstream relay does not prove VJGR/QSOL/ZOXX are MinerLab/JetSki'],
@@ -467,7 +467,6 @@ const KNOWN = {
   'QLIXZOGTLJVHWBZLJODFZQVXCVYCGNFSWGPELMESRBGRJTVEAMLMOHZCUVEF': ['qli','qli-branded wallet, fed by LHDR (22.2B QU)'],
   'OSFBXSGRBQRJHEWPKIVVWPTTKTSBCWMYXQUCFIUBQFZWSMZMOTPIWQHAQPTI': ['qli','relay, fed by FEDMX, sends to OKRZA and KCOB, and directly to GPXR (confirmed real link into QLIN/QLIMM)'],
   'KCOBMVHDFGJXGBDOEVTBTQPRSOEBRWUOXKTTQYZECEUXNNIEDJNKATRFZQVM': ['qli','collection point, fed by DFVL and OSFB'],
-  'PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG': ['mj','MLAB-family computor'],
   'UYIGCUYICGKDSDRXSKRAWWSZGGBANIDKIBBERPKGMCRGOBKZNSWVVYJDSOFG': ['mj','mega-aggregator (tens of billions QU/transfer)'],
   'XJZQDCNVYIHWVASDSRGQTMBYKDXBHOTATCZRVWXCUBBQLRGNWWEIINOGZHAB': ['mj','terminal reserve wallet (never forwards)'],
   'SAJTBIZKYXHWKCIIGNSXQCWUKHVCUGSFHEXDIYJFVFYCWFQIOMQMWBFDLRXC': ['mj','fed repeatedly by LKBOP, JETSKIMZKTSL, MLABRECT, and UYIG; forwards to AZNY and UMUZ'],
@@ -619,12 +618,13 @@ async function runTrace(id) {
       steps.push({ title: src, sub: `Method: real first-ever transaction on record &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text, stage: 'Fund wallet' });
     }
 
-    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
-    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null, stage: 'Computor' });
-
     // Step 2 (method: getEventLogs, destination=id, source=null-protocol-address, amount
     // filtered): the identity's own largest real epoch revenue payout, if any on record.
+    // This is informational only (confirms the seat is real and earning) — it is NOT a
+    // hop in the fund-flow chain, so it's folded into the computor box below rather than
+    // shown as its own trace step.
     status.textContent = 'Method: checking largest real epoch payout from the protocol...';
+    let payoutNote2 = '';
     try {
       const payoutRes = await getJson(`https://rpc.qubic.org/query/v1/getEventLogs`, {
         method: 'POST', headers: {'Content-Type':'application/json'},
@@ -634,9 +634,12 @@ async function runTrace(id) {
       if (payoutLogs.length) {
         hadPayout = true;
         const biggestPayout = payoutLogs.reduce((a,b) => Number(a.quTransfer.amount) > Number(b.quTransfer.amount) ? a : b);
-        steps.push({ title: id, sub: `Method: largest incoming transfer from the protocol/null address &middot; tick ${biggestPayout.tickNumber}`, role: 'computor', amt: biggestPayout.quTransfer.amount, tag: 'real epoch payout', stage: 'Payout' });
+        payoutNote2 = ` &middot; real epoch payout on record: ${Number(biggestPayout.quTransfer.amount).toLocaleString()} QU (tick ${biggestPayout.tickNumber})`;
       }
     } catch (e) { /* payout lookup is best-effort; walk continues without it */ }
+
+    const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
+    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU${payoutNote2}`, role: 'computor', amt: null, stage: 'Computor' });
 
     // Steps 3..N (method: getEventLogs, source=cursor, amount>=2,000,000, take the
     // largest destination): walk the COMPUTOR'S OWN money forward, hop by hop, through
