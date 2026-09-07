@@ -466,7 +466,7 @@ async function runTrace(id) {
       const dir = first.sourceId === id ? 'sent to' : 'received from';
       const lbl = labelFor(src);
       steps.push({ title: src, sub: `first transaction &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text });
-      if (KNOWN[src]) { endReason = 'known-hub'; }
+      if (lbl.cls === 'exch') { endReason = 'known-hub'; }
       cursor = src;
       visited.add(src);
     } else {
@@ -474,8 +474,10 @@ async function runTrace(id) {
     }
 
     // Hops 2..N: keep following each address's own largest real outgoing transfer
-    // (the same reverse-mapping technique used manually throughout this investigation)
-    // until we land on a known/labeled hub, hit a dead end, a cycle, or the hop cap.
+    // (the same reverse-mapping technique used manually throughout this investigation).
+    // A known mj/qli hub is a WAYPOINT, not a stop — we've proven those keep forwarding
+    // funds further (AUHF -> SLATZ -> VAFY -> BYBY). Only a labeled EXCHANGE wallet, a
+    // dead end, a cycle, or the hop cap ends the walk.
     while (endReason !== 'known-hub' && endReason !== 'no-funder-found' && steps.length - 1 < MAX_TRACE_HOPS) {
       status.textContent = `Following the trail... checked ${steps.length} hops so far, now querying ${cursor.slice(0,10)}...`;
       let biggest;
@@ -492,12 +494,12 @@ async function runTrace(id) {
       steps.push({ title: dest, sub: `largest outgoing from previous hop &middot; tick ${biggest.tickNumber}`, role: lbl.cls, amt: biggest.quTransfer.amount, tag: lbl.text });
       visited.add(dest);
       cursor = dest;
-      if (KNOWN[dest]) { endReason = 'known-hub'; break; }
+      if (lbl.cls === 'exch') { endReason = 'known-hub'; break; }
     }
     if (endReason === 'max-depth' || steps.length - 1 >= MAX_TRACE_HOPS) endReason = 'max-depth';
 
     const endMsg = {
-      'known-hub': 'Reached a known/labeled hub &mdash; path complete.',
+      'known-hub': 'Reached a known exchange wallet &mdash; path complete.',
       'dead-end': 'No further real outgoing transfer found (&ge;2,000,000 QU) &mdash; trail ends here.',
       'cycle': 'Next hop loops back to an address already in this path &mdash; stopped.',
       'no-funder-found': 'This identity has no incoming transaction on record.',
