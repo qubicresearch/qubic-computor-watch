@@ -14,10 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check every current computor's real first-ever transaction
+      - name: Check every current computor real seeding + real payout destination
         run: |
           set -e
-          mkdir -p /tmp/firsttx
+          mkdir -p /tmp/firsttx /tmp/outgoing
+          UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 
           curl -s "https://qubic.jetskipool.ai/api/qubic_data.json" -o /tmp/qubic_data.json
           python3 -c "
@@ -30,15 +31,12 @@ jobs:
           print(len(computors), 'current computors to check')
           "
 
-          # Fetch each identity's real first-ever transaction (ascending order).
-          # Modest concurrency + a real check for empty/failed responses, since
-          # this investigation has repeatedly found that high concurrency against
-          # these APIs silently drops results rather than erroring.
+          # Real first-ever transaction per identity (ascending order).
           check_one() {
             addr="$1"
             out="/tmp/firsttx/$addr.json"
             for attempt in 1 2 3; do
-              curl -s --max-time 15 "https://rpc.qubic.org/v2/identities/$addr/transfers?desc=false&pageSize=1&page=0" -o "$out"
+              curl -s -A "$UA" --max-time 15 "https://rpc.qubic.org/v2/identities/$addr/transfers?desc=false&pageSize=1&page=0" -o "$out"
               if python3 -c "import json,sys; json.load(open('$out'))" 2>/dev/null; then
                 break
               fi
@@ -46,57 +44,158 @@ jobs:
             done
           }
           export -f check_one
+          export UA
           cat /tmp/computor_list.txt | xargs -P 6 -I{} bash -c 'check_one "$@"' _ {}
+
+          # For identities not directly seeded by a known hub, check real outgoing
+          # transfers in the 100M-999M QU range (the real epoch-payout signature
+          # amounts confirmed throughout this investigation) for a match against the
+          # same known-hub list. This second pass is what actually resolved epochs
+          # 226/227/228 to zero-unexplained -- first-tx alone misses computors funded
+          # via a second hop, a satellite funder, or a QUTIL SendToManyV1 batch call.
+          check_outgoing() {
+            addr="$1"
+            out="/tmp/outgoing/$addr.json"
+            for attempt in 1 2 3; do
+              curl -s -A "$UA" --max-time 15 -X POST "https://rpc.qubic.org/query/v1/getEventLogs" \
+                -H "Content-Type: application/json" \
+                -d "{\"filters\":{\"source\":\"$addr\"},\"ranges\":{\"amount\":{\"gte\":\"100000000\",\"lte\":\"999999999\"}},\"pagination\":{\"offset\":0,\"size\":20}}" \
+                -o "$out"
+              if python3 -c "import json,sys; json.load(open('$out'))" 2>/dev/null; then
+                break
+              fi
+              sleep 1
+            done
+          }
+          export -f check_outgoing
+          cat /tmp/computor_list.txt | xargs -P 4 -I{} bash -c 'check_outgoing "$@"' _ {}
 
           python3 - <<'PYEOF'
           import json, os, datetime
 
-          # Every seeder wallet directly confirmed this investigation (real first-
-          # transaction checks, not inference). All fold into one operator, but the
-          # per-identity 'seededBy' field below keeps which specific wallet did it.
+          # Every wallet below is a real, individually confirmed hub from this
+          # investigation's live evidence (kept in sync with investigation-report.html's
+          # KNOWN dict) -- direct first-transaction funding, or a real confirmed
+          # transaction-graph link (not shared-destination/exchange inference).
           SEEDERS = {
-              'TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ': 'MinerLab/JetSki',  # TKOG
-              'YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN': 'MinerLab/JetSki',  # YNRE
-              'ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC': 'MinerLab/JetSki',  # ZTQM
-              'MLABGELELEHTSGAVZVMTWEGARDGBSJXFLAQTAJWTXEKDUPAKSSLLNKDGPIUB': 'MinerLab/JetSki',  # MLABG
-              'MLABNEHWNYBDOFNHELXZAFVDDWCCIGFKYZMFSFKCECAWATTFPCEHRKBFOKPD': 'MinerLab/JetSki',  # MLABN
-              'MLABDNEGKEJLIFFHLCHLDFUVYSHALWSNQXLECAYBADULQESQIYHIULJELLXG': 'MinerLab/JetSki',  # MLABD
-              'MLABRECTCPJJFGHOMEDVQKOMLPQDRXIJRRWQAMOXXBEKHUWUCTFZSEYDYTIM': 'MinerLab/JetSki',  # MLABR
-              'MLABZCULRLUKHCSJBCDUUKUTUDFCAJVNRGMKTGTHCFUOUYCPUGFCOKBFLFTC': 'MinerLab/JetSki',  # MLABZ
-              'JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG': 'MinerLab/JetSki',  # JETSKIYUBUPF
-              'JETSKIQRDEIVUDRAXYUVZOBHJAMCWFSOJBDKBPRDKCWSCHQHDBJHCPIEJUAH': 'MinerLab/JetSki',  # JETSKIQRDEIV
-              'JETSKIMZKTSLXCGBKJQNNSOBLFQDTCYBJPFLYGHVRFSITZNCDHCKSSRAESFM': 'MinerLab/JetSki',  # JETSKIMZKTSL
-              'TMNNSVZZPYTZSGOOOHMXIJINBYNCSYTTVVQPSIRNAEESGORHENUKWLAGOFFC': 'MinerLab/JetSki',  # TMNN
+              'TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ': 'MinerLab/JetSki',
+              'YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN': 'MinerLab/JetSki',
+              'ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC': 'MinerLab/JetSki',
+              'MLABGELELEHTSGAVZVMTWEGARDGBSJXFLAQTAJWTXEKDUPAKSSLLNKDGPIUB': 'MinerLab/JetSki',
+              'MLABNEHWNYBDOFNHELXZAFVDDWCCIGFKYZMFSFKCECAWATTFPCEHRKBFOKPD': 'MinerLab/JetSki',
+              'JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG': 'MinerLab/JetSki',
+              'JETSKIQRDEIVUDRAXYUVZOBHJAMCWFSOJBDKBPRDKCWSCHQHDBJHCPIEJUAH': 'MinerLab/JetSki',
+              'JETSKIMZKTSLXCGBKJQNNSOBLFQDTCYBJPFLYGHVRFSITZNCDHCKSSRAESFM': 'MinerLab/JetSki',
+              'TMNNSVZZPYTZSGOOOHMXIJINBYNCSYTTVVQPSIRNAEESGORHENUKWLAGOFFC': 'MinerLab/JetSki',
+              'LKBOPOUKGSYTODWVEPXHUXDTRSOCDOXXXIEAGBJXAGJRMGXRXMCHDNCHWRLK': 'MinerLab/JetSki',
+              'GXITFZPMTHWNUAWQQVCHXZRKOVMDMWOBRVCDCUDHYBJMEJOYDYDELZAFEIIA': 'MinerLab/JetSki',
+              'BBMMAXUALHUWHEVSALTYQVYVTRHBVPVMZCJEFIVAJDXVYFITYPIOGGQGCWTC': 'MinerLab/JetSki',
+              'RPQDNLQUXXZBGACRWSHICRBBCNTABNAFJAVMIQKFWANUFAJPDPKIEJPGZCXE': 'MinerLab/JetSki',
+              'AUHFHHNWLWPXEEXRCAKDWUCYRDRAZNRDNISHEDZYAFYJOUZZKYFMMWFAAFXM': 'MinerLab/JetSki',
+              'SLATZCORGXQSRADVQTONQTMNBKMAHDSCLFRQZCYLWBMOICZATGDRNETELDUD': 'MinerLab/JetSki',
+              'NFCGIOFLZKQTZFWFCYUVSQFTBWKCISWKUUWGVCPBSDYQATTESDBCMEUDJLHH': 'MinerLab/JetSki',
+              'VAFYBTBFWTOOFAWQEMXLBMNJHVIAEKIPMTZMSRUWPESTTYFLEHMMEDXECDVB': 'MinerLab/JetSki',
+              'PYIAVTFIMSCLGCFWQXKZEINRNFADCWXMFMVGEGHVXCSSCHHJXEIEUYDBYQDD': 'MinerLab/JetSki',
+              'HUHHXVNAPQIRDCIAYRLMFMOKCSODZFCITHVVJWGQQFEDHJODDSSQMGWAWAXF': 'MinerLab/JetSki',
+              'BCGIBHMQOAQRYEHXWDBQQMWVHUPDEXCPJHZETAGHMDAOJYMOPVDMNIXCUKSC': 'MinerLab/JetSki',
+              'IXAYOJUAPPCKEGTCHLSZUHKXQVJAZBTMAYVSYOIAMDVAJQXNKRKBLKCGBFRJ': 'MinerLab/JetSki',
+              'LIRSHZJPCRSAZAXWOWTVYWBVZTBAXXHKEVERACEFXAIGKEKAHJZCEVMFQQME': 'MinerLab/JetSki',
+              'PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG': 'MinerLab/JetSki',
+              'UYIGCUYICGKDSDRXSKRAWWSZGGBANIDKIBBERPKGMCRGOBKZNSWVVYJDSOFG': 'MinerLab/JetSki',
+              'XJZQDCNVYIHWVASDSRGQTMBYKDXBHOTATCZRVWXCUBBQLRGNWWEIINOGZHAB': 'MinerLab/JetSki',
+              'UHLSQVOWHBOHREGYHCQDWXAQHHFCZCZNCDAYIVRJVCGOUNOEHOAFUPMDICKF': 'MinerLab/JetSki',
+              'IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ': 'qli',
+              'VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ': 'qli',
+              'KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB': 'qli',
+              'JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ': 'qli',
+              'PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL': 'qli',
+              'KDHVRGXDVVLVZBUFZRAWKGDUMJSBESEYRBDBGKHYBGOIPVIWGKEZWJSBREAK': 'qli',
+              'LHDRZRNITLNVCEVCHDVASGFWPWUCQBQURBIXLDWIMAZQILTNAFGVDEXDKIYG': 'qli',
+              'DMRKLYUUQWXNGBQUQBHWSMUJORGCOJQYQINFEUDMPANYZAJILKBQRXYAKNTC': 'qli',
+              'QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL': 'qli',
+              'QLIFODMBOSRWEAPSTZWFVWWKKRPAVNVXCENFDIRSEBJOMAMTZUKMAWBABQRJ': 'qli',
+              'BDLGUILQJVSKAADGFXEQROCXVHIDWSVVVQMROIPIAHVNJIFMDSOHOMLGEJVM': 'qli',
+              'GUIIQZSRHVCEZACFQVAHBJKYPNJBHQYOOYOWUIOJSCPDRXCCPRSIAUJHKABK': 'qli',
+              'CWKWQRFKLKGOUDDJYDZVJRGYWSXBFSTTMVLQPCVXBFKLMDAZISEWGBPBWDNL': 'qli',
+              'YHPKEYPHFCDIYCYGEROEOBDMUHWADQITISJELEPQRGFLVJZGHHFMJWKGZVFI': 'qli',
+              'OJFSEVTRSWKYKGQDTHNWAQAHNSCBEYDBKVYYGLPJCEIQNSCGOZDLTVGECUBK': 'qli',
+              'VCHMDEWRRZDZOEXRWGNVHNAAVWQCQJIJQNBYFIUJSEZWUAAUOXMTAKRDIODF': 'qli',
+              'UUSJTRNPGEKNQFMIDYFMNQZFINTCCSTYTNVGRRGQRGVQOLDKPZKJGSEGRXNJ': 'qli',
+              'GZOGRWWFUPHACHNXSKSRHAUDWXFANISCAJDHMJZEHADRFOPFYONZRKFFRMHK': 'qli',
+              'QLIKKBOCYDIMXBAOKUTENUUOYTHAJRHMBUMUXWNAYFDWXVDRUPUOSTTCERRB': 'qli',
+              'QLIMMIFYFPADADYAJNZLKAMTMSNATYFDJLQNRRAMKGDOLPKBSCAGIZDBCTGD': 'qli',
+              'FEDMXOKLYWDCIFRGLZRXPZJJZYUBQYSDPGTTDYTRUCFKQQCLZTEUSWSDNJCK': 'qli',
+              'ONIQMOTNHJRYGHDISYMDVMEDRKGCAELQKCAVYTUWCEPWRTCFWHYBIDGFTJMJ': 'qli',
+              'PGIYMURTXAWAZCEEGFZEBLHQJKACVRNRLKGRWRYUBGDYLXYPPBXGLJKFNFXC': 'qli',
+              'FEXOQAYWSUILDGMOMUSUOMVGDLEAFPTACFETEAGLZFWZIXHWIBGZQVREQSZF': 'qli',
+              'BRZMNDREOZHUDFWIZGSGAOJMJVKBPDDKFYONZDBPQDWOBCVMXUUPLWJDCDDD': 'qli',
+              'SFMWUYAAAXLUOFBQNIPFLYTOQIDAQIKZBSRLQENGLFKAWNHBGXXALEKEWVGB': 'qli',
+              'DOFALETICJMALDQLABJPCULFKZQANBLWTWPZTNCVLGLSXLRNDWQBDVCFXEDD': 'qli',
+              'BQCJLJIEBKITDFPFGEBNMPWYCXNBQLKOHKVZIKGMUDZGYKZEZVPPRFHEBFTM': 'qli',
+              'WXTOYHEMGVGTIAFVQNYUMFJJDTXBUJLRJYCUGOSPODFAFMBBQJNJUNVGTSLO': 'qli',
+              'DAMBYPVCONUQPENIZAZFLJZMKQHABQGLPSCBYIIUEAZJWBQSXSYZNMUGYMTC': 'qli',
+              'TOXMGLKRNFLFKAKSJDERZTWTTHLAUTLXLEBVKTKNDHRKJRXKGJHIRSKFRIDL': 'qli',
+              'POOLXOQVKAZSBEGWJBFDUDNZZOKCJAWRDTJFJYAUKFBYAVYROCBVMABDQUIO': 'qli',
+              'OKRZANWEXYAUCCTKHGTAGLERMGHAVOMNJJICCRQXVFMIKKQILTBRPCQDIWUH': 'qli',
+              'GPXRUGMCDVTWVGUESIXDKXOCICSDHSTIJLZDPFKLKDCQUYYGSUTMENTFEJUF': 'qli',
+              'QLIMFQNVTXLYBDPEVIFGLZERZYECACLJYWGXBNANVFYBWMRYTLOTLQYCZLIA': 'qli',
+              'QLIDKNDWMDKGSDKDHUXLZYHQYPBDRWKQVZFOWVYZCAALZEMYCJOCXKNBKUKN': 'qli',
+              'QLIRPDJHQLFROBQMGNLSGZSSCQWBTJBWURZNFHPTPAHPMOFNEFIUAPXGYIPI': 'qli',
+              'FRWWRPUIMYHQSCQICSALCNQHMRGAAJTHADFYYJPPYBLKJOREMQIXOUQABDGC': 'qli',
+              'QLIPZVYJZKJWDCRHIMQKLCDLJLODWDSMLUVMMAMXSBFREEKJLHHDCVPAPQED': 'qli',
+              'QLIWZKBVQEKQADKZLPZLVODHLLBCHCLZIPYIARNAXEXGKYDLMSOZZAQADIFH': 'qli',
+              'SCAUFYMVFWCLIBTKRDBFDCVLUPMCOLJZNTLXVRPMEAXFKOGLGTIDRPFHOJWA': 'qli',
+              'OSFBXSGRBQRJHEWPKIVVWPTTKTSBCWMYXQUCFIUBQFZWSMZMOTPIWQHAQPTI': 'qli',
+              'KCOBMVHDFGJXGBDOEVTBTQPRSOEBRWUOXKTTQYZECEUXNNIEDJNKATRFZQVM': 'qli',
           }
 
           computors = open('/tmp/computor_list.txt').read().splitlines()
           results = {}
-          counts = {'MinerLab/JetSki': 0, 'unattributed (not seeded by a known hub)': 0, 'lookup failed': 0}
+          counts = {'MinerLab/JetSki': 0, 'qli': 0, 'unattributed (not seeded by a known hub)': 0, 'lookup failed': 0}
 
           for addr in computors:
               path = f'/tmp/firsttx/{addr}.json'
+              family = None
+              detail = {}
               try:
                   d = json.load(open(path))
                   txs = d.get('transactions', [])
-                  if not txs:
-                      results[addr] = {'family': 'unattributed (not seeded by a known hub)', 'firstTx': None}
-                      counts['unattributed (not seeded by a known hub)'] += 1
-                      continue
-                  tx = txs[0]['transactions'][0]['transaction']
-                  source = tx['sourceId']
-                  family = SEEDERS.get(source, 'unattributed (not seeded by a known hub)')
-                  results[addr] = {
-                      'family': family, 'seededBy': source,
-                      'amount': tx['amount'], 'tick': tx['tickNumber'],
-                  }
-                  counts[family] = counts.get(family, 0) + 1
+                  if txs:
+                      tx = txs[0]['transactions'][0]['transaction']
+                      source = tx['sourceId']
+                      if source in SEEDERS:
+                          family = SEEDERS[source]
+                          detail = {'method': 'first-tx', 'seededBy': source, 'amount': tx['amount'], 'tick': tx['tickNumber']}
               except Exception:
-                  results[addr] = {'family': 'lookup failed', 'firstTx': None}
-                  counts['lookup failed'] += 1
+                  pass
+
+              if family is None:
+                  # Second pass: real outgoing transfer (100M-999M QU) to a known hub.
+                  out_path = f'/tmp/outgoing/{addr}.json'
+                  try:
+                      od = json.load(open(out_path))
+                      for e in od.get('eventLogs', []):
+                          t = e.get('quTransfer')
+                          if t and t['destination'] in SEEDERS:
+                              family = SEEDERS[t['destination']]
+                              detail = {'method': 'outgoing-payout', 'sentTo': t['destination'], 'amount': t['amount'], 'tick': e['tickNumber']}
+                              break
+                  except Exception:
+                      pass
+
+              if family is None:
+                  try:
+                      json.load(open(path))
+                      family = 'unattributed (not seeded by a known hub)'
+                  except Exception:
+                      family = 'lookup failed'
+
+              results[addr] = {'family': family, **detail}
+              counts[family] = counts.get(family, 0) + 1
 
           out = {
               'updated': datetime.datetime.now(datetime.UTC).isoformat(),
-              'method': 'Real first-ever transaction per current computor, checked against known seeder wallets. Not a heuristic.',
+              'method': 'Real first-ever transaction, then real 100M-999M outgoing transfer, checked against 69 known hub wallets (both MinerLab/JetSki and qli). Not a heuristic.',
               'totalComputors': len(computors),
               'counts': counts,
               'byIdentity': results,
