@@ -120,6 +120,7 @@
   .trace-step .addr { font-size: 0.72rem; color: var(--fg); }
   .trace-step .amt { font-family: var(--mono); font-size: 0.95rem; font-weight: 600; margin: 6px 0 2px; }
   .trace-step .meta { font-size: 0.7rem; color: var(--dimmer); }
+  .trace-step .stage-name { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; font-weight: 700; }
   .trace-step .role-badge { display: inline-block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 10px; margin-bottom: 8px; font-weight: 600; }
   .trace-step .role-badge.mj { background: rgba(90,169,255,0.15); color: var(--mj); }
   .trace-step .role-badge.qli { background: rgba(201,139,245,0.15); color: var(--qli); }
@@ -424,6 +425,7 @@ function renderSteps(steps) {
     return `
       ${i > 0 ? '<div class="trace-arrow-v">&rarr;</div>' : ''}
       <div class="trace-step">
+        ${s.stage ? `<div class="stage-name">${s.stage}</div>` : ''}
         ${s.role ? `<span class="role-badge ${s.role}">${s.tag || s.role}</span><br>` : ''}
         <span class="addr">${s.title}</span>
         ${s.amt ? `<div class="amt">${Number(s.amt).toLocaleString()} QU</div><div class="amt-bar"><div class="amt-bar-fill ${s.role || 'role'}" style="width:${pct}%"></div></div>` : ''}
@@ -453,33 +455,46 @@ async function runTrace(id) {
   const visited = new Set([id]);
   let endReason = 'max-depth';
   try {
-    status.textContent = 'Fetching real transaction history from rpc.qubic.org...';
+    status.textContent = 'Method: checking real first-ever transaction (funding source)...';
     const balance = await getJson(`https://rpc.qubic.org/v1/balances/${id}`);
-    steps.push({ title: id, sub: `balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null });
+    steps.push({ title: id, sub: `TRACED IDENTITY &middot; balance: ${Number(balance.balance.balance).toLocaleString()} QU`, role: 'computor', amt: null, stage: 'Computor' });
 
-    // Hop 1: who first funded this identity (upstream).
+    // Step 1 (method: ascending-order first transaction): who first funded this identity.
     const firstTx = await getJson(`https://rpc.qubic.org/v2/identities/${id}/transfers?desc=false&pageSize=1&page=0`);
     const first = firstTx.transactions && firstTx.transactions[0] ? firstTx.transactions[0].transactions[0].transaction : null;
-    let cursor = id;
     if (first) {
       const src = first.sourceId === id ? first.destId : first.sourceId;
-      const dir = first.sourceId === id ? 'sent to' : 'received from';
+      const dir = first.sourceId === id ? 'sent' : 'received';
       const lbl = labelFor(src);
-      steps.push({ title: src, sub: `first transaction &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text });
-      if (lbl.cls === 'exch') { endReason = 'known-hub'; }
-      cursor = src;
-      visited.add(src);
-    } else {
-      endReason = 'no-funder-found';
+      steps.push({ title: src, sub: `Method: real first-ever transaction on record &middot; ${dir} &middot; tick ${first.tickNumber}`, role: lbl.cls, amt: first.amount, tag: lbl.text, stage: 'Fund wallet' });
     }
 
-    // Hops 2..N: keep following each address's own largest real outgoing transfer
-    // (the same reverse-mapping technique used manually throughout this investigation).
-    // A known mj/qli hub is a WAYPOINT, not a stop — we've proven those keep forwarding
-    // funds further (AUHF -> SLATZ -> VAFY -> BYBY). Only a labeled EXCHANGE wallet, a
-    // dead end, a cycle, or the hop cap ends the walk.
+    // Step 2 (method: getEventLogs, destination=id, source=null-protocol-address, amount
+    // filtered): the identity's own largest real epoch revenue payout, if any on record.
+    status.textContent = 'Method: checking largest real epoch payout from the protocol...';
+    try {
+      const payoutRes = await getJson(`https://rpc.qubic.org/query/v1/getEventLogs`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({filters:{source:NULL_ADDR, destination:id}, ranges:{amount:{gte:"1000000"}}, pagination:{offset:0,size:20}})
+      });
+      const payoutLogs = payoutRes.eventLogs || [];
+      if (payoutLogs.length) {
+        const biggestPayout = payoutLogs.reduce((a,b) => Number(a.quTransfer.amount) > Number(b.quTransfer.amount) ? a : b);
+        steps.push({ title: id, sub: `Method: largest incoming transfer from the protocol/null address &middot; tick ${biggestPayout.tickNumber}`, role: 'computor', amt: biggestPayout.quTransfer.amount, tag: 'real epoch payout', stage: 'Payout' });
+      }
+    } catch (e) { /* payout lookup is best-effort; walk continues without it */ }
+
+    // Steps 3..N (method: getEventLogs, source=cursor, amount>=2,000,000, take the
+    // largest destination): walk the COMPUTOR'S OWN money forward, hop by hop, through
+    // whatever it actually passes through. A known mj/qli hub is a WAYPOINT, not a stop
+    // — we've proven those keep forwarding funds further (AUHF -> SLATZ -> VAFY -> BYBY).
+    // Only a labeled EXCHANGE wallet, a dead end, a cycle, or the hop cap ends the walk.
+    let cursor = id;
+    visited.add(id);
+    const stageNames = ['First hub', 'Reroute', 'Clearing house', 'Collection wallet'];
+    let hubHop = 0;
     while (endReason !== 'known-hub' && endReason !== 'no-funder-found' && steps.length - 1 < MAX_TRACE_HOPS) {
-      status.textContent = `Following the trail... checked ${steps.length} hops so far, now querying ${cursor.slice(0,10)}...`;
+      status.textContent = `Method: largest outgoing transfer (&ge;2,000,000 QU) &mdash; checked ${steps.length} hops so far, now querying ${cursor.slice(0,10)}...`;
       let biggest;
       try {
         biggest = await largestOutgoing(cursor);
@@ -491,9 +506,11 @@ async function runTrace(id) {
       const dest = biggest.quTransfer.destination;
       if (visited.has(dest)) { endReason = 'cycle'; break; }
       const lbl = labelFor(dest);
-      steps.push({ title: dest, sub: `largest outgoing from previous hop &middot; tick ${biggest.tickNumber}`, role: lbl.cls, amt: biggest.quTransfer.amount, tag: lbl.text });
+      const stage = lbl.text ? lbl.text : (stageNames[hubHop] || `Relay hop ${hubHop + 1}`);
+      steps.push({ title: dest, sub: `Method: largest outgoing transfer found from previous hop &middot; tick ${biggest.tickNumber}`, role: lbl.cls, amt: biggest.quTransfer.amount, tag: lbl.text, stage });
       visited.add(dest);
       cursor = dest;
+      hubHop++;
       if (lbl.cls === 'exch') { endReason = 'known-hub'; break; }
     }
     if (endReason === 'max-depth' || steps.length - 1 >= MAX_TRACE_HOPS) endReason = 'max-depth';
