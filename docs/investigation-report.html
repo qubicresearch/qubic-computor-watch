@@ -623,13 +623,14 @@ async function runTrace(id) {
 
     // Step 2 (method: getEventLogs, destination=id, source=null-protocol-address, amount
     // filtered): the identity's own largest REAL epoch revenue payout, if any on record.
-    // Floor is 100,000,000 QU (real epoch payouts run ~200M-1B+) specifically to exclude
-    // small incidental transfers from the null address that aren't the actual epoch payout.
+    // Floor is 75,000,000 QU -- a full census of all 676 real epoch-228 payouts (pulled
+    // directly from this same endpoint, filtered to that epoch's exact settlement tick)
+    // found a real min of 88,955,033 QU; a 100M floor silently missed that one seat.
     status.textContent = 'Method: checking largest real epoch payout from the protocol...';
     try {
       const payoutRes = await getJson(`https://rpc.qubic.org/query/v1/getEventLogs`, {
         method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({filters:{source:NULL_ADDR, destination:id}, ranges:{amount:{gte:"100000000"}}, pagination:{offset:0,size:20}})
+        body: JSON.stringify({filters:{source:NULL_ADDR, destination:id}, ranges:{amount:{gte:"75000000"}}, pagination:{offset:0,size:20}})
       });
       const payoutLogs = payoutRes.eventLogs || [];
       if (payoutLogs.length) {
