@@ -107,6 +107,16 @@
   /* interactive tracer */
   .tracer { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; margin: 24px 0; }
   .tracer-examples { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .featured-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 22px; }
+  .featured-card { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; cursor: pointer; text-align: left; font-family: var(--sans); width: 100%; }
+  .featured-card:hover { border-color: var(--accent); }
+  .featured-card.mj { border-top: 3px solid var(--mj); }
+  .featured-card.qli { border-top: 3px solid var(--qli); }
+  .featured-card .featured-label { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 6px; }
+  .featured-card.mj .featured-label { color: var(--mj); }
+  .featured-card.qli .featured-label { color: var(--qli); }
+  .featured-card .featured-desc { font-size: 0.86rem; color: var(--dim); margin-bottom: 8px; }
+  .featured-card .featured-addr { font-family: var(--mono); font-size: 0.72rem; color: var(--fg); word-break: break-all; }
   .ex-btn { background: var(--panel2); border: 1px solid var(--line); color: var(--fg); font-family: var(--mono); font-size: 0.76rem; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
   .ex-btn:hover { border-color: var(--accent); }
   .ex-btn.active { border-color: var(--accent); background: rgba(232,184,84,0.1); }
@@ -315,6 +325,7 @@
     <p>This is a live tool, not a screenshot — it queries <code>rpc.qubic.org</code> directly, the same public API used throughout this investigation. Pick one of the real examples below, or paste any 60-character Qubic identity, and step through its actual first-ever transaction and largest subsequent transfers, exactly the way the public explorer does.</p>
 
     <div class="tracer">
+      <div class="featured-examples" id="featuredExamples"></div>
       <div class="tracer-examples" id="tracerExamples"></div>
       <div class="trace-input-row">
         <select id="epochSelect"><option value="">All 676 computors from epoch...</option></select>
@@ -466,6 +477,41 @@ const EXAMPLES = [
   ['MINERLABVOCLEHSRZXTUGFRRZXKAFMRPSWGTLPPHSFBURNUSLJZCBVSFAJGA', 'MINERLAB-named, funded directly by QSOL'],
   ['ARDUSALCURCISAWJLKDOUJVFMHNAFWKIPAAGDKUNLDAQFQAVSLHGQGTGLVRN', '5-hop path through a 100B-QU mega-aggregator, one of 12 computors sharing it'],
 ];
+
+const FEATURED = [
+  {
+    addr: 'BDLGUILQJVSKAADGFXEQROCXVHIDWSVVVQMROIPIAHVNJIFMDSOHOMLGEJVM',
+    family: 'qli',
+    label: 'Typical qli computor',
+    desc: 'Gets paid via a QUTIL SendToManyV1 batch call from QLIF, then forwards its own real epoch revenue straight back to QLIF — the ordinary round-trip shape most qli seats follow.',
+  },
+  {
+    addr: 'PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG',
+    family: 'mj',
+    label: 'Typical MinerLab/JetSki computor',
+    desc: 'Seeded by a confirmed MJ funder, then sweeps its real epoch revenue to whichever MLAB-family hub is collecting that week, on a repeating weekly cadence — the ordinary shape most MJ seats follow.',
+  },
+];
+
+function renderFeatured() {
+  const el = document.getElementById('featuredExamples');
+  el.innerHTML = '';
+  FEATURED.forEach(({ addr, family, label, desc }) => {
+    const card = document.createElement('button');
+    card.className = `featured-card ${family}`;
+    card.innerHTML = `
+      <div class="featured-label">${label}</div>
+      <div class="featured-desc">${desc}</div>
+      <div class="featured-addr">${addr}</div>
+    `;
+    card.onclick = () => {
+      document.querySelectorAll('.ex-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tracerInput').value = addr;
+      runTrace(addr);
+    };
+    el.appendChild(card);
+  });
+}
 
 function labelFor(addr) {
   const k = KNOWN[addr];
@@ -634,6 +680,7 @@ async function runTrace(id) {
   }
 }
 
+renderFeatured();
 renderExamples();
 document.getElementById('tracerGo').onclick = () => runTrace(document.getElementById('tracerInput').value.trim().toUpperCase());
 
