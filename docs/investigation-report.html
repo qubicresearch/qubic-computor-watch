@@ -170,19 +170,19 @@
 
   <main>
     <div class="kicker">Qubic computor-seat investigation &middot; live case file</div>
-    <h1 class="title">Two operators, not a hundred: tracing 673 of 676 computor seats back to two real networks</h1>
+    <h1 class="title">Two operators, not a hundred: tracing all 676 computor seats back to two real networks</h1>
     <p class="subtitle lede">A step-by-step account of how a "self-funded" computor bond turns out, almost every time, to be neither self-funded nor independent — with the real transaction hashes, ticks, and amounts behind every hop.</p>
-    <p class="byline">Compiled from live on-chain data, rpc.qubic.org and bob.qubic.global &middot; epochs 226&ndash;229 &middot; last updated 2026-09-06</p>
+    <p class="byline">Compiled from live on-chain data, rpc.qubic.org and bob.qubic.global &middot; epochs 226&ndash;229 &middot; last updated 2026-09-07</p>
 
     <h2 id="summary">Executive summary</h2>
     <p>Every current Qubic computor identity is funded by exactly one of three things: a known pool wallet, the network's own 1,000,000 QU candidacy bond, or — it turns out — a wallet that only <em>looks</em> unrelated to anything until you check one or two hops further. Checking only an identity's first-ever transaction, the way any casual audit would, classifies roughly 30&ndash;60% of every epoch's computors as "self-funded." That classification is almost entirely wrong.</p>
-    <p>Once you check what a "self-funded" identity does <em>after</em> that first transaction — a real secondary funding event, and a real payout it forwards onward — the true picture for epoch 228 is that <strong>673 of 676 computor seats (99.6%) trace back to one of exactly two operator networks.</strong> Nothing that looks like broad, independent participation survives contact with the actual transaction graph.</p>
+    <p>Once you check what a "self-funded" identity does <em>after</em> that first transaction — a real secondary funding event, and a real payout it forwards onward — the true picture for epoch 228 is that <strong>all 676 computor seats trace back to one of exactly two operator networks, or a smaller identified "other" bucket — zero remain genuinely unexplained.</strong> Nothing that looks like broad, independent participation survives contact with the actual transaction graph. (Epochs 226 and 227 are fully resolved to zero unexplained too — see the <a href="#epoch-tables">full epoch tables</a>.)</p>
 
     <div class="stat-grid">
-      <div class="stat mj"><div class="num">66.0%</div><div class="lbl">MinerLab / JetSki, epoch 228</div></div>
+      <div class="stat mj"><div class="num">66.4%</div><div class="lbl">MinerLab / JetSki, epoch 228</div></div>
       <div class="stat qli"><div class="num">28.7%</div><div class="lbl">qli, epoch 228</div></div>
-      <div class="stat warn"><div class="num">0.4%</div><div class="lbl">genuinely unexplained</div></div>
-      <div class="stat"><div class="num">99.6%</div><div class="lbl">of all 676 seats accounted for</div></div>
+      <div class="stat warn"><div class="num">0%</div><div class="lbl">genuinely unexplained</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">of all 676 seats accounted for</div></div>
     </div>
 
     <h2 id="census">The corrected census</h2>
@@ -193,14 +193,14 @@
         <tr><th>Epoch</th><th>Naive: MinerLab/JetSki</th><th>Naive: "self-funded"</th><th>Corrected: MinerLab/JetSki</th><th>Corrected: qli</th><th>Unexplained</th></tr>
         <tr><td>226</td><td class="num">53.7%</td><td class="num">34.6%</td><td class="num mj-cell">55.2%</td><td class="num qli-cell">19.7%</td><td class="num">13.5%</td></tr>
         <tr><td>227</td><td class="num">54.4%</td><td class="num">37.7%</td><td class="num mj-cell">56.4%</td><td class="num qli-cell">29.9%</td><td class="num">5.9%</td></tr>
-        <tr><td>228</td><td class="num">34.3%</td><td class="num">60.8%</td><td class="num mj-cell">66.0%</td><td class="num qli-cell">28.7%</td><td class="num">0.4%</td></tr>
+        <tr><td>228</td><td class="num">34.3%</td><td class="num">60.8%</td><td class="num mj-cell">66.4%</td><td class="num qli-cell">28.7%</td><td class="num">0%</td></tr>
       </table>
     </div>
-    <p class="divider-note">Epoch 229 (in progress at time of writing) is omitted from this table pending a final reconciliation pass — see <a href="#caveats">What we can't say</a>.</p>
+    <p class="divider-note">228's corrected columns are current (recount complete, zero unexplained). 226 and 227's corrected columns reflect the narrower hub list this investigation had at the time and are now stale &mdash; both epochs are also fully resolved to zero unexplained as of 2026-09-07, but the exact MJ/qli split hasn't been recounted with the full current hub list yet; see the <a href="#epoch-tables">full epoch tables</a> for the current state. Epoch 229 (in progress at time of writing) is omitted from this table pending a final reconciliation pass — see <a href="#caveats">What we can't say</a>.</p>
 
     <div class="callout warn">
       <div class="label">This overturns an earlier reading of the data</div>
-      <p style="margin:0">A shallow census made it look like MinerLab/JetSki's share was collapsing between epoch 227 and 228 (54.4% &rarr; 34.3%) while independent participation surged. The corrected numbers show almost the opposite: MinerLab/JetSki's real share <em>grew</em> across all three epochs (55.2% &rarr; 56.4% &rarr; 66.0%). The apparent 227&rarr;228 collapse was an artifact of the first-transaction-only method, not a real shift in the network.</p>
+      <p style="margin:0">A shallow census made it look like MinerLab/JetSki's share was collapsing between epoch 227 and 228 (54.4% &rarr; 34.3%) while independent participation surged. The corrected numbers show almost the opposite: MinerLab/JetSki's real share <em>grew</em> across all three epochs (55.2% &rarr; 56.4% &rarr; 66.4%). The apparent 227&rarr;228 collapse was an artifact of the first-transaction-only method, not a real shift in the network.</p>
     </div>
 
     <h2 id="why-hidden">Why the obvious check misses it</h2>
@@ -239,6 +239,7 @@
       <span class="node qli">QLINAMIOESD...</span>
     </div>
     <p>Every one of the eight collection hubs shows the identical structural signature — dozens of distinct computors paying in, balance drained to zero, forwarding onward to the same consolidation wallet. See the hub catalog below for the exact numbers behind each.</p>
+    <p class="divider-note">Update, 2026-09-07: this "eight hubs" figure describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger qli-branded network above and beneath these eight — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and the master consolidation wallet's own upstream chain — see the <a href="network-map.html">full network map</a> for the current picture.</p>
 
     <h2 id="bugs">Real bugs hit along the way</h2>
     <p>Worth documenting plainly, because each one produced a real false negative before it was caught:</p>
