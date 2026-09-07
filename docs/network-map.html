@@ -90,6 +90,11 @@
 
   .callout { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 6px; padding: 16px 20px; margin: 24px clamp(20px, 5vw, 64px); max-width: 900px; font-size: 0.9rem; }
 
+  .terminal-split { display: flex; gap: 12px; flex-wrap: wrap; }
+  .terminal-split .group { flex: 1 1 0; margin-bottom: 0; min-width: 160px; }
+  .group.payout { border-top: 3px solid var(--accent); }
+  .group.payout .group-label { color: var(--accent); }
+
   @media (max-width: 1100px) {
     .flow { grid-template-columns: 1fr; min-width: 0; }
     .col-arrow { transform: rotate(90deg); padding: 10px 0; }
@@ -218,18 +223,20 @@
     <div class="tier">
       <div class="tier-head">Tier 4</div>
       <div class="tier-sub">Where the money actually lands</div>
-      <div class="group exch">
-        <div class="group-label">Named exchanges &mdash; 6 real brands confirmed across this investigation</div>
-        <a class="node exch-node" href="https://explorer.qubic.org/network/address/BYBYFUMBVLPUCANXEXTSKVMGFCJBMTLPPOFVPNSATABMWDGTMFXPLZLBCXJL" target="_blank" title="Confirmed via the explorer's own label. Receives from the MinerLab/JetSki side (via NFCG/VAFY) AND sends 50B QU inbound to VCPN.">BYBY&hellip;LZLBCXJL<span class="role">Gate.io</span></a>
-        <a class="node exch-node" href="https://explorer.qubic.org/network/address/VUEYKUCYYHXKDGOSCWAIEECECDBCXVUSUAJRVXUQVAQPGIOABLGGLXDAXTNK" target="_blank" title="Confirmed via the explorer's own label. Receives from the MinerLab/JetSki side via GXITF/BBMMA and from a legit JetSki chain (MHWT->EGDY).">VUEY&hellip;DAXTNK<span class="role">MEXC</span></a>
-        <a class="node exch-node" href="https://explorer.qubic.org/network/address/CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE" target="_blank" title="Confirmed via the explorer's own label. Sends INBOUND into VCHM, not outbound like the others. Also confirmed relaying to MEXC via YFWHA.">CLJHH&hellip;ECQJPE<span class="role">SafeTrade1 (inbound + relays to MEXC)</span></a>
-        <a class="node exch-node" href="https://explorer.qubic.org/network/address/EXNRRBDPYFQPXFPXCMUHZVEEBRQCBEAUDYUBHKGTRCKHVSRAQXWHQCXDLZXL" target="_blank" title="Confirmed 2026-09-02. Real balance/volume observed.">EXNRR&hellip;QCXDLZXL<span class="role">Bitget</span></a>
-        <a class="node exch-node" href="https://explorer.qubic.org/network/address/RGTOAPIIMQMFMDPQOIYLFEXOVNZAQRWMIMKMRVSKGFFIRMXXQPWQPRWAGHHI" target="_blank" title="Confirmed 2026-09-02. Real balance/volume: 551,554,272,368 QU.">RGTOA&hellip;PWQPRWAGHHI<span class="role">CoinEx</span></a>
-        <a class="node exch-node" href="https://explorer.qubic.org/network/address/IZTNWDKXSFULQADTOLTMLUPHSCFCXLOJMQOUHPBSRGQZMMXZCJYQFTRDOGRE" target="_blank" title="TradeOgre 1 of 6 confirmed wallets (all via the explorer's own labels). TradeOgre has since shut down; balances may be frozen.">TradeOgre&hellip;&times;6<span class="role">TradeOgre (defunct, 6 wallets)</span></a>
-      </div>
-      <div class="group mixed">
-        <div class="group-label">QUTIL SendToManyV1 &mdash; assumed miner payout</div>
-        <a class="node" href="https://explorer.qubic.org/network/address/EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVWRF" target="_blank" title="Real official Qubic utility contract. SendToManyV1 pays up to 25 recipients in one call. Most qli master wallets route almost everything here.">EAAAA&hellip;VWRF<span class="role">QUTIL contract</span></a>
+      <div class="terminal-split">
+        <div class="group exch">
+          <div class="group-label">Named exchanges &mdash; 6 real brands confirmed across this investigation</div>
+          <a class="node exch-node" href="https://explorer.qubic.org/network/address/BYBYFUMBVLPUCANXEXTSKVMGFCJBMTLPPOFVPNSATABMWDGTMFXPLZLBCXJL" target="_blank" title="Confirmed via the explorer's own label. Receives from the MinerLab/JetSki side (via NFCG/VAFY) AND sends 50B QU inbound to VCPN.">BYBY&hellip;LZLBCXJL<span class="role">Gate.io</span></a>
+          <a class="node exch-node" href="https://explorer.qubic.org/network/address/VUEYKUCYYHXKDGOSCWAIEECECDBCXVUSUAJRVXUQVAQPGIOABLGGLXDAXTNK" target="_blank" title="Confirmed via the explorer's own label. Receives from the MinerLab/JetSki side via GXITF/BBMMA and from a legit JetSki chain (MHWT->EGDY).">VUEY&hellip;DAXTNK<span class="role">MEXC</span></a>
+          <a class="node exch-node" href="https://explorer.qubic.org/network/address/CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE" target="_blank" title="Confirmed via the explorer's own label. Sends INBOUND into VCHM, not outbound like the others. Also confirmed relaying to MEXC via YFWHA.">CLJHH&hellip;ECQJPE<span class="role">SafeTrade1 (inbound + relays to MEXC)</span></a>
+          <a class="node exch-node" href="https://explorer.qubic.org/network/address/EXNRRBDPYFQPXFPXCMUHZVEEBRQCBEAUDYUBHKGTRCKHVSRAQXWHQCXDLZXL" target="_blank" title="Confirmed 2026-09-02. Real balance/volume observed.">EXNRR&hellip;QCXDLZXL<span class="role">Bitget</span></a>
+          <a class="node exch-node" href="https://explorer.qubic.org/network/address/RGTOAPIIMQMFMDPQOIYLFEXOVNZAQRWMIMKMRVSKGFFIRMXXQPWQPRWAGHHI" target="_blank" title="Confirmed 2026-09-02. Real balance/volume: 551,554,272,368 QU.">RGTOA&hellip;PWQPRWAGHHI<span class="role">CoinEx</span></a>
+          <a class="node exch-node" href="https://explorer.qubic.org/network/address/IZTNWDKXSFULQADTOLTMLUPHSCFCXLOJMQOUHPBSRGQZMMXZCJYQFTRDOGRE" target="_blank" title="TradeOgre 1 of 6 confirmed wallets (all via the explorer's own labels). TradeOgre has since shut down; balances may be frozen.">TradeOgre&hellip;&times;6<span class="role">TradeOgre (defunct, 6 wallets)</span></a>
+        </div>
+        <div class="group payout">
+          <div class="group-label">QUTIL SendToManyV1 &mdash; assumed miner payout</div>
+          <a class="node" href="https://explorer.qubic.org/network/address/EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVWRF" target="_blank" title="Real official Qubic utility contract. SendToManyV1 pays up to 25 recipients in one call. Most qli master wallets route almost everything here.">EAAAA&hellip;VWRF<span class="role">QUTIL contract</span></a>
+        </div>
       </div>
     </div>
 
