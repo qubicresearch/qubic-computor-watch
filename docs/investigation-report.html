@@ -230,16 +230,21 @@
     <p>An identity that looks self-funded on its first transaction (a plain 1,000,000 QU bond, source unrecognized) very often receives a second, separate payment of <strong>exactly 9,000,000 QU</strong> some time later — not from a known hub, but from one of a small, closed set of wallets:</p>
     <div class="table-scroll">
       <table>
-        <tr><th>Funder</th><th>Identities funded (epoch 228+229)</th></tr>
-        <tr><td class="addr">OSFBXSGRBQRJHEWPKIVVWPTTKTSBCWMYXQUCFIUBQFZWSMZMOTPIWQHAQPTI</td><td class="num">42</td></tr>
-        <tr><td class="addr">VUYDQJWYQMRZJHKNEUXOVCDGTAOBARGEMYLEIQNZZFHDHJBTNVULLXTBAHQL</td><td class="num">21</td></tr>
-        <tr><td class="addr">WPEDKQYFHDCBADJBHKQBGRPOWXKCUSUFENENEGEMDCTAIQPFBYZPUUEEMFMO</td><td class="num">17</td></tr>
-        <tr><td class="addr">ZOUODTJNQSVYBFVRYKLTYUANVXHBTDGCLVEMXDXYLBQKCKZWRNJIYONGEVKB</td><td class="num">16</td></tr>
-        <tr><td class="addr">EAFWYRBBVOADXGTBNNZNJMMBPNJCXPZCPDZZZCAGXGYNGVLEJBCAEUQAUUME</td><td class="num">16</td></tr>
-        <tr><td colspan="2" class="footnote" style="padding-top:6px;">Plus 6 more wallets funding 4&ndash;13 identities each. 11 distinct funders in total, ~350 identities funded across the two epochs checked.</td></tr>
+        <tr><th>Funder</th><th>Exact 9,000,000 QU sends (real total, live-verified)</th></tr>
+        <tr><td class="addr">OSFBXSGRBQRJHEWPKIVVWPTTKTSBCWMYXQUCFIUBQFZWSMZMOTPIWQHAQPTI</td><td class="num">55</td></tr>
+        <tr><td class="addr">VTIIKNEHCGCKEBKTAHFXXQYUEKQBTOYFUDRBAGWLRCBOMCFJNSGNXBPCXGSO</td><td class="num">42</td></tr>
+        <tr><td class="addr">JAOSHTYLMKVLPEYWJZNINEVHMLBBWYQZCVSUBZZUAEWIYPFPFHRRIMBAKCKI</td><td class="num">42</td></tr>
+        <tr><td class="addr">VUYDQJWYQMRZJHKNEUXOVCDGTAOBARGEMYLEIQNZZFHDHJBTNVULLXTBAHQL</td><td class="num">25</td></tr>
+        <tr><td class="addr">ZOUODTJNQSVYBFVRYKLTYUANVXHBTDGCLVEMXDXYLBQKCKZWRNJIYONGEVKB</td><td class="num">23</td></tr>
+        <tr><td class="addr">VUKEQPVNKWVEKBHXZHNASJPJHUACYMQHCLBOAUTRLBBFQEEZEIQSCCYDTJYJ</td><td class="num">23</td></tr>
+        <tr><td class="addr">WPEDKQYFHDCBADJBHKQBGRPOWXKCUSUFENENEGEMDCTAIQPFBYZPUUEEMFMO</td><td class="num">19</td></tr>
+        <tr><td class="addr">EAFWYRBBVOADXGTBNNZNJMMBPNJCXPZCPDZZZCAGXGYNGVLEJBCAEUQAUUME</td><td class="num">19</td></tr>
+        <tr><td class="addr">TDHVJGVERJRKHDICPHEZPCSOHSFDTWTZGVBBPYAONELTZDSNXHSHHBCHQNZF</td><td class="num">19</td></tr>
+        <tr><td class="addr">JZAZNLEGBXOMPEDQYIVNVGDCVRBBFEZPFEQEIUOVYBAACOJBAMQENEYBGSVC</td><td class="num">17</td></tr>
+        <tr><td class="addr">SMCITEHEYIRTLBKQDUBCKFTBDZQDFJJFMGQPSNHSVAVFZFIJMIZUXVDFCCMJ</td><td class="num">13</td></tr>
       </table>
     </div>
-    <p>Each of these funder wallets is itself a large, active address (10,000+ of its own transactions) — the same scale as the confirmed operator relays documented below, not a one-off personal wallet.</p>
+    <p>Each of these funder wallets is itself a large, active address (10,000+ of its own transactions) — the same scale as the confirmed operator relays documented below, not a one-off personal wallet. All 11 shown; nothing summarized off-screen.</p>
     <p class="divider-note">Update, 2026-09-07: this table isn't MinerLab/JetSki-exclusive. <code>OSFB</code>, one of the largest funders here, was separately confirmed this session as part of the qli-branded network too (fed by <code>FEDMX</code>, feeds <code>GPXR</code> which sends directly into <code>QLIN</code>/<code>QLIMM</code>). Same real wallet, two real roles &mdash; the 9M secondary-funding pattern isn't a signature of one family exclusively.</p>
 
     <h3>Layer 3 — the real epoch payout, forwarded onward within minutes</h3>
@@ -253,12 +258,12 @@
     </div>
     <p>The original eight qli hubs each show the identical structural signature — dozens of distinct computors paying in the same real amount (268,701,925 QU was the signature for the epoch this was first documented in; 537,403,847 QU and others recur in later epochs), balance drained to zero, forwarding onward to the same consolidation wallet. See the hub catalog below for the exact numbers behind each.</p>
 
-    <h4 style="font-family:var(--display);font-size:0.98rem;margin:24px 0 8px;">MinerLab/JetSki side — the same pattern, real example</h4>
+    <h4 style="font-family:var(--display);font-size:0.98rem;margin:24px 0 8px;">MinerLab/JetSki side — the same pattern</h4>
     <div class="chain">
-      <span class="node">PYEUX&hellip;DUCBG</span><span class="arrow">&rarr;</span>
-      <span class="node mj">MLABN / MLABZ / MLABD / MLABR / ZTQMS</span>
+      <span class="node">computor</span><span class="arrow">&rarr;</span>
+      <span class="node mj">MLABG / MLABN / MLABD / MLABR / MLABZ / YNRE / ZTQM</span>
     </div>
-    <p><code>PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG</code> receives its real epoch payout directly from the protocol address and forwards it, almost without exception the exact same amount, to whichever MLAB-family hub is collecting that week — 537,403,847 QU to <code>YNRE</code> at epoch 227's start, 516,936,318 QU to <code>MLABN</code>, 535,304,613 QU to <code>MLABR</code>, repeating weekly across more than a year of continuous activity. Same structural signature as the qli side: real payout in, near-identical amount out within the same window, to a rotating cast of confirmed hub wallets rather than one fixed address. <code>BCGI</code>, <code>LIRS</code>, and <code>UYIG</code> (see the hub catalog and <a href="network-map.html">network map</a>) show the same pattern from the receiving hub's side — fed directly and repeatedly by multiple confirmed MLAB wallets at once.</p>
+    <p>The same structural signature shows up here too: a computor receives its real epoch payout directly from the protocol address, then forwards almost the exact same amount, within the same window, to whichever MLAB-family hub is collecting that week — the rotating cast, not one fixed address, is the point. Confirmed on many computors independently (see the hub catalog and the <a href="#tracer">live tracer</a> above), and from the receiving side too: <code>BCGI</code>, <code>LIRS</code>, and <code>UYIG</code> (see the <a href="network-map.html">network map</a>) are each fed directly and repeatedly by multiple confirmed MLAB wallets at once.</p>
     <p class="divider-note">Update, 2026-09-07: the "eight hubs" figure for the qli side describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger network on both sides — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and multiple confirmed MinerLab/JetSki collection wallets (BCGI, LIRS, UYIG, IXAY) fed directly by the MLAB family — see the <a href="network-map.html">full network map</a> for the current picture.</p>
 
     <h2 id="bugs">Real bugs hit along the way</h2>
