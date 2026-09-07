@@ -1,0 +1,240 @@
+<title>The Network Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0b0e14;
+    --panel: #12161f;
+    --panel2: #171d29;
+    --line: #232b3a;
+    --fg: #dbe2ee;
+    --dim: #8b96aa;
+    --dimmer: #5c667a;
+    --accent: #e8b854;
+    --mj: #5aa9ff;
+    --qli: #c98bf5;
+    --ok: #4cd28a;
+    --bad: #ff6b6b;
+    --warn: #f2c14e;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --display: 'Space Grotesk', 'Inter', sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f7f5f0; --panel: #ffffff; --panel2: #f0ede6; --line: #ddd7c9;
+      --fg: #232323; --dim: #6b6558; --dimmer: #9a9384;
+      --accent: #a3690f; --mj: #1c5fc4; --qli: #8b3fc7; --ok: #1c8a5a; --bad: #c3402f; --warn: #a3690f;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f5f0; --panel: #ffffff; --panel2: #f0ede6; --line: #ddd7c9;
+    --fg: #232323; --dim: #6b6558; --dimmer: #9a9384;
+    --accent: #a3690f; --mj: #1c5fc4; --qli: #8b3fc7; --ok: #1c8a5a; --bad: #c3402f; --warn: #a3690f;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; }
+  ::selection { background: var(--accent); color: #100c02; }
+
+  header { padding: 40px clamp(20px, 5vw, 64px) 20px; max-width: 1400px; margin: 0 auto; }
+  .kicker { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  h1 { font-family: var(--display); font-size: clamp(1.6rem, 3.6vw, 2.3rem); line-height: 1.15; margin: 0 0 12px; text-wrap: balance; }
+  .subtitle { color: var(--dim); font-size: 1rem; max-width: 78ch; margin-bottom: 6px; }
+  .back-link { font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 22px 0 8px; font-size: 0.82rem; }
+  .legend .item { display: flex; align-items: center; gap: 7px; }
+  .legend .swatch { width: 12px; height: 12px; border-radius: 3px; }
+  .legend .swatch.mj { background: var(--mj); }
+  .legend .swatch.qli { background: var(--qli); }
+  .legend .swatch.exch { background: var(--warn); }
+  .legend .swatch.computor { background: var(--ok); }
+  .legend .swatch.unnamed { background: var(--dimmer); }
+
+  .diagram-wrap { padding: 10px clamp(10px, 5vw, 64px) 80px; max-width: 1500px; margin: 0 auto; overflow-x: auto; }
+  .flow { display: grid; grid-template-columns: repeat(5, minmax(220px, 1fr)); gap: 0; min-width: 1180px; align-items: start; }
+
+  .tier { padding: 0 14px; position: relative; }
+  .tier-head { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); text-align: center; margin-bottom: 4px; }
+  .tier-sub { font-size: 0.72rem; color: var(--dimmer); text-align: center; margin-bottom: 16px; min-height: 32px; }
+
+  .group { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+  .group.mj { border-top: 3px solid var(--mj); }
+  .group.qli { border-top: 3px solid var(--qli); }
+  .group.exch { border-top: 3px solid var(--warn); }
+  .group.mixed { border-top: 3px solid var(--dimmer); }
+  .group-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .group.mj .group-label { color: var(--mj); }
+  .group.qli .group-label { color: var(--qli); }
+  .group.exch .group-label { color: var(--warn); }
+  .group.mixed .group-label { color: var(--dim); }
+
+  .node { display: block; font-family: var(--mono); font-size: 0.74rem; color: var(--fg); background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; margin-bottom: 6px; text-decoration: none; cursor: help; }
+  .node:last-child { margin-bottom: 0; }
+  .node:hover { border-color: var(--accent); }
+  .node .role { display: block; font-family: var(--sans); font-size: 0.68rem; color: var(--dim); margin-top: 2px; }
+  .node.exch-node { border-color: var(--warn); }
+  .node.exch-node .role { color: var(--warn); }
+
+  .more-note { font-size: 0.7rem; color: var(--dimmer); text-align: center; margin-top: 4px; font-style: italic; }
+
+  .connector { display: flex; align-items: center; justify-content: center; padding-top: 60px; }
+  .connector svg { width: 100%; height: 40px; }
+
+  .col-arrow { text-align: center; color: var(--dimmer); font-size: 1.4rem; padding-top: 40px; }
+
+  footer { padding: 30px clamp(20px, 5vw, 64px) 60px; max-width: 1400px; margin: 0 auto; color: var(--dimmer); font-size: 0.82rem; border-top: 1px solid var(--line); }
+  footer a { color: var(--accent); }
+
+  .callout { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 6px; padding: 16px 20px; margin: 24px clamp(20px, 5vw, 64px); max-width: 900px; font-size: 0.9rem; }
+
+  @media (max-width: 1100px) {
+    .flow { grid-template-columns: 1fr; min-width: 0; }
+    .col-arrow { transform: rotate(90deg); padding: 10px 0; }
+  }
+</style>
+
+<header>
+  <div class="kicker">Qubic computor-seat investigation &middot; live case file</div>
+  <h1>The network map</h1>
+  <p class="subtitle">Every node below is a real, on-chain-confirmed address from this investigation &mdash; not illustrative. Money flows left to right: computors seed from a hub, real epoch revenue gets forwarded up through aggregators, and it lands at either a master consolidation wallet, an exchange, or the QUTIL payout contract. Hover any node for its full role description; click to verify on the explorer.</p>
+  <a class="back-link" href="investigation-report.html">&larr; Back to the full write-up</a>
+  <div class="legend">
+    <div class="item"><span class="swatch computor"></span> Computor (676 seats)</div>
+    <div class="item"><span class="swatch mj"></span> MinerLab/JetSki family</div>
+    <div class="item"><span class="swatch qli"></span> qli family</div>
+    <div class="item"><span class="swatch exch"></span> Named exchange (only 3 confirmed)</div>
+    <div class="item"><span class="swatch unnamed"></span> Family known, real name NOT known</div>
+  </div>
+</header>
+
+<div class="callout">This investigation has confirmed <strong>6 real exchange brands</strong> (Gate.io, MEXC, SafeTrade1, Bitget, CoinEx, and the now-defunct TradeOgre, which alone has 6 known wallets) touching this network somewhere &mdash; but only those exchange wallets carry a real identified name. Every other hub (54+ found this session) is confirmed by family (MinerLab/JetSki or qli) and by behavior only; who actually controls them is not known from on-chain data alone.</div>
+
+<div class="diagram-wrap">
+  <div class="flow">
+
+    <div class="tier">
+      <div class="tier-head">Tier 0</div>
+      <div class="tier-sub">Computor seats<br>676 total across epochs 226&ndash;228, ALL now accounted for</div>
+      <div class="group mixed">
+        <div class="group-label">Real epoch revenue payout</div>
+        <a class="node" href="https://explorer.qubic.org/network/address/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB" target="_blank" title="The universal protocol/null address. Pays every active computor's real epoch revenue, regardless of family. Not a hub.">AAAA&hellip;FXIB<span class="role">Protocol issuance (all families)</span></a>
+      </div>
+      <div class="group mixed">
+        <div class="group-label">Individual computors</div>
+        <div class="node" title="Example: paid via QUTIL from QLIF, forwards revenue back to QLIF">BDLGU&hellip;GEJVM<span class="role">qli computor</span></div>
+        <div class="node" title="MLAB-family, sweeps to MLABR/TKOG">AUHF&hellip;AAFXM<span class="role">MJ computor</span></div>
+        <div class="node" title="Sends 145B and 100B QU after months-long dormancy">AWJJ&hellip;BPPSE<span class="role">high-value, dormant</span></div>
+        <div class="more-note">673 more real seats, same two patterns</div>
+      </div>
+    </div>
+
+    <div class="col-arrow">&rarr;</div>
+
+    <div class="tier">
+      <div class="tier-head">Tier 1</div>
+      <div class="tier-sub">Direct seeding / first collection<br>where a computor's very first transaction traces to</div>
+      <div class="group mj">
+        <div class="group-label">MJ seeding &amp; collection</div>
+        <div class="node" title="Round-amount seed funder, 3M/20M/50M QU">TKOG&hellip;GLVIJ<span class="role">seeding hub</span></div>
+        <div class="node" title="Round-amount seed funder">YNRE&hellip;WENPQN<span class="role">seeding hub</span></div>
+        <div class="node" title="Bulk seeds 3M QU to 2000+ addresses in one pass">MLABG&hellip;GPIUB<span class="role">seeding hub</span></div>
+        <div class="node" title="MLAB seeding hub">MLABN&hellip;RKBFOKPD<span class="role">seeding hub</span></div>
+        <div class="node" title="Collection point, receives real payout sweeps">ZTQM&hellip;RUDIIWC<span class="role">collection hub</span></div>
+        <div class="node" title="Collection point">TMNN&hellip;WLAGOFFC<span class="role">collection hub</span></div>
+        <div class="node" title="3 JETSKI-prefixed payout wallets">JETSKI&times;3<span class="role">payout wallets</span></div>
+      </div>
+      <div class="group qli">
+        <div class="group-label">qli seeding &amp; collection</div>
+        <div class="node" title="qli collection hub">IHDR&hellip;TPFDJVJ<span class="role">collection hub</span></div>
+        <div class="node" title="qli collection hub, feeds QLIF directly">KOYO&hellip;KFLYFB<span class="role">collection hub</span></div>
+        <div class="node" title="qli collection hub, the 268.7M QU signature lands here">JBWF&hellip;GMHBVMJ<span class="role">collection hub</span></div>
+        <div class="node" title="qli collection hub">VAQA&hellip;LJSCVSSJ<span class="role">collection hub</span></div>
+        <div class="node" title="qli collection hub">PCUT&hellip;JMDUKAKZFL<span class="role">collection hub</span></div>
+        <div class="node" title="qli collection hub">KDHV&hellip;IPVIWGKEZWJSBREAK<span class="role">collection hub</span></div>
+        <div class="node" title="LEGACY 2024-era qli hub, feeds CWKWQ/GZOG">DMRK&hellip;RXYAKNTC<span class="role">collection hub (legacy)</span></div>
+        <div class="node" title="LEGACY 2024-era qli hub, feeds YHPK">LHDR&hellip;VDEXDKIYG<span class="role">collection hub (legacy)</span></div>
+      </div>
+    </div>
+
+    <div class="col-arrow">&rarr;</div>
+
+    <div class="tier">
+      <div class="tier-head">Tier 2</div>
+      <div class="tier-sub">Aggregation / relay<br>consolidates many computors' revenue before forwarding up</div>
+      <div class="group mj">
+        <div class="group-label">MJ aggregation</div>
+        <div class="node" title="Central clearinghouse, sits between hubs and the exchange relay">LKBOP&hellip;NCHWRLK<span class="role">clearinghouse</span></div>
+        <div class="node" title="Mega-aggregator, moves 30-100B QU per transfer, fed exclusively by known MJ wallets">UYIG&hellip;VYJDSOFG<span class="role">mega-aggregator</span></div>
+        <div class="node" title="Never forwards, terminal reserve">XJZQD&hellip;INOGZHAB<span class="role">terminal reserve</span></div>
+        <div class="node" title="Legacy 2024-era aggregation hub">SLATZ&hellip;RNETELDUD<span class="role">legacy aggregator</span></div>
+        <div class="node" title="One hop before Gate.io">NFCG&hellip;BCMEUDJLHH<span class="role">relay to Gate.io</span></div>
+        <div class="node" title="One hop before MEXC">GXITF&hellip;YDYDELZAFEIIA<span class="role">relay to MEXC</span></div>
+      </div>
+      <div class="group qli">
+        <div class="group-label">qli aggregation (largest cluster: 13 wallets found in one session)</div>
+        <div class="node" title="Legacy 2024-era computor, sends directly to DMRK">GUIIQ&hellip;AUJHKABK</div>
+        <div class="node" title="Fan-in aggregator, fed directly by DMRK">CWKWQ&hellip;EWGBPBWDNL</div>
+        <div class="node" title="Fed by LHDR, funds VCHM and OJFS">YHPK&hellip;GHHFMJWKGZVFI</div>
+        <div class="node" title="Two-tier fan-in aggregator">OJFS&hellip;YBIDGFTJMJ</div>
+        <div class="node" title="QUTIL SendToManyV1 mass-payout dispatcher">VCHM&hellip;OXMTAKRDIODF</div>
+        <div class="node" title="Massive collection hub, dozens of computors converge here">UUSJ&hellip;VQOLDKPZKJGSEGRXNJ</div>
+        <div class="node" title="Legacy computor, funds QLIF/QLIKK">GZOG&hellip;FOFHNNPJ</div>
+        <div class="node" title="Legacy computor, feeds OJFS">FEDMX&hellip;KQQCLZTEUSWSDNJCK</div>
+        <div class="node" title="Major relay, billions directly into QLIN/QLIMM">GPXR&hellip;GSUTMENTFEJUF</div>
+        <div class="node" title="Relay, fed by FEDMX">OSFB&hellip;ZMZMOTPIWQHAQPTI</div>
+        <div class="node" title="Collection point, fed by OJFS and OSFB">OKRZA&hellip;QILTBRPCQDIWUH</div>
+        <div class="node" title="Collection point, fed by DFVL and OSFB">KCOB&hellip;ATRFZQVM</div>
+        <div class="node" title="Collection hub, 537.4M QU signature converges here">PYIA&hellip;JXEIEUYDBYQDD</div>
+        <div class="node" title="Fed by PYIA, up to 15B QU per transfer">HUHH&hellip;QMGWAWAXF</div>
+      </div>
+    </div>
+
+    <div class="col-arrow">&rarr;</div>
+
+    <div class="tier">
+      <div class="tier-head">Tier 3</div>
+      <div class="tier-sub">Master consolidation<br>+ the top-tier "mystery" wallets, pattern differs from everything else</div>
+      <div class="group qli">
+        <div class="group-label">qli master wallets (all QLI-prefixed)</div>
+        <div class="node" title="qli MASTER consolidation, ~276B QU lifetime outgoing, 100% via QUTIL">QLIN&hellip;LDXFJKUHASONL<span class="role">master consolidation</span></div>
+        <div class="node" title="Payout distributor, fed by KOYO">QLIF&hellip;MTZUKMAWBABQRJ<span class="role">payout distributor</span></div>
+        <div class="node" title="Fed by GZOG">QLIKK&hellip;DRUPUOSTTCERRB<span class="role">qli-family</span></div>
+        <div class="node" title="Fed by UUSJ">QLIMM&hellip;PKBSCAGIZDBCTGD<span class="role">qli-family</span></div>
+      </div>
+      <div class="group mixed">
+        <div class="group-label">Top-tier: irregular, huge, months dormant &mdash; pattern differs from the rest, possibly individual/operator wallets (unproven)</div>
+        <div class="node" title="Received 50B QU direct from Gate.io + 85B QU from XQCL">VCPN&hellip;NGUUPWBQBVVOL</div>
+        <div class="node" title="Fed VCPN 85B QU, feeds QOBK 104B+ QU">XQCL&hellip;JXEIEUYDBYQDD</div>
+        <div class="node" title="Largest distributor found: 50-100B+ QU per QUTIL call">QOBK&hellip;YTTTIHKAYJJI</div>
+      </div>
+    </div>
+
+    <div class="col-arrow">&rarr;</div>
+
+    <div class="tier">
+      <div class="tier-head">Tier 4</div>
+      <div class="tier-sub">Where the money actually lands</div>
+      <div class="group exch">
+        <div class="group-label">Named exchanges &mdash; 6 real brands confirmed across this investigation</div>
+        <a class="node exch-node" href="https://explorer.qubic.org/network/address/BYBYFUMBVLPUCANXEXTSKVMGFCJBMTLPPOFVPNSATABMWDGTMFXPLZLBCXJL" target="_blank" title="Confirmed via the explorer's own label. Receives from the MJ side (via NFCG/VAFY) AND sends 50B QU inbound to VCPN.">BYBY&hellip;LZLBCXJL<span class="role">Gate.io</span></a>
+        <a class="node exch-node" href="https://explorer.qubic.org/network/address/VUEYKUCYYHXKDGOSCWAIEECECDBCXVUSUAJRVXUQVAQPGIOABLGGLXDAXTNK" target="_blank" title="Confirmed via the explorer's own label. Receives from the MJ side via GXITF/BBMMA and from a legit JetSki chain (MHWT->EGDY).">VUEY&hellip;DAXTNK<span class="role">MEXC</span></a>
+        <a class="node exch-node" href="https://explorer.qubic.org/network/address/CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE" target="_blank" title="Confirmed via the explorer's own label. Sends INBOUND into VCHM, not outbound like the others. Also confirmed relaying to MEXC via YFWHA.">CLJHH&hellip;ECQJPE<span class="role">SafeTrade1 (inbound + relays to MEXC)</span></a>
+        <a class="node exch-node" href="https://explorer.qubic.org/network/address/EXNRRBDPYFQPXFPXCMUHZVEEBRQCBEAUDYUBHKGTRCKHVSRAQXWHQCXDLZXL" target="_blank" title="Confirmed 2026-09-02. Real balance/volume observed.">EXNRR&hellip;QCXDLZXL<span class="role">Bitget</span></a>
+        <a class="node exch-node" href="https://explorer.qubic.org/network/address/RGTOAPIIMQMFMDPQOIYLFEXOVNZAQRWMIMKMRVSKGFFIRMXXQPWQPRWAGHHI" target="_blank" title="Confirmed 2026-09-02. Real balance/volume: 551,554,272,368 QU.">RGTOA&hellip;PWQPRWAGHHI<span class="role">CoinEx</span></a>
+        <a class="node exch-node" href="https://explorer.qubic.org/network/address/IZTNWDKXSFULQADTOLTMLUPHSCFCXLOJMQOUHPBSRGQZMMXZCJYQFTRDOGRE" target="_blank" title="TradeOgre 1 of 6 confirmed wallets (all via the explorer's own labels). TradeOgre has since shut down; balances may be frozen.">TradeOgre&hellip;&times;6<span class="role">TradeOgre (defunct, 6 wallets)</span></a>
+      </div>
+      <div class="group mixed">
+        <div class="group-label">QUTIL SendToManyV1 &mdash; assumed miner payout</div>
+        <a class="node" href="https://explorer.qubic.org/network/address/EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVWRF" target="_blank" title="Real official Qubic utility contract. SendToManyV1 pays up to 25 recipients in one call. Most qli master wallets route almost everything here.">EAAAA&hellip;VWRF<span class="role">QUTIL contract</span></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  Every address here is real and independently verifiable &mdash; hover for role, click named-exchange nodes to open the explorer. Full evidence, transaction ticks, and amounts for each hop: <a href="investigation-report.html">the full write-up</a>. This diagram groups behaviorally-similar nodes for readability; it does not imply the grouped wallets are the same entity beyond what the write-up separately proves for each one. Compiled from live rpc.qubic.org data, epochs 226&ndash;229, last updated 2026-09-07.
+</footer>
