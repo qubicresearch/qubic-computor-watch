@@ -231,15 +231,24 @@
     </div>
     <p>Each of these funder wallets is itself a large, active address (10,000+ of its own transactions) — the same scale as the confirmed operator relays documented below, not a one-off personal wallet.</p>
 
-    <h3>Layer 3 — the 268,701,925 QU payout, always to the same eight addresses</h3>
-    <p>This is the layer that actually resolves most of the remaining mystery. A computor that survives long enough to earn a real epoch payout receives that payout directly from the network's own protocol address, and — almost without exception — forwards <strong>the exact same amount</strong> onward within minutes, to one of eight known collection wallets, all part of the network labeled "qli":</p>
+    <h3>Layer 3 — the real epoch payout, forwarded onward within minutes</h3>
+    <p>This is the layer that actually resolves most of the remaining mystery, and it is not unique to one family — both networks show the identical structural pattern. A computor that survives long enough to earn a real epoch payout receives that payout directly from the network's own protocol address, and — almost without exception — forwards <strong>the exact same amount</strong> onward within minutes, to a known collection wallet.</p>
+
+    <h4 style="font-family:var(--display);font-size:0.98rem;margin:24px 0 8px;">qli side</h4>
     <div class="chain">
       <span class="node">computor</span><span class="arrow">&rarr;</span>
       <span class="node qli">JBWF / VAQA / KOYO / IHDR / PCUTRGWY / KDHVRGXD / LHDR / DMRK</span><span class="arrow">&rarr;</span>
       <span class="node qli">QLINAMIOESD...</span>
     </div>
-    <p>Every one of the eight collection hubs shows the identical structural signature — dozens of distinct computors paying in, balance drained to zero, forwarding onward to the same consolidation wallet. See the hub catalog below for the exact numbers behind each.</p>
-    <p class="divider-note">Update, 2026-09-07: this "eight hubs" figure describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger qli-branded network above and beneath these eight — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and the master consolidation wallet's own upstream chain — see the <a href="network-map.html">full network map</a> for the current picture.</p>
+    <p>The original eight qli hubs each show the identical structural signature — dozens of distinct computors paying in the same real amount (268,701,925 QU was the signature for the epoch this was first documented in; 537,403,847 QU and others recur in later epochs), balance drained to zero, forwarding onward to the same consolidation wallet. See the hub catalog below for the exact numbers behind each.</p>
+
+    <h4 style="font-family:var(--display);font-size:0.98rem;margin:24px 0 8px;">MinerLab/JetSki side — the same pattern, real example</h4>
+    <div class="chain">
+      <span class="node">PYEUX&hellip;DUCBG</span><span class="arrow">&rarr;</span>
+      <span class="node mj">MLABN / MLABZ / MLABD / MLABR / ZTQMS</span>
+    </div>
+    <p><code>PYEUXXOTQBTMQDTSBINPGQVVRDZAMDOSRJZCUVWHJFVGCDVFGLODNYHDUCBG</code> receives its real epoch payout directly from the protocol address and forwards it, almost without exception the exact same amount, to whichever MLAB-family hub is collecting that week — 537,403,847 QU to <code>YNRE</code> at epoch 227's start, 516,936,318 QU to <code>MLABN</code>, 535,304,613 QU to <code>MLABR</code>, repeating weekly across more than a year of continuous activity. Same structural signature as the qli side: real payout in, near-identical amount out within the same window, to a rotating cast of confirmed hub wallets rather than one fixed address. <code>BCGI</code>, <code>LIRS</code>, and <code>UYIG</code> (see the hub catalog and <a href="network-map.html">network map</a>) show the same pattern from the receiving hub's side — fed directly and repeatedly by multiple confirmed MLAB wallets at once.</p>
+    <p class="divider-note">Update, 2026-09-07: the "eight hubs" figure for the qli side describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger network on both sides — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and multiple confirmed MJ collection wallets (BCGI, LIRS, UYIG, IXAY) fed directly by the MLAB family — see the <a href="network-map.html">full network map</a> for the current picture.</p>
 
     <h2 id="bugs">Real bugs hit along the way</h2>
     <p>Worth documenting plainly, because each one produced a real false negative before it was caught:</p>
