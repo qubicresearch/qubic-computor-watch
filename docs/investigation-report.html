@@ -171,6 +171,8 @@
     <div class="section-label">Evidence</div>
     <a href="#hubs">Hub-by-hub evidence</a>
     <a href="#entangled">Why MinerLab and JetSki can't be separated</a>
+    <a href="#governance">CCF governance votes</a>
+    <a href="#xwrz">XWRZ: a full pool lifecycle</a>
     <a href="#tracer">Trace it yourself</a>
     <a href="network-map.html">Full network map &rarr;</a>
     <div class="section-label">Reference</div>
@@ -182,7 +184,7 @@
     <div class="kicker">Qubic computor-seat investigation &middot; live case file</div>
     <h1 class="title">Tracing all 676 computor seats</h1>
     <p class="subtitle lede">A step-by-step account of how a "self-funded" computor bond turns out, almost every time, to be neither self-funded nor independent — with the real transaction hashes, ticks, and amounts behind every hop.</p>
-    <p class="byline">Compiled from live on-chain data, rpc.qubic.org and bob.qubic.global &middot; epochs 226&ndash;229 &middot; last updated 2026-09-07</p>
+    <p class="byline">Compiled from live on-chain data, rpc.qubic.org and bob.qubic.global &middot; epochs 226&ndash;229 &middot; last updated 2026-09-08</p>
 
     <h2 id="summary">Executive summary</h2>
     <p>Every current Qubic computor identity is funded by exactly one of three things: a known pool wallet, the network's own 1,000,000 QU candidacy bond, or — it turns out — a wallet that only <em>looks</em> unrelated to anything until you check one or two hops further. Checking only an identity's first-ever transaction, the way any casual audit would, classifies roughly 30&ndash;60% of every epoch's computors as "self-funded." That classification is almost entirely wrong.</p>
@@ -325,6 +327,39 @@
     <div class="callout mj">
       <div class="label">What this doesn't claim</div>
       <p style="margin:0">This is evidence of one coordinated money-flow network operating under two labels — it is not evidence about which entity, if either, "owns" the other, and no claim is made about legal structure or corporate relationship. The fund flow is direct and repeated; the org chart behind it is not something on-chain data can show.</p>
+    </div>
+
+    <h2 id="governance">CCF governance votes</h2>
+    <p>The Computor Controlled Fund (CCF) contract runs its own funding-proposal votes, separate from block production. Pulling the contract's vote transaction history and classifying each voting address by the same method used above shows the same two networks voting as blocs.</p>
+
+    <div class="hub-card">
+      <h4>Proposals 67 and 73 <span class="hub-tag mj">MinerLab/JetSki</span></h4>
+      <ul class="evidence plain">
+        <li>Proposal 67 ("QUBIC AGI (True AI) Research 2026 Q4," a $57,000 / 139.4B QU request, published tick 78,369,421): 105 votes cast, all "reject," all submitted within ticks 78,835,939&ndash;78,835,941 (a 2-tick window), roughly two days after publication. All 105 voting addresses classify as MinerLab/JetSki.</li>
+        <li>Proposal 73 (published tick 78,369,500, the same day): 105 votes cast, all "reject," submitted within ticks 78,835,877&ndash;78,835,879 &mdash; about 23 seconds before proposal 67's vote burst. 104 of the 105 addresses are the same as proposal 67's; one address differs between the two.</li>
+      </ul>
+    </div>
+
+    <div class="hub-card">
+      <h4>Proposal 2, epoch 227 &mdash; six non-overlapping clusters</h4>
+      <ul class="evidence plain">
+        <li>905 votes cast, contested outcome (482 vs 423). Grouping by submission tick (gaps of 5 ticks or less, groups of 5+ votes) finds 8 clusters spread across the roughly 7-hour voting window.</li>
+        <li>Classifying every clustered address gives 6 groups with no address overlap between any pair: one 5-address qli group, and five MinerLab/JetSki groups of 51, 116&ndash;118, 116&ndash;118, 65, and 65 addresses. Two of the mj groups each appear twice, about 5h20m apart, with identical membership both times.</li>
+      </ul>
+    </div>
+
+    <p>Full pull of the CCF contract's vote history: 9,981 vote transactions across 18 distinct proposal instances, tick range roughly 56.4M&ndash;78.8M. Pagination stopped at page 41 after repeated HTTP 400 errors; the 40 pages retrieved cover roughly late May 2026 through the present.</p>
+
+    <h2 id="xwrz">XWRZ: a full pool lifecycle on one address</h2>
+    <div class="hub-card">
+      <h4>XWRZEUFWAFUTGGZHKPMNUGPEIKXBQUYQGFTJKULPHAPQFAQMFILDBAAFRXXH</h4>
+      <ul class="evidence plain">
+        <li>2024: collected computor payments at the ~1.4&ndash;1.48B QU per-transfer amount seen at several other hubs in this report.</li>
+        <li>Mid-2025: paid out to qli infrastructure.</li>
+        <li>February&ndash;March 2026: paid out to <code>MLABGELE</code> (mj), 252.9B QU across 7 transfers.</li>
+        <li>March 2026: two final transfers &mdash; 50B QU then 56B QU &mdash; to <code>GAEYQDGFULBOMBVISBNMHTZJMSDDRIYLZDNARYQFBHICOWLMQXOUYQXEMKGC</code>, which sends 100% of its own outgoing to the same Gate.io wallet (<code>BYBY...</code>) used by three other gateway wallets identified in this investigation.</li>
+        <li>No activity since March 2026. Current balance: 64,507,730,970 QU.</li>
+      </ul>
     </div>
 
     <h2 id="tracer">Trace it yourself</h2>
