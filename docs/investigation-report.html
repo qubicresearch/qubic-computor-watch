@@ -167,7 +167,6 @@
     <div class="section-label">Method</div>
     <a href="#why-hidden">Why the obvious check misses it</a>
     <a href="#layers">The three funding layers</a>
-    <a href="#bugs">Real bugs hit along the way</a>
     <div class="section-label">Evidence</div>
     <a href="#hubs">Hub-by-hub evidence</a>
     <a href="#entangled">Why MinerLab and JetSki can't be separated</a>
@@ -267,14 +266,6 @@
     </div>
     <p>The same structural signature shows up here too: a computor receives its real epoch payout directly from the protocol address, then forwards almost the exact same amount, within the same window, to whichever MLAB-family hub is collecting that week — the rotating cast, not one fixed address, is the point. Confirmed on many computors independently (see the hub catalog and the <a href="#tracer">live tracer</a> above), and from the receiving side too: <code>BCGI</code>, <code>LIRS</code>, and <code>UYIG</code> (see the <a href="network-map.html">network map</a>) are each fed directly and repeatedly by multiple confirmed MLAB wallets at once.</p>
     <p class="divider-note">Update, 2026-09-07: the "eight hubs" figure for the qli side describes what had been confirmed when this section was first written. Since then, this investigation has traced a much larger network on both sides — dozens more collection points, several more QLI-vanity-prefixed wallets, a QUTIL SendToManyV1 payout mechanism, and multiple confirmed MinerLab/JetSki collection wallets (BCGI, LIRS, UYIG, IXAY) fed directly by the MLAB family — see the <a href="network-map.html">full network map</a> for the current picture.</p>
-
-    <h2 id="bugs">Real bugs hit along the way</h2>
-    <p>Worth documenting plainly, because each one produced a real false negative before it was caught:</p>
-    <ul class="plain">
-      <li><strong>Windows line endings in a source data file</strong> silently corrupted every address extracted from it, appending a hidden <code>\r</code> that curl correctly rejected as a malformed URL — 100% failure rate, misdiagnosed at first as an IPv6 routing issue before the real cause was found with <code>curl -sS</code> and a hex dump.</li>
-      <li><strong>Killing a stuck sub-process by name pattern also killed its own parent</strong> <code>xargs</code> orchestrator, because the parent's command line happened to contain the same search string — two separate large fetches were silently terminated moments after starting, appearing to "complete successfully" with zero real output.</li>
-      <li><strong>Fetching only the first page of an identity's history</strong> (even a generous 600-row page) reliably missed real evidence sitting further in — corrected by switching to a server-side amount filter instead of client-side pagination.</li>
-    </ul>
 
     <h2 id="hubs">Hub-by-hub evidence</h2>
     <p>Every wallet below was identified from its own real transaction history — not assumed from a label. Balances and counts current as of the investigation date.</p>
