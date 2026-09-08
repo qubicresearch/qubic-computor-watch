@@ -163,9 +163,7 @@
     <div class="brand">676 Computor Seats</div>
     <div class="brand-sub">Qubic computor investigation</div>
     <a href="#summary">Executive summary</a>
-    <a href="#census">The corrected census</a>
-    <div class="section-label">Method</div>
-    <a href="#why-hidden">Why the obvious check misses it</a>
+    <a href="#census">The census</a>
     <a href="#layers">The three funding layers</a>
     <div class="section-label">Evidence</div>
     <a href="#hubs">Hub-by-hub evidence</a>
@@ -196,30 +194,16 @@
       <div class="stat"><div class="num">100%</div><div class="lbl">of all 676 seats accounted for</div></div>
     </div>
 
-    <h2 id="census">The corrected census</h2>
-    <p>The naive method — check an identity's first transaction, call it "self-funded" if that's a plain 1,000,000 QU bond from an unrecognized address — produces a materially different (and wrong) picture from the corrected one below. Both are shown for comparison.</p>
-
+    <h2 id="census">The census</h2>
     <div class="table-scroll">
       <table>
-        <tr><th>Epoch</th><th>Naive: MinerLab/JetSki</th><th>Naive: "self-funded"</th><th>Corrected: MinerLab/JetSki</th><th>Corrected: qli</th><th>Unexplained</th></tr>
-        <tr><td>226</td><td class="num">53.7%</td><td class="num">34.6%</td><td class="num mj-cell">55.2%</td><td class="num qli-cell">19.7%</td><td class="num">13.5%</td></tr>
-        <tr><td>227</td><td class="num">54.4%</td><td class="num">37.7%</td><td class="num mj-cell">56.4%</td><td class="num qli-cell">29.9%</td><td class="num">5.9%</td></tr>
-        <tr><td>228</td><td class="num">34.3%</td><td class="num">60.8%</td><td class="num mj-cell">66.4%</td><td class="num qli-cell">28.7%</td><td class="num">0%</td></tr>
+        <tr><th>Epoch</th><th>MinerLab/JetSki</th><th>qli</th><th>Unexplained</th></tr>
+        <tr><td>226</td><td class="num mj-cell">55.2%</td><td class="num qli-cell">19.7%</td><td class="num">0%</td></tr>
+        <tr><td>227</td><td class="num mj-cell">56.4%</td><td class="num qli-cell">29.9%</td><td class="num">0%</td></tr>
+        <tr><td>228</td><td class="num mj-cell">66.4%</td><td class="num qli-cell">28.7%</td><td class="num">0%</td></tr>
       </table>
     </div>
-    <p class="divider-note">228's corrected columns are current (recount complete, zero unexplained). 226 and 227's corrected columns reflect the narrower hub list this investigation had at the time and are now stale &mdash; both epochs are also fully resolved to zero unexplained as of 2026-09-07, but the exact MinerLab/JetSki-vs-qli split hasn't been recounted with the full current hub list yet; see the <a href="#epoch-tables">full epoch tables</a> for the current state. Epoch 229 (in progress at time of writing) is omitted from this table pending a final reconciliation pass — see <a href="#caveats">What we can't say</a>.</p>
-
-    <div class="callout warn">
-      <div class="label">This overturns an earlier reading of the data</div>
-      <p style="margin:0">A shallow census made it look like MinerLab/JetSki's share was collapsing between epoch 227 and 228 (54.4% &rarr; 34.3%) while independent participation surged. The corrected numbers show almost the opposite: MinerLab/JetSki's real share <em>grew</em> across all three epochs (55.2% &rarr; 56.4% &rarr; 66.4%). The apparent 227&rarr;228 collapse was an artifact of the first-transaction-only method, not a real shift in the network.</p>
-    </div>
-
-    <h2 id="why-hidden">Why the obvious check misses it</h2>
-    <p>A computor identity typically generates thousands of transactions over its lifetime, and roughly 90&ndash;95% of them are a zero-value housekeeping transaction (<code>inputType 6</code>) the protocol requires every tick or so — not evidence of anything. Real, meaningful transfers are rare and can be sitting hundreds or even a thousand-plus positions deep in an identity's history. Two consequences follow directly from that:</p>
-    <ul class="plain">
-      <li><strong>Checking "the first N transactions" reliably misses the real evidence.</strong> We hit this directly: an identity's real 258&ndash;270 million QU payout to a known hub was sitting on page 2 of its transaction history — completely invisible to a check of the first 30, or even the first 600, transactions.</li>
-      <li><strong>The fix is to filter server-side, not paginate client-side.</strong> Qubic's <code>getEventLogs</code> endpoint accepts an amount-range filter directly in the query. Asking for "everything this address ever sent or received above 2,000,000 QU" returns a handful of real rows per identity instead of thousands of noise rows — the same real evidence, found reliably, in one request instead of dozens.</li>
-    </ul>
+    <p class="divider-note">228's split is current (recount complete). 226 and 227's mj/qli split predates the full current hub list and hasn't been recounted at that precision yet &mdash; the 0% unexplained figure for all three is current; see the <a href="#epoch-tables">full epoch tables</a> for raw counts. Epoch 229 is omitted pending a final reconciliation pass.</p>
 
     <h2 id="layers">The three funding layers</h2>
     <p>Once you look past the first transaction, three distinct, real patterns appear, layered on top of each other:</p>
