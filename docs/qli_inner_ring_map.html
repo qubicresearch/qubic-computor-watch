@@ -1,0 +1,183 @@
+<title>The qli inner ring</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0b0e14;
+    --panel: #12161f;
+    --panel2: #171d29;
+    --line: #232b3a;
+    --fg: #dbe2ee;
+    --dim: #8b96aa;
+    --dimmer: #5c667a;
+    --accent: #e8b854;
+    --mj: #5aa9ff;
+    --qli: #c98bf5;
+    --ok: #4cd28a;
+    --bad: #ff6b6b;
+    --warn: #f2c14e;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --display: 'Space Grotesk', 'Inter', sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f7f5f0; --panel: #ffffff; --panel2: #f0ede6; --line: #ddd7c9;
+      --fg: #232323; --dim: #6b6558; --dimmer: #9a9384;
+      --accent: #a3690f; --mj: #1c5fc4; --qli: #8b3fc7; --ok: #1c8a5a; --bad: #c3402f; --warn: #a3690f;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f5f0; --panel: #ffffff; --panel2: #f0ede6; --line: #ddd7c9;
+    --fg: #232323; --dim: #6b6558; --dimmer: #9a9384;
+    --accent: #a3690f; --mj: #1c5fc4; --qli: #8b3fc7; --ok: #1c8a5a; --bad: #c3402f; --warn: #a3690f;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; }
+  ::selection { background: var(--accent); color: #100c02; }
+
+  header { padding: 40px clamp(20px, 5vw, 64px) 20px; max-width: 1400px; margin: 0 auto; }
+  .kicker { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  h1 { font-family: var(--display); font-size: clamp(1.6rem, 3.6vw, 2.3rem); line-height: 1.15; margin: 0 0 12px; text-wrap: balance; }
+  .subtitle { color: var(--dim); font-size: 1rem; max-width: 78ch; margin-bottom: 6px; }
+  .back-link { font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 22px 0 8px; font-size: 0.82rem; }
+  .legend .item { display: flex; align-items: center; gap: 7px; }
+  .legend .swatch { width: 12px; height: 12px; border-radius: 3px; }
+  .legend .swatch.qli { background: var(--qli); }
+  .legend .swatch.new { background: var(--ok); }
+  .legend .swatch.cross { background: var(--bad); }
+
+  .diagram-wrap { padding: 10px clamp(10px, 5vw, 64px) 40px; max-width: 1500px; margin: 0 auto; overflow-x: auto; }
+  .flow { display: grid; grid-template-columns: minmax(230px, 1fr) 36px minmax(230px, 1fr) 36px minmax(230px, 1fr); gap: 0; min-width: 980px; align-items: start; }
+
+  .tier { padding: 0 14px; position: relative; }
+  .tier-head { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); text-align: center; margin-bottom: 4px; }
+  .tier-sub { font-size: 0.72rem; color: var(--dimmer); text-align: center; margin-bottom: 16px; min-height: 32px; }
+
+  .group { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+  .group.qli { border-top: 3px solid var(--qli); }
+  .group.new { border-top: 3px solid var(--ok); }
+  .group.cross { border-top: 3px solid var(--bad); }
+  .group-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .group.qli .group-label { color: var(--qli); }
+  .group.new .group-label { color: var(--ok); }
+  .group.cross .group-label { color: var(--bad); }
+
+  .node { display: block; font-family: var(--mono); font-size: 0.74rem; color: var(--fg); background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; margin-bottom: 6px; text-decoration: none; cursor: help; }
+  .node:last-child { margin-bottom: 0; }
+  .node:hover { border-color: var(--accent); }
+  .node .role { display: block; font-family: var(--sans); font-size: 0.68rem; color: var(--dim); margin-top: 2px; }
+
+  .more-note { font-size: 0.7rem; color: var(--dimmer); text-align: center; margin-top: 4px; font-style: italic; }
+  .col-arrow { text-align: center; color: var(--dimmer); font-size: 1.4rem; padding-top: 40px; }
+
+  .side-note { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 6px; padding: 14px 18px; margin: 0 clamp(20px, 5vw, 64px) 24px; max-width: 1400px; font-size: 0.85rem; }
+  .side-note h3 { margin: 0 0 8px; font-size: 0.85rem; font-family: var(--display); }
+
+  footer { padding: 30px clamp(20px, 5vw, 64px) 60px; max-width: 1400px; margin: 0 auto; color: var(--dimmer); font-size: 0.82rem; border-top: 1px solid var(--line); }
+  footer a { color: var(--accent); }
+
+  @media (max-width: 1100px) {
+    .flow { grid-template-columns: 1fr; min-width: 0; }
+    .col-arrow { transform: rotate(90deg); padding: 10px 0; }
+  }
+</style>
+
+<header>
+  <div class="kicker">Qubic computor-seat investigation &middot; live case file</div>
+  <h1>The qli inner ring</h1>
+  <p class="subtitle">A zoomed-in map of one specific corner of the qli side: two large, previously-uncatalogued collection hubs, a fixed 10,000,000 QU side-payment that rotates across several already-known qli wallets, one address's full lifecycle from ordinary computor to onboarding funder, and a real cross-link into a completely separate cartel investigation. Every node and figure below is a real, on-chain-confirmed transfer &mdash; not illustrative.</p>
+  <a class="back-link" href="investigation-report.html">&larr; Back to the full write-up</a> &nbsp;&middot;&nbsp;
+  <a class="back-link" href="network-map.html">Full network map &rarr;</a>
+  <div class="legend">
+    <div class="item"><span class="swatch qli"></span> Already-confirmed qli</div>
+    <div class="item"><span class="swatch new"></span> Newly identified this session</div>
+    <div class="item"><span class="swatch cross"></span> Cross-investigation link</div>
+  </div>
+</header>
+
+<div class="diagram-wrap">
+  <div class="flow">
+
+    <div class="tier">
+      <div class="tier-head">Tier 0</div>
+      <div class="tier-sub">Computors' real epoch payout<br>~126M&ndash;540M QU per epoch, varies with score</div>
+      <div class="group qli">
+        <div class="group-label">Feeds ZWLEWECI</div>
+        <div class="node" title="24 significant transfers, its ENTIRE lifetime, 100% to ZWLEWECI, amounts 126M-537M">BBASVUCS&hellip;PZCMMJC<span class="role">computor</span></div>
+        <div class="node" title="Also sent a separate 10M to FEDMX">BGYPQKI&hellip;DDHCOXLAYARJ<span class="role">computor</span></div>
+        <div class="node" title="Also sent a separate 10M to OJFS">WNJWVVR&hellip;LJPUHRRJDDGJRM<span class="role">computor</span></div>
+        <div class="more-note">100+ more, same shape</div>
+      </div>
+      <div class="group new">
+        <div class="group-label">Feeds WHHXTSUE (140 distinct computors found)</div>
+        <div class="node" title="10M side-payment to CWKWQ">AOHXHEKO&hellip;GIHGIFXWPK<span class="role">computor</span></div>
+        <div class="node" title="10M side-payment to YHPK">AOUJVGNZ&hellip;PDUMSHTUKCGDTYCA<span class="role">computor</span></div>
+        <div class="node" title="Full lifecycle example &mdash; see side note below" style="border-color:var(--accent)">VUKEQPVN&hellip;EEZIQSCCYDTJYJ<span class="role">computor &rarr; later a funder</span></div>
+        <div class="more-note">137+ more, same shape</div>
+      </div>
+      <div class="group new">
+        <div class="group-label">Feeds AZGHHTHD (one-time batch only)</div>
+        <div class="node" title="114 distinct computors, each paid exactly 20,000,000 QU, all within a 417-tick burst, epoch 227 &mdash; a one-time event, not recurring">114 addresses &times; 20,000,000 QU<span class="role">single tick-burst, tick 75,617,501&ndash;918</span></div>
+      </div>
+    </div>
+
+    <div class="col-arrow">&rarr;</div>
+
+    <div class="tier">
+      <div class="tier-head">Tier 1</div>
+      <div class="tier-sub">Collection hubs + the 10M side-payment rotation</div>
+      <div class="group new">
+        <div class="group-label">Newly identified collection hubs</div>
+        <div class="node" title="5,545 total records. Dominant signature 537,403,847 QU (105 distinct senders, epochs 190-225) plus a separate 130-150M-range cohort (81 senders, epochs further back). Forwards to GZOG (majority), QLIWZK, QLIPZVY.">ZWLEWECI&hellip;JUEKBOIUE<span class="role">collection hub</span></div>
+        <div class="node" title="5,704 total records. 140 distinct computors at ~500-540M each. Forwards billions per transfer to GZOG, QLIXZOG, QLIRPDJ.">WHHXTSUE&hellip;OFPOWFSFCHFEDPA<span class="role">collection hub</span></div>
+      </div>
+      <div class="group qli">
+        <div class="group-label">10M side-payment destinations (rotates, all already-confirmed qli)</div>
+        <div class="node" title="Already confirmed qli fan-in aggregator">CWKWQ&hellip;EWGBPBWDNL</div>
+        <div class="node" title="Already confirmed qli, two-tier fan-in">OJFS&hellip;YBIDGFTJMJ</div>
+        <div class="node" title="Already confirmed qli">YHPK&hellip;GHHFMJWKGZVFI</div>
+        <div class="node" title="Already confirmed qli, legacy computor">FEDMX&hellip;KQQCLZTEUSWSDNJCK</div>
+        <div class="node" title="Same address as Tier 0 &mdash; received its own 10M here to YHPK, then became a funder itself">VUKEQPVN&hellip;EEZIQSCCYDTJYJ<span class="role">also a Tier-0 computor</span></div>
+      </div>
+      <div class="group cross">
+        <div class="group-label">Cross-investigation link</div>
+        <div class="node" title="Received the one-time 114-computor/20M batch. Own outgoing: 44.07B QU and 41.86B QU to UHOTKSPYAJ, several billion to VOIPYXJEPMYKHGKIECJQ.">AZGHHTHD&hellip;AABDOYTFOFIN<span class="role">old-time computor, now a hub</span></div>
+      </div>
+    </div>
+
+    <div class="col-arrow">&rarr;</div>
+
+    <div class="tier">
+      <div class="tier-head">Tier 2</div>
+      <div class="tier-sub">Terminal consolidation</div>
+      <div class="group qli">
+        <div class="group-label">qli consolidation (already confirmed)</div>
+        <div class="node" title="Dominant real destination for both ZWLEWECI and WHHXTSUE">GZOG&hellip;FOFHNNPJ</div>
+        <div class="node" title="Fed by WHHXTSUE">QLIXZOG&hellip;GCUVEF</div>
+        <div class="node" title="Fed by WHHXTSUE">QLIRPDJ&hellip;GYIPI</div>
+        <div class="node" title="Fed by ZWLEWECI">QLIWZK&hellip;QADIFH</div>
+        <div class="node" title="Fed by ZWLEWECI">QLIPZVY&hellip;PAPQED</div>
+      </div>
+      <div class="group cross">
+        <div class="group-label">g15 epoch-211 cartel archive &mdash; separate investigation, same hub</div>
+        <div class="node" title="Flagged in the earlier g15 epoch-211 archive as &quot;100% cashout, 0 miners&quot; &mdash; fed there by HUHH (independently confirmed MinerLab/JetSki in THIS investigation). Now also confirmed fed by AZGHHTHD, from the qli side. Two independent investigations, two different families, same terminal hub.">UHOTKSPYAJ&hellip;TEVOHQKTKGAIDG<span class="role">cash-out hub, 0 miners (prior finding)</span></div>
+        <div class="node" title="Also fed by AZGHHTHD, several billion QU across multiple transfers. Not yet independently classified.">VOIPYXJEPMY&hellip;KHGKIECJQ<span class="role">unclassified</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="side-note">
+  <h3>VUKEQ's full lifecycle (one address, three roles)</h3>
+  <p style="margin:0">Real, chronological, all on one address: (1) forwarded its own real epoch payouts &mdash; 524,333,253 QU and 532,680,571 QU &mdash; to ZWLEWECI, same as any other computor. (2) Received the same 10,000,000 QU side-payment documented above, to YHPK (tick 73,881,739). (3) Starting tick 76,572,507, itself fired off dozens of exactly-9,000,000 QU payments to brand-new addresses, one roughly every 35 ticks &mdash; the same "Layer 2 secondary funding" mechanism documented in the main write-up's funding-layers table. One address, a full real pipeline: collect payout &rarr; forward it &rarr; get a small kickback &rarr; get reused to onboard the next batch of computors.</p>
+</div>
+
+<footer>
+  All figures, ticks, and addresses above are real and independently verifiable against rpc.qubic.org. This is a zoomed-in supplement to <a href="network-map.html">the full network map</a>; see <a href="investigation-report.html">the main write-up</a> for the rest of the investigation. Compiled 2026-09-08.
+</footer>
