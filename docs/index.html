@@ -131,7 +131,7 @@
   <label class="small" for="epochSelect">Epoch: </label>
   <input type="number" id="epochSelect" value="229" min="1" max="229" style="width:80px;">
   <button id="epochBtn">Load</button>
-  <p class="small" style="margin-top:10px;">Sourced from fattydoge.top via analytics.qubic.li — by their own disclosure, "heuristic (deposit patterns, peer self-declaration, etc.)... use as a directional signal, not as ground truth." Its own "unlabeled" bucket is not the same as unresolved — see the funding-based and money-flow censuses above, both ours, both real chain data. Shown here only for comparison; note jetski/minerlab/YNRE are three labels for the one real MinerLab/JetSki operation.</p>
+  <p class="small" style="margin-top:10px;">Sourced from fattydoge.top via analytics.qubic.li — by their own disclosure, "heuristic (deposit patterns, peer self-declaration, etc.)... use as a directional signal, not as ground truth." Its own "unlabeled" bucket is not the same as unresolved — see the funding-based and money-flow censuses above, both ours, both real chain data. Shown here only for comparison; note jetski/minerlab/YNRE are three labels for the one real MinerLab/JetSki operation. <strong>Note:</strong> we checked whether the epoch selector below actually returns different historical data — it doesn't. The underlying API returns the exact same current snapshot (same computor counts, same revenue totals to the QU) regardless of which epoch you request, so treat this as "as of right now," not a real historical trend.</p>
   <div id="censusStats" class="stat-row" style="margin-top:10px;">
     <div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>
   </div>
@@ -208,6 +208,30 @@
 <table id="hubTable">
 <tr><th>Hub</th><th>Address</th><th>Balance</th><th>Family</th></tr>
 </table>
+</div>
+
+<h2>Network pulse — real on-chain health metrics, self-hosted (not analytics.qubic.li)</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">Independently polled every 60 seconds since 2026-07-21 straight from rpc.qubic.org (epoch, tick quality, active addresses, burned QUs, price, market cap) by our own <span class="mono">qubic-pulse</span> tool — not sourced from any third party. Rolled up to hourly averages for the browser.</p>
+  <div id="pulseStats" class="stat-row" style="margin-top:10px;">
+    <div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>
+  </div>
+  <div id="pulseSparks" style="margin-top:14px;"></div>
+  <p id="pulseNote" class="small" style="margin-top:10px;"></p>
+</div>
+
+<h2>Governance proposals by owner label</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">Every CCF/governance proposal analytics.qubic.li has record of, tagged with that same third-party owner label on the <em>proposer's</em> identity — who actually steers governance, not just who holds seats.</p>
+  <div id="govStats" class="stat-row" style="margin-top:10px;">
+    <div class="stat"><div class="num">loading…</div><div class="lbl">fetching</div></div>
+  </div>
+  <div class="table-scroll" style="margin-top:12px;">
+    <table id="govTable">
+      <tr><th>Epoch</th><th>Contract</th><th>Type</th><th>Proposer</th><th>Owner label</th><th>When</th></tr>
+    </table>
+  </div>
+  <p id="govNote" class="small" style="margin-top:10px;"></p>
 </div>
 
 <h2>The mechanism, in brief</h2>
@@ -736,6 +760,73 @@ document.getElementById('chainBtn').onclick = async () => {
     status.innerHTML = '<span class="status-bad">' + e.message + '</span>';
   }
 };
+
+function sparkline(points, w, h, color) {
+  if (!points.length) return '';
+  const vals = points.map(p => p[1]);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const range = (max - min) || 1;
+  const step = w / Math.max(points.length - 1, 1);
+  const path = points.map((p, i) => `${(i * step).toFixed(1)},${(h - ((p[1] - min) / range) * h).toFixed(1)}`).join(' ');
+  return `<svg width="${w}" height="${h}" style="display:block;"><polyline points="${path}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>
+    <div class="small" style="display:flex; justify-content:space-between;"><span>min ${min.toLocaleString(undefined,{maximumFractionDigits:4})}</span><span>max ${max.toLocaleString(undefined,{maximumFractionDigits:4})}</span></div>`;
+}
+
+async function loadPulse() {
+  const statsEl = document.getElementById('pulseStats');
+  const sparksEl = document.getElementById('pulseSparks');
+  const note = document.getElementById('pulseNote');
+  try {
+    const d = await getJson('pulse_timeseries.json');
+    const m = d.metrics;
+    const latest = name => { const s = m[name]; return s && s.length ? s[s.length - 1][1] : null; };
+    const fmt = v => v === null ? '?' : v.toLocaleString(undefined, {maximumFractionDigits: 6});
+    statsEl.innerHTML = `
+      <div class="stat"><div class="num">${fmt(latest('epoch'))}</div><div class="lbl">current epoch</div></div>
+      <div class="stat"><div class="num">${fmt(latest('price'))}</div><div class="lbl">price (USD)</div></div>
+      <div class="stat"><div class="num">${fmt(latest('activeAddresses'))}</div><div class="lbl">active addresses</div></div>
+      <div class="stat"><div class="num">${fmt(latest('last10000TickQuality'))}%</div><div class="lbl">tick quality (last 10k)</div></div>
+    `;
+    const priceSeries = (m.price || []).filter(p => p[1] > 0);
+    const addrSeries = (m.activeAddresses || []).filter(p => p[1] > 0);
+    sparksEl.innerHTML = `
+      <div style="display:flex; gap:24px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:260px;"><div class="small" style="margin-bottom:4px;">price, full history</div>${sparkline(priceSeries, 260, 50, 'var(--acc)')}</div>
+        <div style="flex:1; min-width:260px;"><div class="small" style="margin-bottom:4px;">active addresses, full history</div>${sparkline(addrSeries, 260, 50, 'var(--ok)')}</div>
+      </div>`;
+    const updated = new Date(d.updated).toLocaleString();
+    note.textContent = `${d.rowsProcessed.toLocaleString()} raw 60s samples rolled up into hourly buckets. Last exported ${updated}.`;
+  } catch (e) {
+    statsEl.innerHTML = '<div class="stat"><div class="num status-bad">error</div><div class="lbl">' + e.message + '</div></div>';
+  }
+}
+loadPulse();
+
+async function loadGovernance() {
+  const statsEl = document.getElementById('govStats');
+  const tableEl = document.getElementById('govTable');
+  const note = document.getElementById('govNote');
+  try {
+    const d = await getJson('governance_by_owner.json');
+    const tally = d.byProposerOwner || {};
+    statsEl.innerHTML = Object.entries(tally).sort((a, b) => b[1] - a[1]).map(([owner, n]) => {
+      const cls = owner === 'qli' ? 'qli' : owner === 'none' ? '' : 'mj';
+      return `<div class="stat ${cls}"><div class="num">${n}</div><div class="lbl">${owner}</div></div>`;
+    }).join('');
+    const rows = d.proposals.slice().sort((a, b) => (b.proposalTime || '').localeCompare(a.proposalTime || '')).map(p => {
+      const owner = p.proposerOwner || 'none';
+      const cls = owner === 'qli' ? 'style="color:var(--qli)"' : owner === 'none' ? '' : 'style="color:var(--mj)"';
+      const when = p.proposalTime ? new Date(p.proposalTime).toLocaleDateString() : '?';
+      return `<tr><td class="num">${p.epoch}</td><td>${p.contractName || ''}</td><td>${p.proposalClassName || ''}</td><td class="mono">${(p.proposerIdentity || '').slice(0, 10)}&hellip;</td><td ${cls}>${owner}</td><td>${when}${p.isCancelled ? ' (cancelled)' : ''}</td></tr>`;
+    }).join('');
+    tableEl.innerHTML = '<tr><th>Epoch</th><th>Contract</th><th>Type</th><th>Proposer</th><th>Owner label</th><th>When</th></tr>' + rows;
+    const updated = new Date(d.updated).toLocaleString();
+    note.textContent = `${d.totalProposals} real proposals across ${new Set(d.proposals.map(p => p.epoch)).size} epochs. jetski (18 of 676 seats) proposes disproportionately more than qli (322 seats) despite holding far fewer seats — worth watching whether that gap holds up over more epochs. Last exported ${updated}.`;
+  } catch (e) {
+    statsEl.innerHTML = '<div class="stat"><div class="num status-bad">error</div><div class="lbl">' + e.message + '</div></div>';
+  }
+}
+loadGovernance();
 
 loadHubBalances();
 loadCensus(229);
