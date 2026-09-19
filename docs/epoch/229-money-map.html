@@ -2,158 +2,177 @@
 <style>
   :root {
     --bg:#0b0e14; --panel:#161b24; --panel2:#1b2230; --line:#262d3d; --ink:#dde3ee; --dim:#8a94a6; --mj:#5aa9ff;
-    --exch:#f2c14e; --exch-bg:#332a12;
+    --exch:#f2c14e; --exch-bg:#332a12; --link:#ff8a5a;
   }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 ui-monospace,Menlo,Consolas,"SF Mono",monospace; padding-inline:16px; padding-block:32px 64px; }
-  .wrap { max-width:1180px; margin:0 auto; }
+  .wrap { max-width:1600px; margin:0 auto; }
   h1 { font-size:1.5rem; margin:0 0 6px; letter-spacing:-0.01em; }
-  h2 { font-size:0.95rem; color:var(--ink); margin:44px 0 18px; border-top:1px solid var(--line); padding-top:26px; text-align:center; }
-  .sub { color:var(--dim); font-size:0.85rem; margin:0 0 28px; max-width:80ch; }
+  h2 { font-size:0.95rem; color:var(--ink); margin:36px 0 16px; border-top:1px solid var(--line); padding-top:22px; text-align:center; }
+  .sub { color:var(--dim); font-size:0.85rem; margin:0 0 20px; max-width:80ch; }
   .nav { font-size:0.82rem; margin-bottom:28px; }
   .nav a { color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); }
   .nav a:hover { color:var(--ink); border-color:var(--dim); }
 
   .flow { display:flex; flex-direction:column; align-items:center; gap:0; }
-  .connector { display:flex; flex-direction:column; align-items:center; color:var(--dim); font-size:0.72rem; padding:6px 0; text-align:center; }
-  .connector .line { width:1px; height:20px; background:var(--line); }
+  .connector { display:flex; flex-direction:column; align-items:center; color:var(--dim); font-size:0.7rem; padding:3px 0; text-align:center; }
+  .connector .line { width:1px; height:12px; background:var(--line); }
   .connector .arrow { line-height:1; }
 
-  .node { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; min-width:150px; text-align:center; }
+  .node { background:var(--panel); border:1px solid var(--line); border-radius:7px; padding:8px 12px; min-width:120px; text-align:center; }
   .node.hub { border-left:3px solid var(--mj); text-align:left; }
-  .node .name { font-size:0.92rem; font-weight:700; }
-  .node .amt { font-size:0.76rem; color:var(--dim); margin-top:4px; font-variant-numeric:tabular-nums; }
-  .node.center { min-width:220px; padding:16px 20px; }
-  .node.center .name { font-size:1.2rem; color:var(--mj); }
+  .node .name { font-size:0.85rem; font-weight:700; }
+  .node .amt { font-size:0.7rem; color:var(--dim); margin-top:2px; font-variant-numeric:tabular-nums; }
+  .node.center { min-width:200px; padding:12px 18px; }
+  .node.center .name { font-size:1.05rem; color:var(--mj); }
   .node.exch { background:var(--exch-bg); border-color:#4a3a12; border-left:3px solid var(--exch); }
   .node.exch .name { color:var(--exch); }
 
-  .tier { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; width:100%; }
-  .chain { display:flex; flex-direction:column; align-items:center; gap:0; max-width:420px; }
+  .tier { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; width:100%; }
+  .chain { display:flex; flex-direction:column; align-items:center; gap:0; max-width:280px; }
 
-  .leaf-box { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:14px 16px; width:100%; }
-  .leaf-count { font-size:0.76rem; color:var(--dim); margin-bottom:10px; }
-  .leaves { display:flex; flex-wrap:wrap; gap:5px; }
-  .leaf { font-size:0.68rem; color:var(--dim); background:#10151e; border:1px solid var(--line); border-radius:4px; padding:3px 6px; font-family:ui-monospace,monospace; }
+  .leaf-box { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:8px; }
+  .leaves { display:flex; flex-wrap:wrap; gap:4px; }
+  .leaf { font-size:0.66rem; color:var(--dim); background:#10151e; border:1px solid var(--line); border-radius:4px; padding:2px 5px; font-family:ui-monospace,monospace; }
   .leaf:hover { color:var(--ink); border-color:var(--mj); }
+  .leaf-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+  @media (max-width:820px) { .leaf-grid { grid-template-columns:1fr; } }
 
-  .section-lbl { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:center; width:100%; margin:6px 0 14px; }
+  .open-branch { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-top:10px; max-width:760px; margin-inline:auto; }
+  .open-branch .lane-title { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:left; margin-bottom:8px; }
 
-  .open-branch { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px; margin-top:14px; max-width:760px; margin-inline:auto; }
-  .open-branch .lane-title { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:left; margin-bottom:10px; }
+  details { margin-bottom:10px; }
+  summary { cursor:pointer; font-size:0.8rem; color:var(--dim); padding:4px 0; }
+  summary:hover { color:var(--ink); }
 
   footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.76rem; }
   footer a { color:var(--dim); }
+
+  /* side-by-side comparison */
+  .lanes-scroll { overflow-x:auto; padding-bottom:14px; }
+  .lanes { display:flex; align-items:flex-start; gap:0; width:max-content; margin-inline:auto; }
+  .lane { flex:0 0 620px; padding:18px 20px; border:1px solid var(--line); border-radius:12px; background:#0e131c; }
+  .lane-hdr { text-align:center; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--mj); margin-bottom:18px; }
+  .lane-hdr .n { display:block; color:var(--dim); text-transform:none; letter-spacing:0; margin-top:3px; font-size:0.72rem; }
+
+  .link-col { flex:0 0 190px; display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:stretch; gap:10px; padding:0 6px; }
+  .link-col .link-line { display:flex; align-items:center; gap:6px; font-size:0.7rem; color:var(--link); white-space:nowrap; }
+  .link-col .link-line .arrow { font-size:0.95rem; }
+  .link-node { background:#2a1710; border:1px solid #5a3520; border-left:3px solid var(--link); border-radius:7px; padding:8px 12px; text-align:center; }
+  .link-node .name { font-size:0.85rem; font-weight:700; color:var(--link); }
+  .link-node .amt { font-size:0.68rem; color:var(--dim); margin-top:2px; }
+  .link-tag { font-size:0.62rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:center; }
 </style>
 
 <div class="wrap">
   <div class="nav"><a href="../index.html">&larr; Main investigation</a> &middot; <a href="229-full.html">Epoch 229 full report</a></div>
   <h1>LKBOP Flow Map</h1>
-  <p class="sub">Real, on-chain money flow through the mj (MinerLab/JetSki) network, epoch 229 only (tick window 77,700,885&ndash;79,301,927). One entity, three real exit channels, same tree structure throughout: computors at top, the real convergence point in the middle, final destination at the bottom. Every node and figure is a confirmed transaction.</p>
+  <p class="sub">Real, on-chain money flow through the mj (MinerLab/JetSki) network, epoch 229 only (tick window 77,700,885&ndash;79,301,927). One entity, shown here as two lanes so the JetSki-reaching side and the MinerLab-only side can be compared directly &mdash; scroll sideways. The orange link in the middle is the one real, confirmed crossover between the two lanes.</p>
 
-  <h2>Channel 1 &mdash; the only path that actually reaches JETSKI &middot; 76 computors</h2>
+  <h2>All 252 computors, by hub</h2>
+  <p class="sub" style="text-align:center; margin-inline:auto;">Listed once here so the trees below can stay compact. Click a group to expand it.</p>
+  <div class="leaf-grid" id="leaf-grid"></div>
 
-  <div class="flow">
-    <div class="tier">
-      <div class="chain">
-        <div class="leaf-box">
-          <div class="leaf-count">51 computors &rarr; ZTQM</div>
-          <div class="leaves" id="ztqm-leaves"></div>
-        </div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">ZTQM</div><div class="amt">collection hub</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">UYIG</div><div class="amt">100% fed by ZTQM &middot; 35.62B QU</div></div>
-      </div>
-      <div class="chain">
-        <div class="leaf-box">
-          <div class="leaf-count">25 computors &rarr; TMNN</div>
-          <div class="leaves" id="tmnn-leaves"></div>
-        </div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">TMNN</div><div class="amt">13.13B QU direct</div></div>
-      </div>
-    </div>
+  <h2>JetSki lane vs MinerLab lane &mdash; side by side</h2>
 
-    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+  <div class="lanes-scroll">
+    <div class="lanes">
 
-    <div class="node center"><div class="name">LKBOP</div><div class="amt">epoch-229 real inflow: 48.75B QU &middot; outflow: 48.75B QU</div></div>
+      <div class="lane">
+        <div class="lane-hdr">Reaches JETSKI<span class="n">76 computors &middot; ZTQM + TMNN &rarr; LKBOP</span></div>
+        <div class="flow">
+          <div class="tier">
+            <div class="chain">
+              <div class="node hub"><div class="name">ZTQM</div><div class="amt">51 computors</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="node hub"><div class="name">UYIG</div><div class="amt">100% fed by ZTQM &middot; 35.62B QU</div></div>
+            </div>
+            <div class="chain">
+              <div class="node hub"><div class="name">TMNN</div><div class="amt">25 computors &middot; 13.13B QU direct</div></div>
+            </div>
+          </div>
 
-    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
 
-    <div class="tier">
-      <div class="node hub"><div class="name">JETSKIYUBUPF</div><div class="amt">48 recipients &middot; 41.0B QU</div></div>
-      <div class="node hub"><div class="name">JETSKIQRDEIV</div><div class="amt">50 recipients &middot; 4.0B QU</div></div>
-      <div class="node hub"><div class="name">JETSKIMZKTSL</div><div class="amt">32 recipients &middot; ~297M QU</div></div>
-    </div>
-    <div class="tier" style="margin-top:14px;">
-      <div class="chain">
-        <div class="node hub"><div class="name">YAQ</div><div class="amt">3.41B QU &middot; ~44.9B QU balance held</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">FZSU</div><div class="amt">100% pass-through</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA</div></div>
-      </div>
-    </div>
-  </div>
+          <div class="node center"><div class="name">LKBOP</div><div class="amt">inflow 48.75B QU &middot; outflow 48.75B QU</div></div>
 
-  <h2>Channel 2 &mdash; does not touch JETSKI &middot; 118 computors, real splits shown as-found</h2>
-  <p class="sub" style="text-align:center; margin-inline:auto;">MLABD and MLABG each really do split across two different destinations &mdash; shown exactly as traced, not forced into one lane.</p>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
 
-  <div class="flow">
-    <div class="tier">
-      <div class="chain">
-        <div class="leaf-box"><div class="leaf-count">50 computors &rarr; MLABN</div><div class="leaves" id="mlabn-leaves"></div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">MLABN</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="tier" style="gap:10px;">
-          <div class="node hub"><div class="name">GXITF</div><div class="amt">6.8B QU &rarr; MEXC</div></div>
-          <div class="node hub"><div class="name">MYKZC</div><div class="amt">3.7B QU &rarr; Gate.io</div></div>
+          <div class="tier">
+            <div class="node hub"><div class="name">JETSKIYUBUPF</div><div class="amt">48 recipients &middot; 41.0B QU</div></div>
+            <div class="node hub"><div class="name">JETSKIQRDEIV</div><div class="amt">50 recipients &middot; 4.0B QU</div></div>
+            <div class="node hub"><div class="name">JETSKIMZKTSL</div><div class="amt">32 recipients &middot; ~297M QU</div></div>
+            <div class="chain">
+              <div class="node hub"><div class="name">YAQ</div><div class="amt">3.41B QU</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="node hub"><div class="name">FZSU</div><div class="amt">pass-through</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="node exch"><div class="name">SafeTrade1</div></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="chain">
-        <div class="leaf-box"><div class="leaf-count">23 computors &rarr; MLABR</div><div class="leaves" id="mlabr-leaves"></div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">MLABR</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">SSEG</div><div class="amt">1.4B QU &rarr; Gate.io</div></div>
+
+      <div class="link-col">
+        <div class="link-tag">real crossover</div>
+        <div class="link-line"><span>JETSKIYUBUPF</span><span class="arrow">&rarr;</span></div>
+        <div class="link-node"><div class="name">EJSX</div><div class="amt">exact pass-through</div></div>
+        <div class="link-line"><span class="arrow">&larr;</span><span>SafeTrade1</span></div>
+        <div class="link-line"><span class="arrow">&darr;</span></div>
+        <div class="link-node"><div class="name">MEXC</div><div class="amt">via VUEY</div></div>
+        <div class="link-tag">both lanes exit here</div>
       </div>
-      <div class="chain">
-        <div class="leaf-box"><div class="leaf-count">16 computors &rarr; MLABD</div><div class="leaves" id="mlabd-leaves"></div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">MLABD</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="tier" style="gap:10px;">
-          <div class="node hub"><div class="name">ZGIR</div><div class="amt">17.0B QU &rarr; unresolved</div></div>
-          <div class="node hub"><div class="name">APUU</div><div class="amt">1.6B QU &rarr; Gate.io</div></div>
+
+      <div class="lane">
+        <div class="lane-hdr">MinerLab only &mdash; does not touch JETSKI<span class="n">118 computors &middot; real splits shown as-found</span></div>
+        <div class="flow">
+          <div class="tier">
+            <div class="chain">
+              <div class="node hub"><div class="name">MLABN</div><div class="amt">50 computors</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="tier" style="gap:8px;">
+                <div class="node hub"><div class="name">GXITF</div><div class="amt">6.8B &rarr; MEXC</div></div>
+                <div class="node hub"><div class="name">MYKZC</div><div class="amt">3.7B &rarr; Gate.io</div></div>
+              </div>
+            </div>
+            <div class="chain">
+              <div class="node hub"><div class="name">MLABR</div><div class="amt">23 computors</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="node hub"><div class="name">SSEG</div><div class="amt">1.4B &rarr; Gate.io</div></div>
+            </div>
+            <div class="chain">
+              <div class="node hub"><div class="name">MLABD</div><div class="amt">16 computors</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="tier" style="gap:8px;">
+                <div class="node hub"><div class="name">ZGIR</div><div class="amt">17.0B &rarr; open</div></div>
+                <div class="node hub"><div class="name">APUU</div><div class="amt">1.6B &rarr; Gate.io</div></div>
+              </div>
+            </div>
+            <div class="chain">
+              <div class="node hub"><div class="name">MLABG</div><div class="amt">10 computors</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="tier" style="gap:8px;">
+                <div class="node hub"><div class="name">GEGV</div><div class="amt">4.6B &rarr; Gate.io</div></div>
+                <div class="node hub"><div class="name">EKMS</div><div class="amt">1.2B &rarr; SafeTrade1</div></div>
+              </div>
+            </div>
+            <div class="chain">
+              <div class="node hub"><div class="name">TKOG</div><div class="amt">19 computors</div></div>
+              <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+              <div class="node hub"><div class="name">ITGIP</div><div class="amt">3.6B &rarr; SafeTrade1</div></div>
+            </div>
+          </div>
+
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+
+          <div class="tier">
+            <div class="node exch"><div class="name">MEXC</div><div class="amt">via GXITF &rarr; BBMMA &rarr; VUEY</div></div>
+            <div class="node exch"><div class="name">Gate.io</div><div class="amt">BYBYFUMBVLPUCANX</div></div>
+            <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA</div></div>
+          </div>
         </div>
       </div>
-      <div class="chain">
-        <div class="leaf-box"><div class="leaf-count">10 computors &rarr; MLABG</div><div class="leaves" id="mlabg-leaves"></div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">MLABG</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="tier" style="gap:10px;">
-          <div class="node hub"><div class="name">GEGV</div><div class="amt">4.6B QU &rarr; Gate.io</div></div>
-          <div class="node hub"><div class="name">EKMS</div><div class="amt">1.2B QU &rarr; SafeTrade1</div></div>
-        </div>
-      </div>
-      <div class="chain">
-        <div class="leaf-box"><div class="leaf-count">19 computors &rarr; TKOG</div><div class="leaves" id="tkog-leaves"></div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">TKOG</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">ITGIP</div><div class="amt">3.6B QU &rarr; SafeTrade1</div></div>
-      </div>
-    </div>
 
-    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-
-    <div class="tier">
-      <div class="node exch"><div class="name">MEXC</div><div class="amt">via GXITF &rarr; BBMMA &rarr; VUEY</div></div>
-      <div class="node exch"><div class="name">Gate.io</div><div class="amt">BYBYFUMBVLPUCANX</div></div>
-      <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA</div></div>
     </div>
   </div>
 
@@ -161,36 +180,35 @@
 
   <div class="open-branch">
     <div class="lane-title">YNRE, 50 computors</div>
-    <p style="color:var(--dim); font-size:0.85rem; margin:0 0 12px;">No real outgoing transaction &ge;1B QU found for YNRE within epoch 229's tick window.</p>
-    <div class="leaf-box"><div class="leaf-count">50 computors &rarr; YNRE</div><div class="leaves" id="ynre-leaves"></div></div>
+    <p style="color:var(--dim); font-size:0.85rem; margin:0;">No real outgoing transaction &ge;1B QU found for YNRE within epoch 229's tick window.</p>
   </div>
   <div class="open-branch">
     <div class="lane-title">MLABZ, 8 computors</div>
-    <p style="color:var(--dim); font-size:0.85rem; margin:0 0 12px;">MLABZ's only real epoch-229 destination is <strong style="color:var(--ink)">ETGB</strong> (1.47B QU), which itself sends to two unidentified addresses (PFNJQGWKUYOIECQXMOPF, XQZBTNQXGXJBJFWMLIYL) &mdash; not yet traced further.</p>
-    <div class="leaf-box"><div class="leaf-count">8 computors &rarr; MLABZ</div><div class="leaves" id="mlabz-leaves"></div></div>
+    <p style="color:var(--dim); font-size:0.85rem; margin:0;">MLABZ's only real epoch-229 destination is <strong style="color:var(--ink)">ETGB</strong> (1.47B QU), which sends to two unidentified addresses (PFNJQGWKUYOIECQXMOPF, XQZBTNQXGXJBJFWMLIYL) &mdash; not yet traced further.</p>
   </div>
   <div class="open-branch">
-    <div class="lane-title">ZGIR &mdash; part of MLABD's split (16.98B of its 18.6B total)</div>
-    <p style="color:var(--dim); font-size:0.85rem; margin:0;"><strong style="color:var(--ink)">ZGIR</strong> (fed by MLABD, part of the same 16 computors already shown under Channel 2's MLABD chain) sent one 15B QU transaction to ZIITZAZIQQUJNDBLVAJG &mdash; not yet traced further.</p>
+    <div class="lane-title">ZGIR &mdash; part of MLABD's split</div>
+    <p style="color:var(--dim); font-size:0.85rem; margin:0;"><strong style="color:var(--ink)">ZGIR</strong> (fed by MLABD) sent one 15B QU transaction to ZIITZAZIQQUJNDBLVAJG &mdash; not yet traced further.</p>
   </div>
 
-  <footer>Every address above is a real epoch-229 computor confirmed by its own largest real payout transaction, cross-checked against <span style="color:var(--ink)">rpc.qubic.org/v1/epochs/229/computors</span>. Hover/tap any chip for the full 60-character address. Full evidence and method: <a href="../index.html">main investigation</a> &middot; <a href="229-full.html">epoch 229 report</a>.</footer>
+  <footer>Every address is a real epoch-229 computor confirmed by its own largest real payout transaction, cross-checked against <span style="color:var(--ink)">rpc.qubic.org/v1/epochs/229/computors</span>. Hover/tap any chip for the full 60-character address. Full evidence and method: <a href="../index.html">main investigation</a> &middot; <a href="229-full.html">epoch 229 report</a>.</footer>
 </div>
 
 <script>
 const HUB_COMPUTORS = {"ZTQM": ["AFUBEKWHJEGYIBDTQMWUAGDEAOHDEHUYAMUMCGMXLDOYOBIBPDIXJBUENROG", "BESPOWHKDESOMFXAILZPYDZSSCJBHOISDTKZTDHLZANRGUKZPGQGMZXFHXRC", "BMMKYVPZSSYKNGIQGBBCLURIUNBAFBNOBXDFUXESTGSIJXQYRBOAJUIALUSL", "BZADTLASVFWTJEJDHTBFCUQCRGSCTWOKJIXEFDLPSCPZENGSEAWMHGFDGEDN", "CBWZHLWQAPQLDEIPFOQRUZOUCOTBQAEPNJWVFATTLFNESATWSOLZKQDCHCMI", "CFHMMFOQUZNVODQFZMLBSIXNOCKCOQIYCBLANRJEDHKPHMLIDHNZNPIEPYXI", "CQNEUTRBFXQJQGLEZNUQTNVVTNNCKPTFCUVQKSWOGCMIVSKNUWMODKPBMFNL", "DETAIRTEJWDYKAMWELTERTIWALSDSCFENJVVGGMSQCCUAJAJHLRNBKKBRUFC", "EMKGYJLVTYZRUDXGRLAGFTVNVHUCYACWHGWXQNHIRBOKNISRWRZEHXNGLCNF", "FBEQUSYKGCJDYDLKVLLCENCDBUFDZFTAXMXVGFALNEKFURKMKLKUXSIGVTJM", "FNYNCRZNABOHMCNIFPHHJUPPXKWBFKSAJKWGFSGQMBWAEGRJFWYPZEWGDVSN", "FQCHJLTGUCDNPFPAEUSFZAAPTQUASLFQWOJKYCKXIAJEIERKQNDMHKZDTGMJ", "GVSAOJTJYDOKGFCJXJTYFWLOBAGDZCPZORRPDDMJVEGQAGOPVRCQZEHGQCUL", "HRDIIENAEBBFPFPATQQTIECLFOJAZSAXGMTWUDDKNBZNSHIRRWNEHGBEBAIH", "HSHZKUMPAPKBUBNPGBARHKRXEVECQFXIZIMOHETNTDCKJAFACRQPVPZFALQO", "IKLMHPSUPVWSZCPGGENNSMUQRVDBBXZXIODYSAERYFVKVMXRXBUAGMBHEJMO", "ISRLBJTPTZPLCAYTBXEIJXSXHDNAJERNBONLASLKVCNWRIMBNXYKLOGASFMC", "JCUDUWHIXQSMXEGQHTRVBJJBLURAYZIIKGRPEPTCQFCBPTTVRIYPFZHGCLCJ", "JUAOQCNPSTSABAHECPKESPQZAJXCGVOCEIHKJKWCCDICSPKRUQMILRHFOUIH", "KAIYIMSAYLQYFCMCFKLBMTDUPYJAHZLJZBDFVFFYTBBLPVZBPOBGMJTEEYAC", "KEHTKOYGHNXZHGXYONTEHGBUGEWBYWBIQHTCSZHNXFWWTPNIKLXGJHDAHPBI", "KRKYRAKEASDKHCYBBREPNLFRLCSCSAFYIHJDZMFFGHROEIPBWGOEDCNEUMJB", "LMLFJDUVALQKNETBEAQBOOYQCQYALXXZIIACIHHNHCIQOENFATBNLLDGSNWL", "LSZNUMDESCJELDEUZHJOUQYVAOQCZDCOKZVEKBSTZAQDHXJOSFTQWJMEJQRE", "LVPNXMUFZFDXZEWCNAVQMZHDXXGDOFIMEXJOBXQFRAOALWQCNPCHGLYCLLWB", "MDJIPZQCPXWKOAUTUVZLJOIWENUBZGRDEGWQSSZUJCFKKZUKTTSBDPYADJPJ", "MNWVTOFCUOYSPFIKPCCJJLMWPYOBNFJVYGWLWIERHDBILEFPSIBVWLYCIQJN", "NCEMSZYDUEPYMESMDJOWODAZZUGCOTGWPYZCLZSZOETPZCQJKAVSUYJGHGUG", "NKYLHQSJLDVTVFETZTQJHEQMNAUBWCQLJKGHBPBJUEAPUBWGTKADXHNCZMGE", "OOCBJVNQXVKRBEPQQLRLKWDAUSSCFORSCJBIRSBAOGBTMGMLHWJWREKDOOCE", "ORYIWYXXBCDPIDIDCUJFXHLZMAKBRAJWJQFGULQMSBOFMAUOZXFQOJHGLNLA", "PPDDVDPJKTSYPAQTNKHEKXGQQXXCINGNEFLGABHORAMYFZLLGNCWBFNDEAKH", "QAWBBNNOBEYUOFRKHVCWPFCQYHSDWIWXARUUIHWEVARIXKZBUMWNSIQBSXEC", "QHZHTKSRHOQVECDPQRUDCRJVVYYATFCTLVZQOCAPEAKKPQGLLOWKXIOFOTII", "QOUZDRBGUTAWCEJZKWHUNFOHBZIAFYGMKECYTBSNODNZGDLDDWAMRMKGJGZM", "QXOEYOZXHBJHBAKIBZZFNSZZKBMDHQVPOTOXXGCWBBIXLUSITVIOTWIAWBCD", "RXIMROQOZNSUVCAOVEJNFMEGXADCRVSJIEAEVLCCLESLDOVEWQTCCSTCTHNC", "SUAHFDEGJKLWUAEBIUWTOKSVLQAAHYTHZPYJHUSSGFTVHSTOSWDUKQHHNDLC", "TEHRLOEXMKZTZETLYTPPRSNLXKGDHSBKTEYUUDZHICYEINQSFWUEJYGEWPQM", "VGJXBAOUPNJMJFDLJGIFQIAGSMNDOMHDOWCWYVXXRCIOQUPOJXTOQTDFALHA", "VNSZJHPBHDNDEDVIWVLXDMXSZMKCCXWZWTJSXGHHPCTIOHUBBMZLCELHMGJM", "WQIOFCIXXPHHWBHLJBSLQUULCERCOIETYXIXULPLBALTXEMFLWZPXGDAKTGE", "WSZCOPBBYPMAFBNEKAGDSATXKOIAZPTZRIXXQIGQJGTZBPJCUCVBQXXEVTXM", "XIXIGIPYWATNQFKBZVURXFIKYOHBSQMGDNSOWUYHDCBTQBQTSLSRKBEFIZCM", "XJPEDXBHJNQXFERYOBVVDBITOMGBZIUTKTSLQOJZKASUVJHRFAYEOFYETGSD", "XLATKFXGMHPNFGVVSLCWCANRIRECIGZHXSCDIAUCNCCEBAFYMCXVDWGEOEQH", "XOEGWAIIGRRNQGTTNPQNZUEOHFAAIFSDWBPRVLNZIGNYJEAPFOKGQMNBLVZF", "YDSDPVHDYCKZVFBZAFWCISWHOZUCYUAKFHEEXLICOCSVCUMBWVCHUWSDYINO", "YFIUTMBCLHSLNFYKOZTIVAAZJROAEEJOJOYGETPFSEFSJNDNEZKRXZHFIRTL", "YMHNUOHUCAHGUDPJNZYPWZYXFKWBCLSSPOTJBJQDSGOPISSWPXAHUGODRXMI", "ZDYGMLCBCDYEHAZPWMNHJMPJIJXBRCSPQONYJOMEEBMNXIZKHRLGYCCCXSZA"], "YNRE": ["ACSOYOWSGXNRXFDNZOBBACCFRNWBMISTMVCRRWQMVDGFDKSARTKDNJRFWFOI", "BAEAUJYZHDOLYFEDXKJATZTKCVGDUNDMYEBPAXLWOEGEQOHSMMQRLAAHWOBL", "BXDALCGYNFQZQDUEHTBWXEUBHOEADYLPTEYUJFNBACIIZEROUVJGYCDFOIEE", "DJXMETSIUFWKFAXMXCPFEBLLFSSAUHZYSAZBQXIAUCURRSKESCHKMVNEMBHJ", "DKHNWCGAKXNOBHBFLFJFVAHJWLUCUMEGPWFVETMTMCXPAWKIJVDTSVGDTDEO", "DMMCIKCJNYZVDFKJZXJXBMMBNLKCFLZOBDWUUAYBTEAKPSFCYKJBTPZAYJNA", "EGCQTNEJLRCTLCSQCHSRKEMFWIABTGXSCFLUPVRVPCCQIKLGJFVIDUJDWBJK", "EOHGTNSJMVAWBAPFMOQQBRKMYMHBEIVJYNRQJCXSRFBUPOMDYMLYVQVELNZN", "ESGFYMATQEDDNEFVQSFKEWEOWNKBBTKCACOTGSXVVADAWDLJKCKGYPPAWUDM", "EUMMNPBKBGILPAMWKHENNMUDPPNDKROFHOJIXIXWBHVCVRNVXZOXJOCEENAK", "EYDOXBBUWZORHHFVDZWVCCROADHBZUHTDPYDLGZHOAUCAQUGFUANAYHHLSCA", "EYQSLSRQNJBEPGHEOPITPGPFGVEDJRVRWMJTZCKCOFDDUHGXQLOYGEKGFGOK", "GNCIPUIOPJXESGHVMNEGEFLSIGLBOCQHKQQBTNWQCBSNNVUARZFACLWCUVOD", "GWFKSWXYTQIKPEAESTAOYYJEDPMBBYSKVWBFKSRECDKEHPBONITCQXRDSWHG", "HJJEQXVAGWAIGDWOKQPGBSUSTVXBRZPEWSPALKKGQAFIPQOKGEUQQBZADLKC", "HPBYWONLAKSIIBRRHQGXFKQJYPXAAFDINOXYARTGOCGZDFSRGBQXKUVFUACC", "IWCGUEHMZELAAFOZHFTGHIHMFVTAEMDATNJCRGKCZBBXRNJZDTJVBGJDOYTN", "KRLNAACWQJENJAJBWCIICIYXQDRAIBUKAWDPYHPHAGQLWZTLGGVQDKXAGVLK", "LCYNIORNRTRWUAWLEIZTZJQQUOQAKIJZTSNVFYYGHBKOIBEZCLGNFGUAXYAN", "LGILSNDJIEIAIEOMXQIGSQGTBJMAEVHFJBQGZRCYBGTMXJYQGDPFVOUEMNJH", "MOARMWNSFNEPGEGEMZUHAXWFVGHAPWGPQMNAOSJYLANZPAODYLKRTUZEOEKB", "MUJHEVQTHBAFLDIIEHEBLWNGAHNAYGLJASOOUWTGIDEWUCQYHJMSVUVDMWBN", "MVZIPEIGJRVMGCWMUIJZPBODCWLDIJMQXFXFXVKTFEQNXHUXYYRVMAQBPACB", "MXZQLZPWYKHBGETUAEWJSOSQKUMAUDVNHRCYSTXWQFOQKPGMKRLPYHPBQWPB", "NWUKWBERZYBQLEQJFZHRYFOUDOODWTGBNQIIQQBMJCUXXLBMHKTOCUDGFAOD", "OBBGAEZWZBRAXAHCVOTNLAAXCVWCGUOGAJSYNKTKLGEEICDUHBUCPFUFCVXF", "OWTPKLGICHFMXBQNEQHPTOMZKIPAXLBBPAPQOPAABGUGOUGDNXSUONAGXPHL", "PBSBWLFCIPDWVFQIDKZZDEHJINEBKSXODBZLTZDCJENPXSODJZLMMPAEDILF", "PCKXHXEMHKRJPDMOVHZDPMPFBPLDAJZPHNZRREVJUCEAMVKKRAXUYQLFOQKI", "PHGVYZELABVCQFLGLBLXQZIFZSCDDZXAJEGPTMUPKFBHYPHCNMWSSOQGJKPI", "PWYPIAUXESDLRGNDOETSGISXSLBAIZNICTWDXXPZHEMDHLFXDYWDDGMACCDD", "QNXGJOIBTOAJFGLWOGQWVMYNACRBNGOEPEVIIVLWRBYGKQJJSURAMVQFJVXJ", "RNPMORCVKLTMVFGWTJEVLZNLAAUBSQGOQIQSIFRZNFSVXSFQAVACLJMEJSZC", "RZVFTCDIDFDJMBIRGWCQKLRLJRTCHCWAFDQTHXUFUEBJPHLCLJEZMAXDYHUG", "SJWWFYFHERFWUBIKVZGXJGBQLHIDYHYULMADRLRIUGDKGSZVAZVPPCQEKKWH", "SNWWSUPYOJFISCRUNUGSHZPMTEQBEEBVPIDWKKYKXDHLKFFTMMYMKNDCTMKO", "SVODUKSSHXDLFEOXVPRNBMVFCGBCIUHBUUELHNONUCGSTJBKCSABOHEGILWE", "TBAIMOQKCMMZZFTDIIWVWQXYPNDBMTEMRZWILNNCHHHWXPSQNHPSGJPBHABN", "UDUPKCADUPDVTCGYHMUFQRRTOCKAHBOZMTSXYYLAJHLQFQXNVOJWXDACQGJH", "WTLVFWOKTHUOTFVNVRHKYXIXDKYANDOLFHVNUNGLXBGETJVQKNMDUNKAQSQA", "XCWIYMBRVOHSNAQLNIMLRIHUJSEATCHGUPXQOWWIAEDRJWWERERVRBDAARFA", "YUDPZXMAVRKGZCDKMIRDCUGMWTRCZSNBTIITMEKCUFJXDSSISYTCYCRCYOLK", "YVNFXWZYHJWDHDEQTBEUMPPUTDBBPIFSXSYVAEODAHHAUIINKAVHVHLGMHIL", "YZJUVZEFEBSYNFAPUBQOETPQKCSCRZTEZJBYGOWZMDQQVGTBYUBSAPMDZDKF", "YZPYIOUSBQEQCEOTAYNVOYNJAJGDEABWUWWHDSZBHFZMACZAUYEISXKBJXKB", "ZEEWMREFEMYWRCHFKVEABPUIERSBRYLXIWCPXILOMBFMEEWZXIADBPVFYORA", "ZIXJPAGOAEUBSFLXIHAXTULOWQTAMKHDUBVOIHCQSERWVMWOHNATFQCDUNAI", "ZNMIYFYAIXUVUBZZALKMMBZENWTBHNDSMDWRMEGJMGRFLBVOPWPJIGTFVIUL", "ZQLLFGGCLDOCODRAMJXFLPTSWMJDUJPTRYWZGPVGVGZFWLYJEXKZDJPCAEVO", "ZVVOFRQLQCHRSDGPYQTAIPAAXJAAVUXYNHRNICOQIAGHVWMHMZDXJGCABFFI"], "MLABN": ["ALWDSYJLZWUHEESVDLMLVAGAPKCCTZYLKILWCDDEAAEVSSJFZBOTTZRFERBO", "AXWAXHMWZWFGZBWRUANPITDMYHACFEWXMOCLWZQTADXSVAQEGYBGZBGBFDFM", "BGWWXALHJRBBLDDZYZMOYRGJXTLCSVGBSCJFEPDLNABZRCLXJVEPEWADQKFC", "CDLNUKPUZODUNDCNMOVAVSZDXQLAHHWOYFEGMDGQGDEWJDJNPILVZXSGIHHG", "CGZCDMONSMJHOESBNVGZJFPLIQDCKBQPRDGPTBAORBFMFOHAYZTOQZKDFWUL", "DDEUHMLOBCVMWFBIBZZPJYOKKUSBGKZIWTRPVJHJXEEFTVHBFSIODMEDOAJI", "EHOUCEHXTCBKKEZHQBDXNJHLVLHACPKYVXJUIJTCLANMGMNJKCKLOTXENKNC", "ESQTOJOHAMFKXAZDJKLVEQGKLKYAMDVVSKCFVPMJBASYRJZVWXZABPRASQAB", "HJHDDGBLXFWGVCFZKNHRLMOZRHKDCYHQEMHJTDTTZAOWXHABZLKOUENFPBRC", "HTKBIYQFMLFDSDUTKAWIADJEJJSCUWCHEAFNIHTJJGKESQNLOZKCZTMBXWUG", "ILTEILYDHOFXPFYZDYTZJREOEJJCOJAGWZQVGNBKXGMMMSLOSTLFBZMDXSUI", "IWLRNNJDYTSSNBAXCTCZVMZXBKHBUTDCUEERVSPEOAUAJOVPDGZQWOAGALNK", "JSLYTQUUFWTKVETLOCWJLGMFKZOBWVCRXVPPJVKYZCAMVEIWANWSXOSGGEOO", "JTSYHIUAEDAFBELDGQVPHTQDNDHBCVXCZNZKQDZUDASKQNWKVMOLCJUCLKFN", "KAIGRTEEVPZQTFLBGXFUTLGMCZSAYTWJSOZCRSUDZBXCBNZMTPKQTKVGWIAB", "LJHOHQTGJDZBLETHMTSSZEBJDQBAYKWNIYKVJRHLSABSHYYBEOFGHKJCOQIJ", "LOJOHPPUIMXZUCOJXAGWIZMODLKCMPXTAUPOZTKTVFAXXJIOXYEHLKCBDVBN", "LXMFLESJPWBZECTQUXVGSCTMEITAQTFSLUXJXYRQJFIQUFMHJDVIOQDFSSRM", "MLABBZGIWSNLCGAUVWAKVGNKDGVAISCVFCLLJGDWKEDXANPBPXYFJQCERGZH", "NBJEPMPFEAIOCGIVSSMQBOUNXPMAGXEKNENCZVLCEERYHMIXQXBNHAADSGNG", "NEWXTFZJEQGJVCLKYNRWXQSUGHFBLVRHSXUDNKGOKHJGCJSWIPGPCGCGCBKC", "NKHTUGEBNSJIGBTGGEFCVOURPOMAHOURWYFLOXFRKEZDGEMCNSYLEPCFDYNE", "NKLZROPHHQELLCPCFTATCTOLJRSAKQYSCFLMCNRXIHVNKZRCIRGWOYTDKKPG", "NQWIFUVUIGDYTBUNAUKOLTQDJRPAQOTVOJMECRLMIDXRAJLBLLONJIBGMPJG", "NWRSUEZLWDMLGGOPEWFYYBIXZPBBJQJPKMHVFJLZGHKZWGFZRSOSCNGCNFSA", "OOUQNGTYIDOHVGYJGNQKBIQDCHPANEQQCXPQSOKNBAWUDNJCNBQSCMEBDJLN", "OSMGRSFXPKSJEGXHLZCBTAMPPGUBLBQOHPXYBPTGIAISJVGPOFMVJQDFHRYA", "PFNWTCGYFKBZSGHXFSFOHPGDKKEAKGDEBQTLXMSMSDENVOGKQMLPJPTEEPCD", "PTXKGDSPQNDTBFRNLTRPKVZAEEMCWFBUBSMDYKMYSBYMYHJWLHURNIFFZSPF", "PVGCLNBLDEKCGAUCSQYNMYBUIYJDKJAZMQFJWJEFFEKDEHHUSNVXGVOGADMK", "QCHEAPSDFWWYDGDPAIATXBNIFYSCEJRNLEAAGIPJMBVKFBUXGCCMFOLGQSUJ", "QKZMSRWOVNHGBCCJDHBEGOKHZAGDCAKQYPXPCXBPDHPFSHCICDYHYMPFUGJM", "QQTUBJEWSNDDGFGKXWZBIRGTYEXAGMMGFEROMWWHQCCBGMBFHFZQFXACYUJF", "RPOFQKRWDHYBOFVDPFGSRGZVYMLBCTDEQWLSZDUONCONPZEWCMMCBGGHGCDJ", "SSXGIGWPBRCTTCHHHVJDAJJSNLACDWOKBEWIXSYQGABHFVHMEXSBBITGEOMM", "SUORPXIGVTRVHCIWCFTDIYSANPBDWONWYJGWIFIRKHSXNRSHEBAWMUFDTOSB", "TRXZGVBJPTFYCCNLKIDXJIQJEKZCPZQERGVNTDFERCQIPKFHWYVMNHACVMXJ", "UBHBBPDPQTSMXFIQIQSZNAUXULBAQSODUMTNUPDULBLFZRSQFKLLPWUANBFD", "UFKEDQHDBSBMSCMABBWBPJYNAHGBTGUMFXNVDHPALBVRVATVTGFEHTCCUGAA", "UQRWDUNAKUFZBCVMAYWTVOGSPMEBTNIAGXFHYTRHGHQPHPVKVVRZVFWEYSXE", "USRDKITPVMHSTFIOGHMCCQLFJUSARKLIGGMQLEUGSCWSLVGYHVFTZWDBYGKL", "VRUVQLHYWOUBDGOPSJQXXMGJCLMABXYEJNBFYQOTMEOMOXLQBDNTOEZGEFJJ", "WRFCDVJHVTKXCCMJUDLPNUYZTPABAAHEHIFHCTHOGBPMSEMHDUSYOADCKQYK", "WYMCKNNOJUAJKDNHKVWLTEZQSLQBLAGSZHUHDQWEZGLSLYUPMOVLCMYGREXK", "XDPLSBGEMAURCHHQGCKKWFWTHBTAZUMMVBWHSQEFJEGZRJFXTYRJUISEEEJB", "XMINXGZSJHMNWDIDWXYMUKNSHWHAGVSYSMRKAWSXMGHXKFQEOOKOZQDCMSYL", "XSNIUQRUHQRNDBCLGZMBWUGHJKDCGFMYOGJRAOHDOCZSXGOCQGSLMVCAMOFJ", "YVACLZEVXXGXKFABUNHVFHIWENYBRTBMDTKXZWZSRCYDWXPLLZHVHCLDAZRM", "ZDWQOJAUQIWVBFWFOABSPTUKOOCCDTSVFGSXTQFQOFXBQUTAJIONLJOETYPF", "ZWRNGZSVXPYNZAMFBDRNTNVBCQZBCBXVNWJJRSKVQGOREGGZXGITVIUFIVGE"], "TMNN": ["BAWPOOHMUNQTGBPOTUGDIYNUHHXAMBSPULBSTUSLMDJJAOVOKBGUSVQFVZKN", "BFDUQJLMQHAJZFWZREACJDXTCFKDTHEJHRZUMCLLMDJESBQOAZQIVYMBJMGC", "ELFFEWZLHRDCECUKCFYPUIBYXQKADTCOGUTVGEMOABDUGWOIDJWJKIEDIAGN", "ELTZMIZRSWJOTASNYWXAFKPWTETBYBENGNNOXOWAEBTRGKFZJCNYZDKFDEHC", "GFDHPMKJBIHBVEPKEGMBBTPVSTRDPKAOVEDYLKNDJFONSGIOCDRVXYYEHLOJ", "HAAEFXUWEGOGIAHPUTGJHPKBWPVBORNFLWGVHTVNCEJLAKSBIUHQDNUDOZRK", "IGKTEUYLUTSIDHWGVQMAYDMBGESAGWDJJGGWHBILWAPZGVFTCBGKRVKDLCHB", "IMSQQSVJVCKXFGWYYMLMWLONCAGDZBPRJTKGHNDPWBHMNVNOFPWEEIZDYLWG", "JTBOGCGFIKLIKHTOBAYDQOLVMEGCVVXMHNIRNYTIRGBMQQYHMWSWYFJCLJAA", "LCUOYUSRXPQGTERNRXYZIGEJCBSDZJVMHPETHPSQGGCLXHQXMQLXMEUADHYN", "LMBAIRBALCVDJGJFRFRXMVDVRKXCYAHTQKHVSFYUEADMVPVCPAMUBOOBTMKO", "MTINTYEKHVDJTCXEGMZUMXVUKXEBTRSAMWXTTNUKLGBFIFYBLYGQGYVCFZUG", "MTVTAACVOAYWUDYQFFHJDIXJPQQAUTKQQLWZHFFNGHTEWUHGYIXXEAKAPYJG", "NIFINNLVERUIPAFYAQSNGHMKZROBROFALRRFSZYOLAYRHQMAAQCJEUNAEPFM", "OBVLJRLFTINFMCWBIMUYGTQXLQMASTQBWSJAGJINGBQFEUHMTRERFHZAWYMF", "QJXUTDVZIRWXDFFNYONKCBGTYYHACKURCGIBUUXNMDPAKWXSCXAUPWWDWQXD", "RJCVHVDONMZJQDDOYCBSNHBZACDDIHTXPVYFAROGTAECOQHWIHQCHCUFLALB", "RLGYBGHHIRLWPFROOIPBODBSBULBOIHGLGFMBADLOBMQAEADIJFUJOHFMJGC", "THERJOZSMPZCEDSSWCQOTXYBIAUBGLRBGUQXUBVJMDQDFWDNIZOMYKVFIDHH", "TWKEKERDUISBFHSQVAYXKUYBYVAAYVMEUVPJRHYYLBKOHTYDUQDPHERDFKWM", "XJFJZFMQXTIPJDYDGNWVZNQXKVJCXPWSCTKNFFZYWEOORJXQPOIJVIHFFONJ", "XUFVGFLQJJJYXETXUPWNBBQXNGDBNYRWXCNUFDMKDFVXYENNVDMZOSJESHVA", "YSNTNWOFRCTEPDYLVYHEUCVTBOOCHINIQDNXIDAZSCLVOJCBZMHMCYIEDPJJ", "ZOCNYXHMVCUHECDZECFXCUTOLDWAGFAJRBBANXKGNDVKJKXLYFGDZQTCOPJH", "ZRKKPXYSAJVKEBDRBQQGPWQYJZKDRNXXWXSNKRNFLBGTHJLXNUWTQKKDXPZK"], "MLABR": ["ANHENRTTSFJKTBTAZLFPWKKSHELCVBODVQWATISDAHMSNNMBPRRHZBRASXZK", "CZMCMZPJEEWUIATCHIQNKOJYGJBCKKPNBRJIWBWNOGILJOTKZJXMVQJGWQWK", "ETKGZCPXBSDNECPXPJAJMCTALNYCGWFCWVDQFSRMJAOYDMSUMQJFKZGFVQYK", "FFWBNVWTRKYGQCEOFXAKLTIQTXFCEDRSHTNQPLEQTBEBMMTSXJHMGKNGXBPM", "GDZKKHTOZPVQRBUBAAIPIZVWYSMDLUNGEXBSSBNJDESRRGHVLGOUVAIFNNMO", "KUZASAXQDIOMAFIPZWJFMJLFXFPBBZGEKZKFDSCXLFHYABCOJMVDUSZAVSNN", "MCTSOZNODTDAXBNXPNDGYVYVWIGARJPZKVWJCSMKXFMZUREZGXGOOZUDXSJL", "MWXJYESDCYDCIDXAZSLLJNVYEHRCQIENCJYJKKVKDGLRVXEXEJTLOMIHLZVO", "OKGXWNTVYCCVZBKQEAWGJPHJTLZBRMVOEDZTBVFEOEUMYYVTHJALIEYFIMFC", "ONLGGOEWJIMXBEKKYIUAKTTDNYZBCMRQPBGWRJXVKCCJLDPZEVYYQONGBQGM", "RQXPJQGWXGQTBCPKYSFKQDIHTOCBOFPKKEOQUZFQDHRUUECNUCXCJYSBCOBC", "RZELAZLIKADKDDKFGMFBQFAMKPYBKVUGNWAKYWWABDOYIGGOXTHJXPXGZZIF", "SNEDGQWJETTROGDKVEUIGXGYUVQDOCRUDFZTENNLRFMHNEKYDYSRJRDEAKNJ", "TWXMWMNMWRSZQFWEZJONLLPDOFTCWPPLLVLGTYOMJBJLTLUYRZJOPHYBPXZK", "UVTYBNIJNPFAKBWZSCHVWSEBSLRAIZKDJAHTSKJXJCGPLSIUUFWWDFHHAKOD", "VJWQBYOXWYTGMASTIKMHRSZLJCBDLPVGDNQSXPSSRGBFOHVCDEXTCLZAWGWO", "VRJGAALWLCTBTEJJMVQTTCSVKUUBXVVDGVOCVLLSRCSWYBIAWYODFLHFHJZB", "WIIFZPKKLHACJGHMZFOMCHFONLMCXUNNASPNWHXBIFNTNDFMVEHEAYSFPXOH", "WNOSGFNHYWMUICYZACFRSEGGSKAAHJLVLLYWRGRMCFSXTIRVGWLIKWLGQRNA", "WPVTSGDMGOLBEBXVOVYUYAELXFCBETWZGBSTVASUBDMEUPRPKSYSTHUFKRIG", "YGJLMWEOGYTJCARGFLIHKWDMZDLDGWJBNGDTQINWKEAFBKDCJLBJOSVFSNMM", "YOIMVRPAQKQPYAPNVDOZPOZYTKEAOBJMAGGATKGZLFYLGRQZEPHZIWIHOZGB", "YPOHAIJIRIFZMDAOTUBEZKVWNOSCOWGCVCFEGSOCBHNWQEGUJPOLASJFCMJO"], "TKOG": ["BPJKOTIDOKFFPGXQWAOLLKXBRKQBOKYTJLUOJOOEHCJFINYRNXEUBEUAOSLC", "BRHVZLFCWFOJIFINLKQHRVRZCWRCHAJPLESZVMIBHDIWRYJUTXXNWWGFHLRO", "BZDLBNBVIWABFGXDEBXXHYLUDNJCUVEAVNHPLUSZWGBRYSVOKSFKASDAQLJE", "CAKWAUIHINHJWCTOFJCZVIHPIPJDCRTMPRWVTSDTZEYRVRKLVKKRYQNAAGIJ", "CEUGALUWCTJILELTOPFETPHJFZXCPGUIWUISMOXQHHVVLXKAYOYCOOHDCMKK", "CQSFZGMEBDJZBFQLSXRPORDOQWFCRADCFWYQCSYJWAXQZLLAZRQLFDBCACFF", "FMEDVJGHGOHBJACGXUXNXBQNEFEBTRUWYQTXRNFNEEAEUWMYJEBEYORAHSFE", "HFCUMGISLJFUBHVKUWUTFUNEPCRDAMJMEXAVHCXQCADBYGWKLTELSTZAGNRK", "HRCJEWVLUBQPFBZQHAEFLDTYNFACIPJTNSBLZOYYRCBMYIKOUIJNBEMFPALD", "ICKVAPOVJGMNHFMHDONHNPFZHFIDNCXGEWJZPHAKRFBNCZBKRSCNLXMFNAOA", "JWNVZZKOOUZTGCXEDMWWTQDIUTZALXTUZQPOZKDFRAEGVFIOJPOMDMKGFHAF", "KEQZGBCQBALUHGTMPMUCCVKNTQLDLBOVTESXAGVSBFERAKOIEPWQOZZATCAI", "SFVGGJWLLVUXXEKULMYWGGOFZPUAVZKQBLBRHZHAJENNKCVMBEOZXHBDGBOC", "TIIABECMKPJACCQJHXKFRWISSPGDEUDHUWFGKHFZOEWAIYGAFCXQBVLFKNZI", "UIGOLKZOEURXIHUCUDHBUQPEOKIBTQNNNJTUQNANUBARODXFUEYLDFDGFYDK", "USFHODCPJYEECANQNDRXUBOMVPCDCFCDSSXSHJVHMDTAISFIGGWXYTOCFUIN", "XKCEABBDCDTMLERZXPTJGMABIUKCXYMNSCMRFZUVTDVIEYATWCLABSSEYCAO", "YGPLVBQUKKUBJGQCBYCKLFTHXPPDXECSQGTEKYQTJDQWKRPKAGTTPNUAZILL", "YQZKVVZTJKJTADGEUDBQRHAARVQBJUQILQLFRFANMBROUWNWRQBQDMHHRRPL"], "MLABD": ["CLXAXFMNAETKEAIPUJUTFVJNVGECZYFLZZYDLHBXPCONQHSSELYGDAFCIDFO", "DAJJWAIESDNTGCFORVUWCJERLGJAQDYBWHTGRDKAHCHOCPZFDQVPYFAGTWCM", "DWDDBNFRDJIVHGJVPVHUUZFBCXUCPATRAOHUWMOCFDIYQLVCMPAWMGTGYZFG", "ENNYIXZUBUKANFQOQBYGKTNENEIDJLSQMDLNWGKCACPAYCGJPAAOWLQGCGSK", "FONMUYFJRJZUUFKBEVUBJFSYVOLDUFRILZJILWWXCAKCMDIWZLHZLIWFNTFK", "GEXQTCZLWUKDTBBRQPRGUHUHWUKDJBHWGVSAVEKWZFIFLXGCFHMVXDUCPWYN", "GTXUYHFOIKQTJHQIKPNNNCPOPZUAAVAIMPVLWRJSHAQESZGPPITERHNBKRVE", "HBIJGTBEXDFJOAABKWCTHBTGIAMBEDRWEILLBTZQBBDKZPFNZJLYNMBEWDSE", "KFFHQHWOJLBJGEAFQREAXHZDKAXABDPEYVSLMTVAQAJIQQQUROYPUTZBDRBB", "MOELMCBXWTWCCBDEJTWEQPWLFIHAJNBOEKOQWWTDNFTDKGXUYUCOEHLAIWJB", "MZWKFCEYLXXYFAXLXCEJHLFJOVPBAMFNDULCIZULCHGWJOQHCGDWIVSCTDWE", "OTLUBCLYIKHMREREJFTLPNJXJSIDTVXPXSKQPLHTBEAWDKDZZWNMPRQGVBKK", "RKHLMHNAWEAHWBMTPPCERQURJVLCDSKDRIZRYHONJHFGVWFUGIKOSYWCITLB", "VOHIKSGRSTXMGFYUQBIFGDIKZPLAAFFXWMNKFNSNHDUCFPEUXOIYNAMFYVOC", "WIRPFILCTNBDBANOGBVRPNWFRCYAXHYXHHMIHRGAKEZJOBSPUMDFMFEEZATM", "ZEDDSEUNDSLAHDMGOITZRGTEWGHASPHZFOYLPPYFJGZNFEQYWDQNBCJHIVLN"], "MLABG": ["JODNSSERODETXCAKYFALWJAZVTGDUQGFGZELCANWLDSCRWBHBWYFHIOFZXXI", "KDSNMPGJGGCBMAJXGNFTSSRJGQMCGTABBOHIAJGQOGUHAWNPHVFYFDEFCAAK", "KGLUEQQRUOVFJCVIVNUXHPOXEOZBIWJPNHOQLCGOCANUYMXXCUBCGOUFNDXM", "MBXFRGEEMJGJCGIDHKXSYJKEASJCCGBOUZQIABMPCEDOCGVTSHLIQZWEBJDI", "MRBMGLHOEQZQVAMHGFWUIVMFASCDPYJRXLIEZPRURBJAAPVATVCFWCQFRPFD", "OATIIJKHXIAKIDZNFZSQWMYCYOBDBHUBEMPUQMYZSBJBZZYZZNPFAOTFPPFF", "PGSYZCSEDVGRRCKTLIIEVOQNUJNDNGKGKMVWVVKBKASTWGUNNIBPMIDCCTEB", "RUZZSWUPHMDGLHYKSTWYUHLPKXXCIEVIXDDWVGWAMAYCTOMQBHIPQHHCUNCB", "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD", "ZFWTACFBKHCKNDSCFNDPLSMRANSDSJQDAYOZIYYXBBXGCKSNNDGJNDBDJTKF"], "MLABZ": ["EGJWIEIXCGGDNBAECOYDOBNKOSDDDUZWYMQKQPTFAHCYAXCVWPJFDASGBFCI", "FFCWUVVWCPOUVCJNLUXBYQHEFNTBKVDPTVFEONXXNETCQTTNMXURXHHFSNEO", "JGNVIBHMMMSUPGCYEEPAENDMMIPAGTTFNLJKETCKZEDJIPOXACRYOCVCQAWF", "MAVJGIZDEPROVBDQGXWEMKJSHXRBUJXYGBLPLKDZDFUZGMXIIKBDHXQFDSQA", "QFBIPVIRQOTSCETGWMKYOZCOJIOCWDNETKGETHSZLGNVQQAWAJEDNLAAHFXH", "TETOPRBNWTTIOASLXZMWYPJZZTRCHTRDYQQZCJXRZDOIHYLMYKSXVXDCCWIK", "XBSOLCOSDSBGSAUIUAHWUPYIDGGDVGVQFDSJENQLRGZXAQZWRKOIJYCBAWYJ", "ZUZZDQDRXQRDBHDTPTHGLWCGDDSDCMNCTXAPSAXLEBEIKZVTLNZSQBDEVOPH"]};
-function renderLeaves(id, addrs) {
-  const el = document.getElementById(id);
-  if (!el || !addrs) return;
-  el.innerHTML = addrs.map(a => `<span class="leaf" title="${a}">${a.slice(0,8)}</span>`).join('');
+const HUB_ORDER = ['ZTQM','TMNN','MLABN','MLABR','MLABZ','MLABG','MLABD','TKOG','YNRE'];
+
+const container = document.getElementById('leaf-grid');
+for (const hub of HUB_ORDER) {
+  const addrs = HUB_COMPUTORS[hub] || [];
+  const det = document.createElement('details');
+  const sum = document.createElement('summary');
+  sum.textContent = `${hub} — ${addrs.length} computors`;
+  det.appendChild(sum);
+  const box = document.createElement('div');
+  box.className = 'leaf-box';
+  box.innerHTML = `<div class="leaves">${addrs.map(a => `<span class="leaf" title="${a}">${a.slice(0,8)}</span>`).join('')}</div>`;
+  det.appendChild(box);
+  container.appendChild(det);
 }
-renderLeaves('ztqm-leaves', HUB_COMPUTORS['ZTQM']);
-renderLeaves('tmnn-leaves', HUB_COMPUTORS['TMNN']);
-renderLeaves('mlabn-leaves', HUB_COMPUTORS['MLABN']);
-renderLeaves('mlabr-leaves', HUB_COMPUTORS['MLABR']);
-renderLeaves('mlabz-leaves', HUB_COMPUTORS['MLABZ']);
-renderLeaves('mlabg-leaves', HUB_COMPUTORS['MLABG']);
-renderLeaves('mlabd-leaves', HUB_COMPUTORS['MLABD']);
-renderLeaves('tkog-leaves', HUB_COMPUTORS['TKOG']);
-renderLeaves('ynre-leaves', HUB_COMPUTORS['YNRE']);
 </script>
