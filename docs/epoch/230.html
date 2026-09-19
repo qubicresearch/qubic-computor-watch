@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qubic Epoch 230 — Computor Watch</title>
+<style>
+  :root { --bg:#0f1218; --panel:#171c26; --line:#2a3242; --fg:#dde3ee; --dim:#8a94a6; --acc:#5aa9ff; --ok:#4cd28a; --bad:#ff6b6b; --warn:#f2c14e; --mj:#5aa9ff; --qli:#c98bf5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 ui-monospace,Menlo,Consolas,monospace; }
+  .wrap { max-width:1100px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  .sub { color:var(--dim); margin:0 0 28px; font-size:0.9rem; }
+  h2 { font-size:1.05rem; margin:36px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line); color:var(--acc); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:14px; }
+  .stat-row { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0; }
+  .stat { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px 18px; flex:1; min-width:140px; }
+  .stat .num { font-size:1.6rem; font-weight:bold; }
+  .stat .lbl { color:var(--dim); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; margin-top:4px; }
+  .stat.mj .num { color:var(--mj); } .stat.qli .num { color:var(--qli); }
+  table { border-collapse:collapse; width:100%; font-size:0.85rem; }
+  th { text-align:left; padding:6px 8px; border-bottom:2px solid var(--line); color:var(--dim); font-size:0.72rem; text-transform:uppercase; }
+  td { padding:5px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  td.mono { font-family:ui-monospace,monospace; font-size:0.78rem; word-break:break-all; color:var(--dim); }
+  td.num { font-family:ui-monospace,monospace; text-align:right; }
+  .table-scroll { overflow-x:auto; border:1px solid var(--line); border-radius:8px; max-height:360px; overflow-y:auto; }
+  .table-scroll table { margin:0; }
+  a { color:var(--acc); }
+  .small { color:var(--dim); font-size:0.82rem; }
+  input[type=text] { background:#0b0e14; color:var(--fg); border:1px solid var(--line); padding:8px 10px; font:inherit; width:520px; max-width:100%; }
+  button { background:#22304a; color:var(--fg); border:1px solid #365079; padding:8px 14px; font:inherit; cursor:pointer; border-radius:4px; }
+  button:hover { background:#2b3d5e; }
+  .status-ok { color:var(--ok); } .status-bad { color:var(--bad); } .status-warn { color:var(--warn); }
+  footer { margin-top:50px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.78rem; }
+  .nav { margin-bottom:20px; font-size:0.85rem; }
+  .nav a { margin-right:14px; }
+  .distbox { border:1px solid #4a3a2a; background:#1a140e; border-radius:8px; padding:16px 20px; text-align:center; margin:16px 0; }
+  .distbox .amt { font-size:1.3rem; font-weight:bold; color:var(--warn); margin:6px 0; }
+  .distbox .addr { font-family:ui-monospace,monospace; font-size:0.72rem; color:var(--dim); word-break:break-all; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="nav"><a href="../index.html">&larr; Main investigation</a> · Epoch reports: <a href="230.html"><strong>230</strong></a> <span class="small">(more coming)</span></div>
+
+<h1>Qubic epoch 230 — where computor revenue goes</h1>
+<p class="sub">Real on-chain money-flow tracing, verified against the protocol's own per-computor revenue record. All 676 computors accounted for. Sourced live from rpc.qubic.org and analytics.qubic.li on 2026-09-19.</p>
+
+<div class="distbox">
+  <div class="small">END-OF-EPOCH DISTRIBUTION (issuance rate, epoch 230)</div>
+  <div class="addr">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB (null/protocol address)</div>
+  <div class="amt">1,000,000,000,000 QU</div>
+  <div class="small">= 988,071,919,137 QU to 676 computors + 11,928,080,863 QU to the Arbitrator (AFZPUAIYVPNUYGJRQVLUKOPPVLHAZQTGLYAAUUNBXFTVTAMSBKQBLEIEPCVJ)</div>
+</div>
+
+<h2>Family split (676 of 676 resolved)</h2>
+<div class="stat-row">
+  <div class="stat qli"><div class="num">53.8%</div><div class="lbl">qli (364 of 676)</div></div>
+  <div class="stat mj"><div class="num">46.0%</div><div class="lbl">MinerLab/JetSki (311 of 676)</div></div>
+  <div class="stat"><div class="num">0.1%</div><div class="lbl">unresolved (1 of 676)</div></div>
+</div>
+<p class="small">Resolved three ways, in order: (1) already in our long-standing KNOWN dict from prior-epoch verification, (2) this epoch's largest real outgoing transfer (&ge;100,000,000 QU) traced to an already-confirmed hub, (3) for computors that received a real payout but hadn't yet swept it onward, cross-checked directly against analytics.qubic.li's own per-computor revenue/owner record instead of guessing. See "Method" below for exactly what each row is based on.</p>
+
+<h2>MinerLab/JetSki — real destination hub for each computor's epoch-230 payout</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Hub</th><th>Computors</th><th>Real revenue traced to this hub</th></tr>
+<tr><td>ZTQM (collection hub)</td><td class="num">86</td><td class="num">36,790,114,153 QU</td></tr>
+<tr><td>MLABN</td><td class="num">61</td><td class="num">30,920,626,829 QU</td></tr>
+<tr><td>MLABR</td><td class="num">53</td><td class="num">30,933,628,397 QU</td></tr>
+<tr><td>YNRE (seeding hub)</td><td class="num">36</td><td class="num">14,703,333,015 QU</td></tr>
+<tr><td>MLABG <span class="small">(not yet in the lookup tool's hub list)</span></td><td class="num">33</td><td class="num">13,276,049,363 QU</td></tr>
+<tr><td>MLABD</td><td class="num">24</td><td class="num">2,947,022,926 QU</td></tr>
+<tr><td>TMNN (collection hub)</td><td class="num">9</td><td class="num">2,925,353,641 QU</td></tr>
+<tr><td>MLABZ</td><td class="num">6</td><td class="num">4,426,312,867 QU</td></tr>
+<tr><td>TKOG (seeding hub)</td><td class="num">1</td><td class="num">1,466,288,368 QU</td></tr>
+<tr><td>carried forward from prior-epoch KNOWN dict <span class="small">(not re-traced this epoch)</span></td><td class="num">2</td><td class="num">1,479,289,940 QU</td></tr>
+<tr><td><strong>Total</strong></td><td class="num"><strong>311</strong></td><td class="num"><strong>139,868,019,499 QU</strong></td></tr>
+</table>
+</div>
+<p class="small">Every one of these 9 hubs already feeds the same clearinghouse (LKBOPOUKGSYT) documented on the main investigation page. MLABG is a real, confirmed destination this epoch that isn't in the lookup tool's hub list yet — added to the backlog.</p>
+
+<h2>qli — real destination hub for each computor's epoch-230 payout</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Hub</th><th>Computors</th><th>Real revenue traced to this hub</th></tr>
+<tr><td>VAQA</td><td class="num">40</td><td class="num">57,469,836,311 QU</td></tr>
+<tr><td>KOYO</td><td class="num">39</td><td class="num">57,510,285,648 QU</td></tr>
+<tr><td>IHDR</td><td class="num">40</td><td class="num">56,110,449,760 QU</td></tr>
+<tr><td>PCUTRGWY</td><td class="num">36</td><td class="num">53,092,640,496 QU</td></tr>
+<tr><td>JBWF</td><td class="num">28</td><td class="num">39,835,371,180 QU</td></tr>
+<tr><td>QLIKKB <span class="small">(not yet in the lookup tool's hub list)</span></td><td class="num">22</td><td class="num">32,385,470,579 QU</td></tr>
+<tr><td>TCRX (transit) <span class="small">confirmed 2026-09-19</span></td><td class="num">18</td><td class="num">26,250,173,331 QU</td></tr>
+<tr><td>QLINAM <span class="small">(not yet in the lookup tool's hub list)</span></td><td class="num">17</td><td class="num">23,554,514,129 QU</td></tr>
+<tr><td>FSDR (transit) <span class="small">confirmed 2026-09-19</span></td><td class="num">14</td><td class="num">20,459,090,448 QU</td></tr>
+<tr><td>TOUP (transit) <span class="small">confirmed 2026-09-19</span></td><td class="num">13</td><td class="num">18,814,718,922 QU</td></tr>
+<tr><td>VOYI (transit) <span class="small">confirmed 2026-09-19</span></td><td class="num">13</td><td class="num">17,669,135,988 QU</td></tr>
+<tr><td>DMRK</td><td class="num">12</td><td class="num">17,643,132,847 QU</td></tr>
+<tr><td>LHDR</td><td class="num">12</td><td class="num">16,211,515,336 QU</td></tr>
+<tr><td>QLIFOD <span class="small">(not yet in the lookup tool's hub list)</span></td><td class="num">11</td><td class="num">14,725,002,300 QU</td></tr>
+<tr><td>9M-QU onboarding-funder confirmation <span class="small">(separate real evidence type, not a hub-forwarding trace — see main investigation)</span></td><td class="num">4</td><td class="num">5,836,261,091 QU</td></tr>
+<tr><td>HMZAF <span class="small">(not yet in the lookup tool's hub list)</span></td><td class="num">2</td><td class="num">2,958,579,880 QU</td></tr>
+<tr><td>KDHVRGXD</td><td class="num">1</td><td class="num">1,459,065,272 QU</td></tr>
+<tr><td>CWKWQ <span class="small">(not yet in the lookup tool's hub list)</span></td><td class="num">1</td><td class="num">1,479,289,940 QU</td></tr>
+<tr><td>Real payout confirmed, not yet swept onward <span class="small">(protocol revenue record, owner=qli — no hub to name yet)</span></td><td class="num">41</td><td class="num">59,493,767,389 QU</td></tr>
+<tr><td><strong>Total</strong></td><td class="num"><strong>364</strong></td><td class="num"><strong>523,489,004,821 QU</strong></td></tr>
+</table>
+</div>
+
+<h2>Unresolved (1 of 676)</h2>
+<div class="card">
+<p class="small" style="margin-top:0;">One computor seat has zero epoch-230 revenue in either our own on-chain trace or analytics.qubic.li's own per-computor revenue record. Its only real activity is a live 1,000,000 QU epoch-231 candidacy bond at tick ~80,793,000 — after epoch 230 had already closed. It appears to be a fresh seat that never qualified for an epoch-230 payout, not a gap in either data source.</p>
+</div>
+
+<h2>Independent cross-check</h2>
+<div class="card">
+<p class="small" style="margin-top:0;">A separate Discord user published their own epoch-230 flow analysis, built from their own Qubic lite node + indexer — a completely independent pipeline from ours. Their MinerLab/JetSki count (226 + 85 = 311) matches ours exactly. Their qli count (365) was 1 higher than our fully-resolved 364; the difference is that one unpaid seat above, which their chart also implicitly had to place somewhere to reach 676 — we left it unresolved instead.</p>
+</div>
+
+<h2>Method &amp; limits</h2>
+<div class="card">
+<ul class="small" style="margin:0; padding-left:18px;">
+  <li>Computor set for epoch 230: <span class="mono">rpc.qubic.org/v1/epochs/230/computors</span> (676 identities, official).</li>
+  <li>Family resolution, in order: (1) KNOWN dict carried forward from prior epochs' own verification, (2) largest real outgoing transfer &ge;100,000,000 QU this epoch traced to an already-confirmed hub (<span class="mono">rpc.qubic.org/query/v1/getEventLogs</span>), (3) for the remainder, cross-checked directly against <span class="mono">analytics.qubic.li/api/stats/computor-revenue?epoch=230</span> — the protocol's own per-computor revenue-and-owner record, not a money-flow inference.</li>
+  <li>New hubs TCRX/FSDR/TOUP/VOYI were added to the KNOWN dict only after confirming they forward directly to already-established qli wallets (QLIFODMBOSRWEAPSTZWF, QLIWZKBVQEKQADKZLPZL, QLIXZOGTLJVHWBZLJODF, QLINAMIOESDCZCCDTMII, QLIKKBOCYDIMXBAOKUTE) — a direct transaction-graph link, not a shared-destination guess.</li>
+  <li>"Real revenue traced to this hub" sums the protocol's own per-computor revenue figure (analytics.qubic.li), not the traced transfer amount itself — the two are usually within a few percent of each other but not identical, since a computor's real payout amount and its forwarded amount can differ by small on-chain fees/timing.</li>
+  <li>This is flow + revenue-record analysis. It does not establish legal ownership of any computor, only where its epoch-230 revenue is demonstrably traceable.</li>
+  <li>Every address above is independently checkable at <a href="https://explorer.qubic.org/" target="_blank">explorer.qubic.org</a>, or with the lookup tool below.</li>
+</ul>
+</div>
+
+<h2>Trace any of these addresses yourself</h2>
+<div class="card">
+  <input type="text" id="lookupInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false">
+  <button id="lookupBtn">Check</button>
+  <div id="lookupResult" class="small">Checks: real balance, real transaction count, and whether its most recent large payment routes to a known hub family.</div>
+  <div id="historySection" style="display:none; margin-top:14px;">
+    <button id="historyBtn">Show full transaction history</button>
+    <div id="historyControls" style="display:none; margin-top:10px;">
+      <button id="historyPrevBtn">&#9664; Newer</button>
+      <span id="historyPageLbl" class="small" style="margin:0 10px;"></span>
+      <button id="historyNextBtn">Older &#9654;</button>
+    </div>
+    <div class="table-scroll" style="margin-top:10px;">
+      <table id="historyTable"><tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr></table>
+    </div>
+  </div>
+</div>
+
+<h2>Your trace trail</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">Every identity you look up gets added here as the next hop. Click any earlier hop to rewind to it; click a funder address inside a result above to follow the money one more step. Saved in your browser only — shared with the main investigation page.</p>
+  <div id="trailView" class="mono" style="margin-top:8px; font-size:0.8rem; line-height:2;"><span class="small">Nothing traced yet — look up an identity above to start.</span></div>
+  <div style="margin-top:10px;">
+    <button id="trailBackBtn">&#9664; Back one step</button>
+    <button id="trailClearBtn">Clear trail</button>
+  </div>
+</div>
+
+<h2>Known hub wallets (live balances)</h2>
+<div class="table-scroll">
+<table id="hubTable">
+<tr><th>Hub</th><th>Address</th><th>Balance</th><th>Family</th></tr>
+</table>
+</div>
+
+<footer>Data sourced live from rpc.qubic.org and analytics.qubic.li. Part of the <a href="../index.html">Qubic Computor Watch</a> investigation.</footer>
+</div>
+
+<script src="../js/trace-tool.js"></script>
+</body>
+</html>
