@@ -1,0 +1,84 @@
+<title>LKBOP Flow Map</title>
+<style>
+  :root {
+    --bg:#0b0e14; --panel:#161b24; --panel2:#1b2230; --line:#262d3d; --ink:#dde3ee; --dim:#8a94a6;
+    --mj:#5aa9ff; --exch:#f2c14e; --exch-bg:#332a12;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 ui-monospace,Menlo,Consolas,"SF Mono",monospace; padding-inline:16px; padding-block:32px 64px; }
+  .wrap { max-width:760px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 6px; letter-spacing:-0.01em; }
+  .sub { color:var(--dim); font-size:0.85rem; margin:0 0 28px; max-width:70ch; }
+  .nav { font-size:0.82rem; margin-bottom:28px; }
+  .nav a { color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); }
+  .nav a:hover { color:var(--ink); border-color:var(--dim); }
+
+  .flow { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .connector { display:flex; flex-direction:column; align-items:center; color:var(--dim); font-size:0.72rem; padding:6px 0; text-align:center; }
+  .connector .line { width:1px; height:20px; background:var(--line); }
+  .connector .arrow { line-height:1; }
+  .connector .dir { color:var(--dim); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.04em; margin-top:2px; }
+
+  .node { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; min-width:150px; text-align:center; }
+  .node.hub { border-left:3px solid var(--mj); text-align:left; }
+  .node .name { font-size:0.92rem; font-weight:700; }
+  .node .amt { font-size:0.76rem; color:var(--dim); margin-top:4px; font-variant-numeric:tabular-nums; }
+  .node.center { min-width:220px; padding:16px 20px; }
+  .node.center .name { font-size:1.2rem; color:var(--mj); }
+  .node.exch { background:var(--exch-bg); border-color:#4a3a12; border-left:3px solid var(--exch); }
+  .node.exch .name { color:var(--exch); }
+
+  .tier { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; width:100%; }
+  .branch { display:flex; flex-direction:column; align-items:center; }
+  .chain { display:flex; flex-direction:column; align-items:center; gap:0; }
+
+  footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.76rem; }
+  footer a { color:var(--dim); }
+</style>
+
+<div class="wrap">
+  <div class="nav"><a href="../index.html">&larr; Main investigation</a> &middot; <a href="229-full.html">Epoch 229 full report</a></div>
+  <h1>LKBOP Flow Map</h1>
+  <p class="sub">Real, on-chain money flow around the LKBOP clearinghouse, epoch 229 only (tick window 77,700,885&ndash;79,301,927, &ge;2M QU floor). Every node below is a confirmed transaction. Read top to bottom &mdash; each connector is labeled with the real direction money actually moves.</p>
+
+  <div class="flow">
+
+    <div class="node center"><div class="name">LKBOP</div><div class="amt">epoch-229 real inflow: 48.75B QU &middot; outflow: 48.75B QU (off by 1 QU)</div></div>
+
+    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div><div class="dir">2 real sources feed in</div></div>
+
+    <div class="tier">
+      <div class="chain">
+        <div class="node hub"><div class="name">UYIG</div><div class="amt">35.62B QU &rarr; LKBOP</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div><div class="dir">100% fed by</div></div>
+        <div class="node hub"><div class="name">ZTQM</div><div class="amt">51 computors feed ZTQM</div></div>
+      </div>
+      <div class="chain">
+        <div class="node hub"><div class="name">TMNN</div><div class="amt">13.13B QU &rarr; LKBOP directly</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div><div class="dir">fed by</div></div>
+        <div class="node hub"><div class="name">25 computors</div><div class="amt">direct real payouts to TMNN</div></div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div><div class="dir">4 real destinations LKBOP pays out to</div></div>
+
+    <div class="tier">
+      <div class="node hub"><div class="name">JETSKIYUBUPF</div><div class="amt">48 recipients &middot; 41.0B QU</div></div>
+      <div class="node hub"><div class="name">JETSKIQRDEIV</div><div class="amt">50 recipients &middot; 4.0B QU</div></div>
+      <div class="node hub"><div class="name">JETSKIMZKTSL</div><div class="amt">32 recipients &middot; ~297M QU</div></div>
+    </div>
+
+    <div class="tier" style="margin-top:14px;">
+      <div class="chain">
+        <div class="node hub"><div class="name">YAQ</div><div class="amt">3.41B QU &middot; real collector, ~44.9B QU balance</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div><div class="dir">forwards to</div></div>
+        <div class="node hub"><div class="name">FZSU</div><div class="amt">100% pass-through relay</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div><div class="dir">forwards to</div></div>
+        <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA &middot; confirmed exchange</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>Every figure above is a real, on-chain-confirmed transaction from epoch 229, traced this session. Full evidence and method: <a href="../index.html">main investigation</a> &middot; <a href="229-full.html">epoch 229 report</a>.</footer>
+</div>
