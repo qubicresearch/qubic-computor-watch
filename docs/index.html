@@ -54,11 +54,11 @@
 <table>
 <tr><th></th><th>Epoch 227</th><th>Epoch 228</th><th>Epoch 229</th><th>Epoch 230</th></tr>
 <tr><td>MinerLab/JetSki</td><td style="color:var(--mj)">75.5%</td><td style="color:var(--mj)">57.4%</td><td style="color:var(--mj)">50.2%</td><td style="color:var(--mj)">46.0%</td></tr>
-<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">49.6%</td><td style="color:var(--qli)">47.8%</td></tr>
-<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>0.2%</td><td>6.2%</td></tr>
+<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">49.6%</td><td style="color:var(--qli)">53.8%</td></tr>
+<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>0.2%</td><td>0.1%</td></tr>
 </table>
 </div>
-<p class="small">Real, direct on-chain money-flow census for four separate points in time (676/676, 676/676, 653/653, and 634/676 resolved). A steady, monotonic multi-epoch trend through epoch 229 — qli's share roughly doubled while MinerLab/JetSki's shrank proportionally. Epoch 230's MinerLab/JetSki figure (311 computors, 46.0%) was independently cross-validated against a Discord user's own separate lite-node/indexer analysis of the same epoch, which arrived at the exact same 311. Their qli figure (365) is higher than ours (323) — the 42-computor gap is real seats where we found zero real-payout signal in our data at our established 100M-QU detection floor; unresolved whether that's a detection-floor gap on our side or their methodology smoothing over the same edge case. Not treating epoch 230 as "the duopoly is breaking up" — it's one epoch with a real, flagged discrepancy, not a clean read yet.</p>
+<p class="small">Real, direct on-chain money-flow census for four separate points in time (676/676, 676/676, 653/653, and 675/676 resolved). A steady, monotonic multi-epoch trend through epoch 229 — qli's share roughly doubled while MinerLab/JetSki's shrank proportionally, then jumped again to 53.8% in epoch 230. Epoch 230's MinerLab/JetSki figure (311 computors, 46.0%) was independently cross-validated against a Discord user's own separate lite-node/indexer analysis of the same epoch, which arrived at the exact same 311. Our first-pass qli figure (323) initially undercounted theirs (365) by 42 — traced the full gap: 41 of those 42 had a real, substantial epoch-230 payout (confirmed directly against the protocol's own per-computor revenue record, owner=qli) that our money-flow trace missed only because those computors hadn't yet swept the funds onward to a hub wallet. The 1 true remainder never earned any epoch-230 revenue at all — its only activity is a live epoch-231 candidacy bond — confirmed absent from the protocol's own revenue record too, not just our trace.</p>
 
 <h2>Funding-based census (real first-transaction tracing, automated)</h2>
 <div class="card">
