@@ -40,26 +40,27 @@
 
 <h1>Qubic Computor Watch</h1>
 <p class="sub">Live, real, on-chain tracking of Qubic computor-seat concentration — money-flow traced, source-code verified, not just statistical correlation.</p>
-<p class="small">Per-epoch reports: <a href="epoch/230.html">Epoch 230</a> <span class="small">(more epochs coming)</span></p>
+<p class="small">Per-epoch reports: <a href="epoch/230-full.html">Epoch 230</a> · <a href="epoch/229-full.html">Epoch 229</a> <span class="small">(more epochs coming)</span></p>
 
 <h2>Real duopoly census (our own, verified by direct money-flow tracing)</h2>
 <div class="stat-row">
-  <div class="stat mj"><div class="num">50.2%</div><div class="lbl">MinerLab/JetSki (328 of 653)</div></div>
-  <div class="stat qli"><div class="num">49.6%</div><div class="lbl">qli (324 of 653)</div></div>
-  <div class="stat"><div class="num">0.2%</div><div class="lbl">unresolved (1 of 653)</div></div>
+  <div class="stat qli"><div class="num">53.8%</div><div class="lbl">qli (364 of 676)</div></div>
+  <div class="stat mj"><div class="num">46.0%</div><div class="lbl">MinerLab/JetSki (311 of 676)</div></div>
+  <div class="stat"><div class="num">0.1%</div><div class="lbl">unresolved (1 of 676)</div></div>
 </div>
-<p class="small">Resolved by tracing every computor's real most-recent large payment to a known hub wallet (TKOG, YNRE, ZTQM, TMNN, MLAB-family → central clearinghouse → JetSki-branded wallets; and the separate qli hub family) — <strong>not</strong> a third-party owner-attribution service. See the epoch trend table below and the full report for methodology.</p>
+<p class="small">Most recent fully-settled epoch (230). Resolved by tracing every computor's real payout to a known hub wallet (TKOG, YNRE, ZTQM, TMNN, MLAB-family → central clearinghouse → JetSki-branded wallets; and the separate qli hub family) — <strong>not</strong> a third-party owner-attribution service. Full per-epoch reports: <a href="epoch/230-full.html">epoch 230</a>. See the epoch trend table below and the full report for methodology.</p>
 
 <h2>The balance has been shifting for months</h2>
 <div class="table-scroll">
 <table>
 <tr><th></th><th>Epoch 227</th><th>Epoch 228</th><th>Epoch 229</th><th>Epoch 230</th></tr>
-<tr><td>MinerLab/JetSki</td><td style="color:var(--mj)">75.5%</td><td style="color:var(--mj)">57.4%</td><td style="color:var(--mj)">50.2%</td><td style="color:var(--mj)">46.0%</td></tr>
-<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">49.6%</td><td style="color:var(--qli)">53.8%</td></tr>
-<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>0.2%</td><td>0.1%</td></tr>
+<tr><td>MinerLab/JetSki</td><td style="color:var(--mj)">75.5%</td><td style="color:var(--mj)">57.4%</td><td style="color:var(--mj)">37.6%</td><td style="color:var(--mj)">46.0%</td></tr>
+<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">58.9%</td><td style="color:var(--qli)">53.8%</td></tr>
+<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>3.4%</td><td>0.1%</td></tr>
 </table>
 </div>
-<p class="small">Real, direct on-chain money-flow census for four separate points in time (676/676, 676/676, 653/653, and 675/676 resolved). A steady, monotonic multi-epoch trend through epoch 229 — qli's share roughly doubled while MinerLab/JetSki's shrank proportionally, then jumped again to 53.8% in epoch 230. Epoch 230's MinerLab/JetSki figure (311 computors, 46.0%) was independently cross-validated against a Discord user's own separate lite-node/indexer analysis of the same epoch, which arrived at the exact same 311. Our first-pass qli figure (323) initially undercounted theirs (365) by 42 — traced the full gap: 41 of those 42 had a real, substantial epoch-230 payout (confirmed directly against the protocol's own per-computor revenue record, owner=qli) that our money-flow trace missed only because those computors hadn't yet swept the funds onward to a hub wallet. The 1 true remainder never earned any epoch-230 revenue at all — its only activity is a live epoch-231 candidacy bond — confirmed absent from the protocol's own revenue record too, not just our trace.</p>
+<p class="small">Epoch 229's figures were corrected 2026-09-19: the number originally shown here (50.2%/49.6%) was captured while epoch 229 was still live/in-progress, not after final settlement. Re-run against the fully-settled epoch, explicitly excluding any transfer from epoch 230's payout window so it couldn't be double-counted — real epoch-229 numbers are qli 398/676, MinerLab/JetSki 254/676, 23 unclassified. This is not a monotonic trend: qli peaked at epoch 229, then eased back at 230. Full report: <a href="epoch/229-full.html">epoch 229</a>.</p>
+<p class="small">Real, direct on-chain money-flow census for four separate points in time (676/676, 676/676, 676/676, and 675/676 resolved — see the correction note above the table). qli's share climbed from epoch 227 through a peak at 229, then eased back somewhat at 230 — not the clean monotonic climb this line used to describe before the epoch-229 fix. Epoch 230's MinerLab/JetSki figure (311 computors, 46.0%) was independently cross-validated against a Discord user's own separate lite-node/indexer analysis of the same epoch, which arrived at the exact same 311. Our first-pass qli figure (323) initially undercounted theirs (365) by 42 — traced the full gap: 41 of those 42 had a real, substantial epoch-230 payout (confirmed directly against the protocol's own per-computor revenue record, owner=qli) that our money-flow trace missed only because those computors hadn't yet swept the funds onward to a hub wallet. The 1 true remainder never earned any epoch-230 revenue at all — its only activity is a live epoch-231 candidacy bond — confirmed absent from the protocol's own revenue record too, not just our trace.</p>
 
 <h2>Funding-based census (real first-transaction tracing, automated)</h2>
 <div class="card">

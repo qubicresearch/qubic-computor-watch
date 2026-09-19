@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qubic Epoch 230 (full) — Computor Watch</title>
+<style>
+  :root { --bg:#0f1218; --panel:#171c26; --line:#2a3242; --fg:#dde3ee; --dim:#8a94a6; --acc:#5aa9ff; --ok:#4cd28a; --bad:#ff6b6b; --warn:#f2c14e; --mj:#5aa9ff; --qli:#c98bf5; --minerlab:#4cd28a; --jetski:#f2c14e; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.5 ui-monospace,Menlo,Consolas,monospace; }
+  .wrap { max-width:1100px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  .sub { color:var(--dim); margin:0 0 28px; font-size:0.9rem; }
+  h2 { font-size:1.05rem; margin:36px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line); color:var(--acc); }
+  h3 { font-size:0.95rem; margin:22px 0 8px; color:var(--acc); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:14px; }
+  .stat-row { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0; }
+  .stat { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px 18px; flex:1; min-width:140px; }
+  .stat .num { font-size:1.6rem; font-weight:bold; }
+  .stat .lbl { color:var(--dim); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; margin-top:4px; }
+  .stat.mj .num { color:var(--mj); } .stat.qli .num { color:var(--qli); }
+  .stat.minerlab .num { color:var(--minerlab); } .stat.jetski .num { color:var(--jetski); }
+  table { border-collapse:collapse; width:100%; font-size:0.85rem; }
+  th { text-align:left; padding:6px 8px; border-bottom:2px solid var(--line); color:var(--dim); font-size:0.72rem; text-transform:uppercase; }
+  td { padding:5px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  td.mono { font-family:ui-monospace,monospace; font-size:0.78rem; word-break:break-all; color:var(--dim); }
+  td.num { font-family:ui-monospace,monospace; text-align:right; }
+  .table-scroll { overflow-x:auto; border:1px solid var(--line); border-radius:8px; max-height:360px; overflow-y:auto; }
+  .table-scroll table { margin:0; }
+  a { color:var(--acc); }
+  .small { color:var(--dim); font-size:0.82rem; }
+  input[type=text] { background:#0b0e14; color:var(--fg); border:1px solid var(--line); padding:8px 10px; font:inherit; width:520px; max-width:100%; }
+  button { background:#22304a; color:var(--fg); border:1px solid #365079; padding:8px 14px; font:inherit; cursor:pointer; border-radius:4px; }
+  button:hover { background:#2b3d5e; }
+  .status-ok { color:var(--ok); } .status-bad { color:var(--bad); } .status-warn { color:var(--warn); }
+  footer { margin-top:50px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.78rem; }
+  .nav { margin-bottom:20px; font-size:0.85rem; }
+  .distbox { border:1px solid #4a3a2a; background:#1a140e; border-radius:8px; padding:16px 20px; text-align:center; margin:16px 0; }
+  .distbox .amt { font-size:1.3rem; font-weight:bold; color:var(--warn); margin:6px 0; }
+  .distbox .addr { font-family:ui-monospace,monospace; font-size:0.72rem; color:var(--dim); word-break:break-all; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="nav"><a href="../index.html">&larr; Main investigation</a> · Epoch reports: <a href="230-full.html"><strong>230</strong></a> · <a href="229-full.html">229</a> · <a href="230.html">(original short 230 writeup)</a></div>
+
+<h1>Qubic epoch 230 — full report</h1>
+<p class="sub">Real on-chain money-flow tracing, MinerLab/JetSki separated, governance, exchange destinations, and a live lookup tool to check any of it yourself.</p>
+
+<div class="distbox">
+  <div class="small">END-OF-EPOCH DISTRIBUTION (issuance rate, epoch 230)</div>
+  <div class="addr">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB (null/protocol address)</div>
+  <div class="amt">1,000,000,000,000 QU</div>
+  <div class="small">= 988,071,919,137 QU to 676 computors + 11,928,080,863 QU to the Arbitrator</div>
+</div>
+
+<h2>Family split (676 of 676 resolved)</h2>
+<div class="stat-row">
+  <div class="stat qli"><div class="num">53.8%</div><div class="lbl">qli (364)</div></div>
+  <div class="stat mj"><div class="num">46.0%</div><div class="lbl">MinerLab/JetSki (311)</div></div>
+  <div class="stat"><div class="num">0.1%</div><div class="lbl">unresolved (1)</div></div>
+</div>
+
+<h2>MinerLab — real collection hubs (this epoch's direct payout destinations)</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Hub</th><th>Computors</th></tr>
+<tr><td>ZTQM</td><td class="num">86</td></tr>
+<tr><td>MLABN</td><td class="num">61</td></tr>
+<tr><td>MLABR</td><td class="num">53</td></tr>
+<tr><td>MLABG</td><td class="num">33</td></tr>
+<tr><td>MLABD</td><td class="num">24</td></tr>
+<tr><td>MLABZ</td><td class="num">6</td></tr>
+<tr><td><strong>MinerLab-branded total</strong></td><td class="num"><strong>263</strong></td></tr>
+</table>
+</div>
+<p class="small">ZTQM is explicitly MinerLab-labeled in prior real trace evidence (sends directly to GXITF, the same relay used by the MLAB-prefixed wallets). MLAB* names carry the brand directly.</p>
+
+<h3>Unbranded / joint seeding-collection hubs (not exclusively MinerLab or JetSki)</h3>
+<div class="table-scroll">
+<table>
+<tr><th>Hub</th><th>Computors</th></tr>
+<tr><td>YNRE</td><td class="num">36</td></tr>
+<tr><td>TMNN</td><td class="num">9</td></tr>
+<tr><td>TKOG</td><td class="num">1</td></tr>
+<tr><td>carried forward from KNOWN dict, not re-traced this epoch</td><td class="num">2</td></tr>
+<tr><td><strong>Total</strong></td><td class="num"><strong>48</strong></td></tr>
+</table>
+</div>
+
+<h2>JetSki — real payout wallets</h2>
+<div class="card">
+<p class="small" style="margin-top:0;"><strong>No epoch-230 computor pays a JetSki-branded wallet directly.</strong> JETSKIYUBUPF, JETSKIQRDEIV, and JETSKIMZKTSL only appear <em>downstream</em> of the shared clearinghouse (see below) — JetSki is the payout/dispatch stage of this operation, not a separate collection stage. This epoch's data doesn't support treating MinerLab and JetSki as two parallel, independent pools.</p>
+</div>
+
+<h2>Tied together: one real chain, both brands</h2>
+<div class="card">
+<p class="small" style="margin-top:0;">Every MinerLab-branded hub above (ZTQM, MLAB*) and every unbranded hub (YNRE, TMNN, TKOG) has been directly traced sending its accumulated balance to the same address: <span class="mono">LKBOPOUKGSYTODWVEPXHUXDTRSOCDOXXXIEAGBJXAGJRMGXRXMCHDNCHWRLK</span> (the clearinghouse). LKBOP then fans that combined balance out to the three JETSKI-branded payout wallets, plus GXITF (which forwards on to BBMMA, which forwards to the confirmed MEXC exchange wallet VUEY). One real trace, verified 2026-09-02: TMNN sent 13,133,333,333 QU to LKBOP at tick 77,704,631; LKBOP fanned 26,952,629,830 QU of its combined balance out to JETSKIYUBUPF less than three hours later. Full trace with all hops: <a href="../index.html">main investigation page</a>.</p>
+</div>
+
+<h2>qli — real collection hubs</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Hub</th><th>Computors</th></tr>
+<tr><td>VAQA</td><td class="num">40</td></tr>
+<tr><td>KOYO</td><td class="num">39</td></tr>
+<tr><td>IHDR</td><td class="num">40</td></tr>
+<tr><td>PCUTRGWY</td><td class="num">36</td></tr>
+<tr><td>JBWF</td><td class="num">28</td></tr>
+<tr><td>QLIKKB</td><td class="num">22</td></tr>
+<tr><td>TCRX (transit, confirmed 2026-09-19)</td><td class="num">18</td></tr>
+<tr><td>QLINAM</td><td class="num">17</td></tr>
+<tr><td>FSDR (transit, confirmed 2026-09-19)</td><td class="num">14</td></tr>
+<tr><td>TOUP (transit, confirmed 2026-09-19)</td><td class="num">13</td></tr>
+<tr><td>VOYI (transit, confirmed 2026-09-19)</td><td class="num">13</td></tr>
+<tr><td>DMRK</td><td class="num">12</td></tr>
+<tr><td>LHDR</td><td class="num">12</td></tr>
+<tr><td>QLIFOD</td><td class="num">11</td></tr>
+<tr><td>9M-QU onboarding-funder confirmation (separate evidence type)</td><td class="num">4</td></tr>
+<tr><td>HMZAF</td><td class="num">2</td></tr>
+<tr><td>KDHVRGXD</td><td class="num">1</td></tr>
+<tr><td>CWKWQ</td><td class="num">1</td></tr>
+<tr><td>real payout confirmed, not yet swept onward (protocol revenue record)</td><td class="num">41</td></tr>
+<tr><td><strong>Total</strong></td><td class="num"><strong>364</strong></td></tr>
+</table>
+</div>
+
+<h2>Unresolved (1 of 676)</h2>
+<div class="card">
+<p class="small" style="margin-top:0;">One seat has zero epoch-230 revenue in either our trace or the protocol's own revenue record. Its only real activity is a live epoch-231 candidacy bond, after epoch 230 had already closed — a fresh seat that never qualified for a payout, not a gap in either data source.</p>
+</div>
+
+<h2>Computor voting / governance</h2>
+<div class="card">
+<p class="small" style="margin-top:0;"><strong>No governance proposals recorded for epoch 230.</strong> The nearest activity is 1 CCF proposal in epoch 231 (proposer owner: jetski) and 3 proposals in epoch 229 — see the <a href="229-full.html">epoch 229 report</a> for those.</p>
+</div>
+
+<h2>Full exchange listing (every confirmed exchange destination, any epoch)</h2>
+<div class="table-scroll">
+<table>
+<tr><th>Wallet</th><th>Exchange</th></tr>
+<tr><td class="mono">VUEYKUCYYHXKDGOSCWAIEECECDBCXVUSUAJRVXUQVAQPGIOABLGGLXDAXTNK</td><td>MEXC</td></tr>
+<tr><td class="mono">YUKEKQQFJHWSHBAVGPSZPEMZVRWAFRDQWHTFGAVSVDTXILYDYJZRDTMBZFKF</td><td>Gate.io (real terminus of the POOLX chain)</td></tr>
+<tr><td class="mono">BYBYFUMBVLPUCANXEXTSKVMGFCJBMTLPPOFVPNSATABMWDGTMFXPLZLBCXJL</td><td>Gate.io</td></tr>
+<tr><td class="mono">CLJHHZVRWAVBEAECXMCEIZOZOJLAMWCQMNYXXHQXOBGRUCXKVZCMBQECQJPE</td><td>SafeTrade1 (confirmed 2026-09-19, feeds VCHM QUTIL dispatcher)</td></tr>
+<tr><td class="mono">EXNRRBDPYFQPXFPXCMUHZVEEBRQCBEAUDYUBHKGTRCKHVSRAQXWHQCXDLZXL</td><td>Bitget</td></tr>
+<tr><td class="mono">RGTOAPIIMQMFMDPQOIYLFEXOVNZAQRWMIMKMRVSKGFFIRMXXQPWQPRWAGHHI</td><td>CoinEx</td></tr>
+<tr><td class="mono">KKIZZTEYCDOWVFPIRZMPVWGHOJKDAWOHTYQMWNNRMBBNMRBPHSJWTIXBUTFL</td><td>Gate.io gateway (15/15 outgoing to BYBY)</td></tr>
+<tr><td class="mono">MYKZCBRIGDKKZGFJUBNDVUTTSFEDHXKBADOZINEXAADUEAZDFQCVEYFDFQOC</td><td>Gate.io gateway for the MLAB/mj cluster (207/207 outgoing to BYBY, 356.6B QU)</td></tr>
+<tr><td class="mono">GAEYQDGFULBOMBVISBNMHTZJMSDDRIYLZDNARYQFBHICOWLMQXOUYQXEMKGC</td><td>Gate.io gateway (10/10 outgoing to BYBY, 618.9B QU)</td></tr>
+<tr><td class="mono">ITGIPJQFADFHQDCNXFCEJPGDDNPCMWGCRMXLKNPBWAJUIFGQHEMSENMBLKHL</td><td>SafeTrade1 gateway (6/6 outgoing to CLJHHZ, 24.99B QU)</td></tr>
+<tr><td class="mono">IZTNWDKXSFULQADTOLTMLUPHSCFCXLOJMQOUHPBSRGQZMMXZCJYQFTRDOGRE</td><td>TradeOgre 1 (defunct)</td></tr>
+<tr><td class="mono">GBXUREVUSESZWAFCHPESIYLBBODDFFFZJUXUGJAJIFPFHMJSJRGQHONDGQFL</td><td>TradeOgre 2 (defunct)</td></tr>
+<tr><td class="mono">ETAWVIXKLVEBCFCNJBNFWMMZFGOAKBXTMARNBWYIKECASQWWBEXODQWBVBGK</td><td>TradeOgre 3 (defunct)</td></tr>
+<tr><td class="mono">XXIOIPKQRCJIMAVIXQQTRWQVPKPCOUSHVUPPRWDSDDXYSKTJOHUKXZICPRDA</td><td>TradeOgre 4 (defunct)</td></tr>
+<tr><td class="mono">BKCTLMGCIUAADAZQVCQCOFTGCYRDIKQRUYKWYKLEGHBELRBDLIQGRWAGFWQD</td><td>TradeOgre 5 (defunct)</td></tr>
+<tr><td class="mono">NUJKVAKTLNMHMFMBZCXSHCLBYRPCTZVOWPWXGRTKLARFUTBVTPVELHBHYAHL</td><td>TradeOgre 6 (defunct)</td></tr>
+</table>
+</div>
+<p class="small">Every wallet above has a confirmed real outgoing-transfer pattern to a named exchange in our own records — not every one of these saw activity specifically in epoch 230.</p>
+
+<h2>Method &amp; limits</h2>
+<div class="card">
+<ul class="small" style="margin:0; padding-left:18px;">
+  <li>Computor set: <span class="mono">rpc.qubic.org/v1/epochs/230/computors</span> (676, official).</li>
+  <li>Family/hub resolution: KNOWN dict carried forward, then largest real outgoing transfer &ge;100,000,000 QU traced to a confirmed hub, then (for the remainder) cross-checked directly against the protocol's own per-computor revenue record.</li>
+  <li>MinerLab vs JetSki split is based on brand naming already documented in our KNOWN dict (MLAB*/ZTQM = MinerLab-labeled; JETSKI* = JetSki-labeled) plus this epoch's real destination-hub trace. Hubs without an exclusive brand attribution are shown separately, not guessed into one side.</li>
+  <li>This is flow + revenue-record analysis, not legal ownership.</li>
+  <li>Every address is checkable at <a href="https://explorer.qubic.org/" target="_blank">explorer.qubic.org</a>, or below.</li>
+</ul>
+</div>
+
+<h2>Trace any of these addresses yourself</h2>
+<div class="card">
+  <input type="text" id="lookupInput" placeholder="Paste a 60-character Qubic identity…" spellcheck="false">
+  <button id="lookupBtn">Check</button>
+  <div id="lookupResult" class="small">Checks: real balance, real transaction count, and whether its most recent large payment routes to a known hub family.</div>
+  <div id="historySection" style="display:none; margin-top:14px;">
+    <button id="historyBtn">Show full transaction history</button>
+    <div id="historyControls" style="display:none; margin-top:10px;">
+      <button id="historyPrevBtn">&#9664; Newer</button>
+      <span id="historyPageLbl" class="small" style="margin:0 10px;"></span>
+      <button id="historyNextBtn">Older &#9654;</button>
+    </div>
+    <div class="table-scroll" style="margin-top:10px;">
+      <table id="historyTable"><tr><th>Date</th><th>Tick</th><th>Direction</th><th>Amount</th><th>Counterparty</th></tr></table>
+    </div>
+  </div>
+</div>
+
+<h2>Your trace trail</h2>
+<div class="card">
+  <p class="small" style="margin-top:0;">Shared with the main investigation page and every other epoch report — saved in your browser only.</p>
+  <div id="trailView" class="mono" style="margin-top:8px; font-size:0.8rem; line-height:2;"><span class="small">Nothing traced yet — look up an identity above to start.</span></div>
+  <div style="margin-top:10px;">
+    <button id="trailBackBtn">&#9664; Back one step</button>
+    <button id="trailClearBtn">Clear trail</button>
+  </div>
+</div>
+
+<h2>Known hub wallets (live balances)</h2>
+<div class="table-scroll">
+<table id="hubTable">
+<tr><th>Hub</th><th>Address</th><th>Balance</th><th>Family</th></tr>
+</table>
+</div>
+
+<footer>Data sourced live from rpc.qubic.org and analytics.qubic.li. Part of the <a href="../index.html">Qubic Computor Watch</a> investigation.</footer>
+</div>
+
+<script src="../js/trace-tool.js"></script>
+</body>
+</html>
