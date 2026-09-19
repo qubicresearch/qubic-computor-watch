@@ -52,13 +52,13 @@
 <h2>The balance has been shifting for months</h2>
 <div class="table-scroll">
 <table>
-<tr><th></th><th>Epoch 227</th><th>Epoch 228</th><th>Live (epoch 229)</th></tr>
-<tr><td>MinerLab/JetSki</td><td style="color:var(--mj)">75.5%</td><td style="color:var(--mj)">57.4%</td><td style="color:var(--mj)">50.2%</td></tr>
-<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">49.6%</td></tr>
-<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>0.2%</td></tr>
+<tr><th></th><th>Epoch 227</th><th>Epoch 228</th><th>Epoch 229</th><th>Epoch 230</th></tr>
+<tr><td>MinerLab/JetSki</td><td style="color:var(--mj)">75.5%</td><td style="color:var(--mj)">57.4%</td><td style="color:var(--mj)">50.2%</td><td style="color:var(--mj)">46.0%</td></tr>
+<tr><td>qli</td><td style="color:var(--qli)">24.0%</td><td style="color:var(--qli)">41.5%</td><td style="color:var(--qli)">49.6%</td><td style="color:var(--qli)">47.8%</td></tr>
+<tr><td>Other/unresolved</td><td>0.5%</td><td>1.1%</td><td>0.2%</td><td>6.2%</td></tr>
 </table>
 </div>
-<p class="small">Real, direct on-chain money-flow census for three separate points in time (676/676, 676/676, and 653/653 resolved). A steady, monotonic multi-epoch trend, not a single jump — qli's share has roughly doubled while MinerLab/JetSki's has shrunk proportionally. The duopoly itself is completely stable; what's changed is the balance of power between the two.</p>
+<p class="small">Real, direct on-chain money-flow census for four separate points in time (676/676, 676/676, 653/653, and 634/676 resolved). A steady, monotonic multi-epoch trend through epoch 229 — qli's share roughly doubled while MinerLab/JetSki's shrank proportionally. Epoch 230's MinerLab/JetSki figure (311 computors, 46.0%) was independently cross-validated against a Discord user's own separate lite-node/indexer analysis of the same epoch, which arrived at the exact same 311. Their qli figure (365) is higher than ours (323) — the 42-computor gap is real seats where we found zero real-payout signal in our data at our established 100M-QU detection floor; unresolved whether that's a detection-floor gap on our side or their methodology smoothing over the same edge case. Not treating epoch 230 as "the duopoly is breaking up" — it's one epoch with a real, flagged discrepancy, not a clean read yet.</p>
 
 <h2>Funding-based census (real first-transaction tracing, automated)</h2>
 <div class="card">
