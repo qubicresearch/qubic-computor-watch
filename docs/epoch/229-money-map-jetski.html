@@ -121,6 +121,28 @@
 
   <p style="color:var(--dim); font-size:0.8rem; max-width:70ch; margin:24px auto 0; text-align:center;">EJSX is a dedicated relay (100% pass-through to MEXC, its only-ever destination across its full history). Within epoch 229 it carried 3.17B QU from JETSKIYUBUPF (ticks 77719685, 77722746) &mdash; JETSKIQRDEIV and JETSKIMZKTSL had no EJSX activity this epoch. EJSX's lifetime history also shows a real but one-time link to MinerLab's own named wallets (epochs 172&ndash;178 only, ~536M QU, nothing since) &mdash; see the <a href="229-side-by-side-v12.html" style="color:var(--mj);">MinerLab comparison</a> for that.</p>
 
+  <h2 style="font-size:0.95rem; color:var(--ink); margin:44px 0 14px; border-top:1px solid var(--line); padding-top:24px; text-align:center;">Vote breakdown &mdash; ZTQM vs TMNN, epoch 229's 3 real proposals</h2>
+  <p class="sub" style="text-align:center; margin-inline:auto;">3 real governance proposals were live in epoch 229: GQMPROP GeneralOptions (proposal tick 77994817, proposer qli) and two CCF Transfer proposals (78369421 and 78369500, both proposer jetski). Real vote-cast transactions decoded from the CCF/GQMPROP contracts' own transfer history.</p>
+
+  <div style="max-width:640px; margin:0 auto; font-size:0.85rem;">
+    <div style="border-bottom:1px solid var(--line); padding:12px 0;">
+      <strong style="color:var(--ink);">Proposal 77994817 (GQMPROP GeneralOptions)</strong><br>
+      <span style="color:var(--dim);">ZTQM: 51/51 voted. TMNN: 24/25 voted (one seat, RLGYBGHHIRLW&hellip;, has zero votes on this specific proposal &mdash; it did vote on the other two).</span><br>
+      <span style="color:var(--dim);">Timing: ZTQM's full 51 + 9 of TMNN's 25 voted together within ~2 seconds (ticks 78942712&ndash;78944711). The remaining 15 TMNN computors voted separately, ~203,000 ticks later (ticks 79146182&ndash;79146202, roughly 2.4 days on).</span>
+    </div>
+    <div style="border-bottom:1px solid var(--line); padding:12px 0;">
+      <strong style="color:var(--ink);">Proposal 78369421 (CCF Transfer, proposer jetski)</strong><br>
+      <span style="color:var(--dim);">ZTQM: 50/51 voted. TMNN: 25/25 voted.</span><br>
+      <span style="color:var(--dim);">Timing: same two-wave pattern &mdash; ZTQM's block + a small TMNN slice together first (ticks 78835939&ndash;78944795), remainder of TMNN following later (ticks 79146265&ndash;79146279).</span>
+    </div>
+    <div style="padding:12px 0;">
+      <strong style="color:var(--ink);">Proposal 78369500 (CCF Transfer, proposer jetski)</strong><br>
+      <span style="color:var(--dim);">ZTQM: 50/51 voted. TMNN: 25/25 voted.</span><br>
+      <span style="color:var(--dim);">Timing: same pattern again &mdash; ZTQM's block + a small TMNN slice together first (ticks 78835877&ndash;78944848), remainder of TMNN following later (ticks 79146340&ndash;79146357).</span>
+    </div>
+  </div>
+  <p style="color:var(--dim); font-size:0.8rem; max-width:70ch; margin:14px auto 0; text-align:center;">On all 3 proposals, the small TMNN slice that voted alongside ZTQM was verified against the classification cache &mdash; each of those computors' own largest real epoch-229 payout goes directly to the TMNN wallet, same as the rest of TMNN. They're correctly classified; this is a real timing split in how the operator cast votes, not a data error.</p>
+
   <footer>Every address above is a real epoch-229 computor confirmed by its own largest real payout transaction, cross-checked against <span style="color:var(--ink)">rpc.qubic.org/v1/epochs/229/computors</span>. Hover/tap any chip for the full 60-character address.</footer>
 </div>
 
