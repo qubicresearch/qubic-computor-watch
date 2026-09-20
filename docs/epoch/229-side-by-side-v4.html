@@ -41,7 +41,7 @@
   footer a { color:var(--dim); }
 
   /* only new thing: two of the above, side by side, horizontal scroll */
-  .dual-scroll { overflow-x:auto; padding-bottom:16px; }
+  .dual-scroll { padding-bottom:16px; }
   .dual { display:flex; align-items:flex-start; gap:0; width:max-content; }
   .col { width:900px; flex:0 0 auto; }
 
@@ -128,9 +128,10 @@
       <h1>MinerLab Flow Map</h1>
       <p class="sub">Real, on-chain money flow through MinerLab's collection hubs, epoch 229 only (tick window 77,700,885&ndash;79,301,927). Same format as the LKBOP map: individual computors at the top of each branch, the hub in the middle, final destination at the bottom. Every node and figure is a confirmed transaction.</p>
 
-      <div class="section-lbl">176 real computors, epoch 229 &middot; all 7 hubs, full lists, nothing hidden</div>
+      <div class="section-lbl">176 real computors, epoch 229 &middot; all 7 hubs, full lists, nothing hidden &middot; scroll this row sideways</div>
 
-      <div class="tier" style="flex-wrap:nowrap; justify-content:flex-start; gap:16px;">
+      <div style="overflow-x:auto; padding-bottom:8px;">
+      <div class="tier" style="flex-wrap:nowrap; justify-content:flex-start; gap:16px; width:max-content;">
         <div class="leaf-box" style="width:auto; max-width:none;">
           <div class="leaf-count">50 computors &rarr; MLABN</div>
           <div class="leaves" id="mlabn-leaves"></div>
@@ -160,8 +161,11 @@
           <div class="leaves" id="mlabz-leaves"></div>
         </div>
       </div>
+      </div>
 
-      <div class="flow" style="margin-top:24px;">
+      <div class="connector" style="margin-top:10px;"><div class="line"></div><div class="arrow">&darr;</div></div>
+
+      <div class="flow">
 
         <div class="tier">
           <div class="chain">

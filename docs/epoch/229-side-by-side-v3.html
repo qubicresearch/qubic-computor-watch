@@ -42,8 +42,13 @@
 
   /* only new thing: two of the above, side by side, horizontal scroll */
   .dual-scroll { overflow-x:auto; padding-bottom:16px; }
-  .dual { display:flex; align-items:flex-start; gap:60px; width:max-content; }
+  .dual { display:flex; align-items:flex-start; gap:0; width:max-content; }
   .col { width:900px; flex:0 0 auto; }
+
+  .cross { flex:0 0 220px; display:flex; flex-direction:column; align-items:center; gap:8px; padding-top:930px; }
+  .cross .cross-lbl { font-size:0.64rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:center; }
+  .cross .arrow-h { font-size:1.2rem; color:var(--dim); line-height:1; }
+  .cross .side-lbl { font-size:0.72rem; color:var(--ink); text-align:center; }
 </style>
 
 <div class="dual-scroll">
@@ -108,22 +113,58 @@
       <footer>Every address above is a real epoch-229 computor confirmed by its own largest real payout transaction, cross-checked against <span style="color:var(--ink)">rpc.qubic.org/v1/epochs/229/computors</span>. Hover/tap any chip for the full 60-character address.</footer>
     </div>
 
+    <div class="cross">
+      <div class="cross-lbl">real, confirmed crossover</div>
+      <div class="side-lbl">JETSKIYUBUPF &rarr;</div>
+      <div class="node hub" style="min-width:0;"><div class="name">EJSX</div><div class="amt">exact pass-through, 100%</div></div>
+      <div class="side-lbl">&larr; SafeTrade1 (both trees' own SafeTrade1)</div>
+      <div class="arrow-h">&darr;</div>
+      <div class="node exch" style="min-width:0;"><div class="name">MEXC</div><div class="amt">via VUEY &mdash; same MEXC both trees reach</div></div>
+      <div class="cross-lbl" style="margin-top:6px;">epoch-229 ticks 77719685 / 77722746 / 78425831 / 78721520</div>
+    </div>
+
     <div class="col">
       <div class="nav"><a href="../index.html">&larr; Main investigation</a> &middot; <a href="229-full.html">Epoch 229 full report</a></div>
       <h1>MinerLab Flow Map</h1>
       <p class="sub">Real, on-chain money flow through MinerLab's collection hubs, epoch 229 only (tick window 77,700,885&ndash;79,301,927). Same format as the LKBOP map: individual computors at the top of each branch, the hub in the middle, final destination at the bottom. Every node and figure is a confirmed transaction.</p>
 
-      <div class="flow">
+      <div class="section-lbl">176 real computors, epoch 229 &middot; all 7 hubs, full lists, nothing hidden</div>
 
-        <div class="section-lbl">118 real computors, epoch 229</div>
+      <div class="tier" style="flex-wrap:nowrap; justify-content:flex-start; gap:16px;">
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">50 computors &rarr; MLABN</div>
+          <div class="leaves" id="mlabn-leaves"></div>
+        </div>
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">23 computors &rarr; MLABR</div>
+          <div class="leaves" id="mlabr-leaves"></div>
+        </div>
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">16 computors &rarr; MLABD</div>
+          <div class="leaves" id="mlabd-leaves"></div>
+        </div>
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">10 computors &rarr; MLABG</div>
+          <div class="leaves" id="mlabg-leaves"></div>
+        </div>
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">19 computors &rarr; TKOG</div>
+          <div class="leaves" id="tkog-leaves"></div>
+        </div>
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">50 computors &rarr; YNRE &middot; open, no destination found</div>
+          <div class="leaves" id="ynre-leaves"></div>
+        </div>
+        <div class="leaf-box" style="width:auto; max-width:none;">
+          <div class="leaf-count">8 computors &rarr; MLABZ &middot; open, ETGB unresolved</div>
+          <div class="leaves" id="mlabz-leaves"></div>
+        </div>
+      </div>
+
+      <div class="flow" style="margin-top:24px;">
 
         <div class="tier">
           <div class="chain">
-            <div class="leaf-box">
-              <div class="leaf-count">50 computors &rarr; MLABN</div>
-              <div class="leaves" id="mlabn-leaves"></div>
-            </div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">MLABN</div><div class="amt">collection hub</div></div>
             <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="tier" style="gap:10px;">
@@ -132,11 +173,6 @@
             </div>
           </div>
           <div class="chain">
-            <div class="leaf-box">
-              <div class="leaf-count">23 computors &rarr; MLABR</div>
-              <div class="leaves" id="mlabr-leaves"></div>
-            </div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">MLABR</div><div class="amt">collection hub</div></div>
             <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">SSEG</div><div class="amt">1.4B QU &rarr; Gate.io</div></div>
@@ -145,11 +181,6 @@
 
         <div class="tier" style="margin-top:34px;">
           <div class="chain">
-            <div class="leaf-box">
-              <div class="leaf-count">16 computors &rarr; MLABD</div>
-              <div class="leaves" id="mlabd-leaves"></div>
-            </div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">MLABD</div><div class="amt">collection hub</div></div>
             <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="tier" style="gap:10px;">
@@ -158,11 +189,6 @@
             </div>
           </div>
           <div class="chain">
-            <div class="leaf-box">
-              <div class="leaf-count">10 computors &rarr; MLABG</div>
-              <div class="leaves" id="mlabg-leaves"></div>
-            </div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">MLABG</div><div class="amt">collection hub</div></div>
             <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="tier" style="gap:10px;">
@@ -174,11 +200,6 @@
 
         <div class="tier" style="margin-top:34px;">
           <div class="chain">
-            <div class="leaf-box">
-              <div class="leaf-count">19 computors &rarr; TKOG</div>
-              <div class="leaves" id="tkog-leaves"></div>
-            </div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">TKOG</div><div class="amt">collection hub</div></div>
             <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
             <div class="node hub"><div class="name">ITGIP</div><div class="amt">3.6B QU &rarr; SafeTrade1</div></div>
@@ -197,22 +218,9 @@
 
       </div>
 
-      <div class="section-lbl" style="margin-top:34px;">Open &mdash; not yet resolved to a real destination</div>
-
-      <div class="tier">
-        <div class="chain">
-          <div class="leaf-box">
-            <div class="leaf-count">50 computors &rarr; YNRE &middot; no real outgoing tx &ge;1B QU found this epoch</div>
-            <div class="leaves" id="ynre-leaves"></div>
-          </div>
-        </div>
-        <div class="chain">
-          <div class="leaf-box">
-            <div class="leaf-count">8 computors &rarr; MLABZ &middot; only destination is ETGB (1.47B QU), itself unresolved</div>
-            <div class="leaves" id="mlabz-leaves"></div>
-          </div>
-        </div>
-      </div>
+      <div class="section-lbl" style="margin-top:34px;">Open &mdash; not yet resolved to a real destination (addresses shown above)</div>
+      <p style="color:var(--dim); font-size:0.85rem; max-width:700px; margin:0 auto 6px; text-align:center;"><strong style="color:var(--ink)">YNRE</strong>: no real outgoing transaction &ge;1B QU found within epoch 229's tick window.</p>
+      <p style="color:var(--dim); font-size:0.85rem; max-width:700px; margin:0 auto; text-align:center;"><strong style="color:var(--ink)">MLABZ</strong>: only real destination is <strong style="color:var(--ink)">ETGB</strong> (1.47B QU), which itself sends to two unidentified addresses &mdash; not yet traced further.</p>
 
       <footer>Every address above is a real epoch-229 computor confirmed by its own largest real payout transaction, cross-checked against <span style="color:var(--ink)">rpc.qubic.org/v1/epochs/229/computors</span>. Hover/tap any chip for the full 60-character address.</footer>
     </div>
