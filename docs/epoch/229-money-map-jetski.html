@@ -1,0 +1,121 @@
+<title>229 Money Map - JetSki</title>
+<style>
+  :root {
+    --bg:#0b0e14; --panel:#161b24; --panel2:#1b2230; --line:#262d3d; --ink:#dde3ee; --dim:#8a94a6; --mj:#5aa9ff;
+    --exch:#f2c14e; --exch-bg:#332a12;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 ui-monospace,Menlo,Consolas,"SF Mono",monospace; padding-inline:16px; padding-block:32px 64px; }
+  .wrap { max-width:900px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 6px; letter-spacing:-0.01em; }
+  .sub { color:var(--dim); font-size:0.85rem; margin:0 0 28px; max-width:70ch; }
+  .nav { font-size:0.82rem; margin-bottom:28px; }
+  .nav a { color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); }
+  .nav a:hover { color:var(--ink); border-color:var(--dim); }
+
+  .flow { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .connector { display:flex; flex-direction:column; align-items:center; color:var(--dim); font-size:0.72rem; padding:6px 0; text-align:center; }
+  .connector .line { width:1px; height:20px; background:var(--line); }
+  .connector .arrow { line-height:1; }
+
+  .node { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; min-width:150px; text-align:center; }
+  .node.hub { border-left:3px solid var(--mj); text-align:left; }
+  .node .name { font-size:0.92rem; font-weight:700; }
+  .node .amt { font-size:0.76rem; color:var(--dim); margin-top:4px; font-variant-numeric:tabular-nums; }
+  .node.center { min-width:220px; padding:16px 20px; }
+  .node.center .name { font-size:1.2rem; color:var(--mj); }
+  .node.exch { background:var(--exch-bg); border-color:#4a3a12; border-left:3px solid var(--exch); }
+  .node.exch .name { color:var(--exch); }
+
+  .tier { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; width:100%; }
+  .chain { display:flex; flex-direction:column; align-items:center; gap:0; max-width:420px; }
+
+  .leaf-box { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:14px 16px; width:100%; }
+  .leaf-count { font-size:0.76rem; color:var(--dim); margin-bottom:10px; }
+  .leaves { display:flex; flex-wrap:wrap; gap:5px; }
+  .leaf { font-size:0.68rem; color:var(--dim); background:#10151e; border:1px solid var(--line); border-radius:4px; padding:3px 6px; font-family:ui-monospace,monospace; }
+  .leaf:hover { color:var(--ink); border-color:var(--mj); }
+
+  .section-lbl { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:center; width:100%; margin:6px 0 14px; }
+
+  footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.76rem; }
+  footer a { color:var(--dim); }
+</style>
+
+<div class="wrap">
+  <div class="nav"><a href="../index.html">&larr; Main investigation</a> &middot; <a href="229-full.html">Epoch 229 full report</a> &middot; <a href="229-side-by-side-v12.html">vs MinerLab</a></div>
+  <h1>LKBOP Flow Map</h1>
+  <p class="sub">Real, on-chain money flow through the LKBOP clearinghouse, epoch 229 only (tick window 77,700,885&ndash;79,301,927). One continuous downward flow: individual computors at the top, LKBOP in the middle, final destinations at the bottom. Every node and figure is a confirmed transaction.</p>
+
+  <div class="flow">
+
+    <div class="section-lbl">76 real computors, epoch 229</div>
+
+    <div class="tier">
+      <div class="chain">
+        <div class="leaf-box">
+          <div class="leaf-count">51 computors &rarr; ZTQM</div>
+          <div class="leaves" id="ztqm-leaves"></div>
+        </div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">ZTQM</div><div class="amt">collection hub</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">UYIG</div><div class="amt">100% fed by ZTQM &middot; 35.62B QU &rarr; LKBOP</div></div>
+      </div>
+      <div class="chain">
+        <div class="leaf-box">
+          <div class="leaf-count">25 computors &rarr; TMNN</div>
+          <div class="leaves" id="tmnn-leaves"></div>
+        </div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">TMNN</div><div class="amt">13.13B QU &rarr; LKBOP directly</div></div>
+      </div>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+
+    <div class="node center"><div class="name">LKBOP</div><div class="amt">epoch-229 real inflow: 48.75B QU &middot; outflow: 48.75B QU (off by 1 QU)</div></div>
+
+    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+
+    <div class="section-lbl">4 real destinations, 7 transactions</div>
+
+    <div class="tier">
+      <div class="chain">
+        <div class="node hub"><div class="name">JETSKIYUBUPF</div><div class="amt">48 recipients &middot; 41.0B QU</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">EJSX</div><div class="amt">3.17B QU of it &middot; exact pass-through relay</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node exch"><div class="name">MEXC</div><div class="amt">via VUEY</div></div>
+      </div>
+      <div class="node hub"><div class="name">JETSKIQRDEIV</div><div class="amt">50 recipients &middot; 4.0B QU</div></div>
+      <div class="node hub"><div class="name">JETSKIMZKTSL</div><div class="amt">32 recipients &middot; ~297M QU</div></div>
+    </div>
+
+    <div class="tier" style="margin-top:14px;">
+      <div class="chain">
+        <div class="node hub"><div class="name">YAQ</div><div class="amt">3.41B QU &middot; real collector, ~44.9B QU balance</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">FZSU</div><div class="amt">100% pass-through relay</div></div>
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA &middot; confirmed exchange</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="color:var(--dim); font-size:0.8rem; max-width:70ch; margin:24px auto 0; text-align:center;">EJSX is a dedicated relay (100% pass-through to MEXC, its only-ever destination across its full history). Within epoch 229 it carried 3.17B QU from JETSKIYUBUPF (ticks 77719685, 77722746) &mdash; JETSKIQRDEIV and JETSKIMZKTSL had no EJSX activity this epoch. EJSX's lifetime history also shows a real but one-time link to MinerLab's own named wallets (epochs 172&ndash;178 only, ~536M QU, nothing since) &mdash; see the <a href="229-side-by-side-v12.html" style="color:var(--mj);">MinerLab comparison</a> for that.</p>
+
+  <footer>Every address above is a real epoch-229 computor confirmed by its own largest real payout transaction, cross-checked against <span style="color:var(--ink)">rpc.qubic.org/v1/epochs/229/computors</span>. Hover/tap any chip for the full 60-character address.</footer>
+</div>
+
+<script>
+const ZTQM_COMPUTORS = ["AFUBEKWHJEGYIBDTQMWUAGDEAOHDEHUYAMUMCGMXLDOYOBIBPDIXJBUENROG", "BESPOWHKDESOMFXAILZPYDZSSCJBHOISDTKZTDHLZANRGUKZPGQGMZXFHXRC", "BMMKYVPZSSYKNGIQGBBCLURIUNBAFBNOBXDFUXESTGSIJXQYRBOAJUIALUSL", "BZADTLASVFWTJEJDHTBFCUQCRGSCTWOKJIXEFDLPSCPZENGSEAWMHGFDGEDN", "CBWZHLWQAPQLDEIPFOQRUZOUCOTBQAEPNJWVFATTLFNESATWSOLZKQDCHCMI", "CFHMMFOQUZNVODQFZMLBSIXNOCKCOQIYCBLANRJEDHKPHMLIDHNZNPIEPYXI", "CQNEUTRBFXQJQGLEZNUQTNVVTNNCKPTFCUVQKSWOGCMIVSKNUWMODKPBMFNL", "DETAIRTEJWDYKAMWELTERTIWALSDSCFENJVVGGMSQCCUAJAJHLRNBKKBRUFC", "EMKGYJLVTYZRUDXGRLAGFTVNVHUCYACWHGWXQNHIRBOKNISRWRZEHXNGLCNF", "FBEQUSYKGCJDYDLKVLLCENCDBUFDZFTAXMXVGFALNEKFURKMKLKUXSIGVTJM", "FNYNCRZNABOHMCNIFPHHJUPPXKWBFKSAJKWGFSGQMBWAEGRJFWYPZEWGDVSN", "FQCHJLTGUCDNPFPAEUSFZAAPTQUASLFQWOJKYCKXIAJEIERKQNDMHKZDTGMJ", "GVSAOJTJYDOKGFCJXJTYFWLOBAGDZCPZORRPDDMJVEGQAGOPVRCQZEHGQCUL", "HRDIIENAEBBFPFPATQQTIECLFOJAZSAXGMTWUDDKNBZNSHIRRWNEHGBEBAIH", "HSHZKUMPAPKBUBNPGBARHKRXEVECQFXIZIMOHETNTDCKJAFACRQPVPZFALQO", "IKLMHPSUPVWSZCPGGENNSMUQRVDBBXZXIODYSAERYFVKVMXRXBUAGMBHEJMO", "ISRLBJTPTZPLCAYTBXEIJXSXHDNAJERNBONLASLKVCNWRIMBNXYKLOGASFMC", "JCUDUWHIXQSMXEGQHTRVBJJBLURAYZIIKGRPEPTCQFCBPTTVRIYPFZHGCLCJ", "JUAOQCNPSTSABAHECPKESPQZAJXCGVOCEIHKJKWCCDICSPKRUQMILRHFOUIH", "KAIYIMSAYLQYFCMCFKLBMTDUPYJAHZLJZBDFVFFYTBBLPVZBPOBGMJTEEYAC", "KEHTKOYGHNXZHGXYONTEHGBUGEWBYWBIQHTCSZHNXFWWTPNIKLXGJHDAHPBI", "KRKYRAKEASDKHCYBBREPNLFRLCSCSAFYIHJDZMFFGHROEIPBWGOEDCNEUMJB", "LMLFJDUVALQKNETBEAQBOOYQCQYALXXZIIACIHHNHCIQOENFATBNLLDGSNWL", "LSZNUMDESCJELDEUZHJOUQYVAOQCZDCOKZVEKBSTZAQDHXJOSFTQWJMEJQRE", "LVPNXMUFZFDXZEWCNAVQMZHDXXGDOFIMEXJOBXQFRAOALWQCNPCHGLYCLLWB", "MDJIPZQCPXWKOAUTUVZLJOIWENUBZGRDEGWQSSZUJCFKKZUKTTSBDPYADJPJ", "MNWVTOFCUOYSPFIKPCCJJLMWPYOBNFJVYGWLWIERHDBILEFPSIBVWLYCIQJN", "NCEMSZYDUEPYMESMDJOWODAZZUGCOTGWPYZCLZSZOETPZCQJKAVSUYJGHGUG", "NKYLHQSJLDVTVFETZTQJHEQMNAUBWCQLJKGHBPBJUEAPUBWGTKADXHNCZMGE", "OOCBJVNQXVKRBEPQQLRLKWDAUSSCFORSCJBIRSBAOGBTMGMLHWJWREKDOOCE", "ORYIWYXXBCDPIDIDCUJFXHLZMAKBRAJWJQFGULQMSBOFMAUOZXFQOJHGLNLA", "PPDDVDPJKTSYPAQTNKHEKXGQQXXCINGNEFLGABHORAMYFZLLGNCWBFNDEAKH", "QAWBBNNOBEYUOFRKHVCWPFCQYHSDWIWXARUUIHWEVARIXKZBUMWNSIQBSXEC", "QHZHTKSRHOQVECDPQRUDCRJVVYYATFCTLVZQOCAPEAKKPQGLLOWKXIOFOTII", "QOUZDRBGUTAWCEJZKWHUNFOHBZIAFYGMKECYTBSNODNZGDLDDWAMRMKGJGZM", "QXOEYOZXHBJHBAKIBZZFNSZZKBMDHQVPOTOXXGCWBBIXLUSITVIOTWIAWBCD", "RXIMROQOZNSUVCAOVEJNFMEGXADCRVSJIEAEVLCCLESLDOVEWQTCCSTCTHNC", "SUAHFDEGJKLWUAEBIUWTOKSVLQAAHYTHZPYJHUSSGFTVHSTOSWDUKQHHNDLC", "TEHRLOEXMKZTZETLYTPPRSNLXKGDHSBKTEYUUDZHICYEINQSFWUEJYGEWPQM", "VGJXBAOUPNJMJFDLJGIFQIAGSMNDOMHDOWCWYVXXRCIOQUPOJXTOQTDFALHA", "VNSZJHPBHDNDEDVIWVLXDMXSZMKCCXWZWTJSXGHHPCTIOHUBBMZLCELHMGJM", "WQIOFCIXXPHHWBHLJBSLQUULCERCOIETYXIXULPLBALTXEMFLWZPXGDAKTGE", "WSZCOPBBYPMAFBNEKAGDSATXKOIAZPTZRIXXQIGQJGTZBPJCUCVBQXXEVTXM", "XIXIGIPYWATNQFKBZVURXFIKYOHBSQMGDNSOWUYHDCBTQBQTSLSRKBEFIZCM", "XJPEDXBHJNQXFERYOBVVDBITOMGBZIUTKTSLQOJZKASUVJHRFAYEOFYETGSD", "XLATKFXGMHPNFGVVSLCWCANRIRECIGZHXSCDIAUCNCCEBAFYMCXVDWGEOEQH", "XOEGWAIIGRRNQGTTNPQNZUEOHFAAIFSDWBPRVLNZIGNYJEAPFOKGQMNBLVZF", "YDSDPVHDYCKZVFBZAFWCISWHOZUCYUAKFHEEXLICOCSVCUMBWVCHUWSDYINO", "YFIUTMBCLHSLNFYKOZTIVAAZJROAEEJOJOYGETPFSEFSJNDNEZKRXZHFIRTL", "YMHNUOHUCAHGUDPJNZYPWZYXFKWBCLSSPOTJBJQDSGOPISSWPXAHUGODRXMI", "ZDYGMLCBCDYEHAZPWMNHJMPJIJXBRCSPQONYJOMEEBMNXIZKHRLGYCCCXSZA"];
+const TMNN_COMPUTORS = ["BAWPOOHMUNQTGBPOTUGDIYNUHHXAMBSPULBSTUSLMDJJAOVOKBGUSVQFVZKN", "BFDUQJLMQHAJZFWZREACJDXTCFKDTHEJHRZUMCLLMDJESBQOAZQIVYMBJMGC", "ELFFEWZLHRDCECUKCFYPUIBYXQKADTCOGUTVGEMOABDUGWOIDJWJKIEDIAGN", "ELTZMIZRSWJOTASNYWXAFKPWTETBYBENGNNOXOWAEBTRGKFZJCNYZDKFDEHC", "GFDHPMKJBIHBVEPKEGMBBTPVSTRDPKAOVEDYLKNDJFONSGIOCDRVXYYEHLOJ", "HAAEFXUWEGOGIAHPUTGJHPKBWPVBORNFLWGVHTVNCEJLAKSBIUHQDNUDOZRK", "IGKTEUYLUTSIDHWGVQMAYDMBGESAGWDJJGGWHBILWAPZGVFTCBGKRVKDLCHB", "IMSQQSVJVCKXFGWYYMLMWLONCAGDZBPRJTKGHNDPWBHMNVNOFPWEEIZDYLWG", "JTBOGCGFIKLIKHTOBAYDQOLVMEGCVVXMHNIRNYTIRGBMQQYHMWSWYFJCLJAA", "LCUOYUSRXPQGTERNRXYZIGEJCBSDZJVMHPETHPSQGGCLXHQXMQLXMEUADHYN", "LMBAIRBALCVDJGJFRFRXMVDVRKXCYAHTQKHVSFYUEADMVPVCPAMUBOOBTMKO", "MTINTYEKHVDJTCXEGMZUMXVUKXEBTRSAMWXTTNUKLGBFIFYBLYGQGYVCFZUG", "MTVTAACVOAYWUDYQFFHJDIXJPQQAUTKQQLWZHFFNGHTEWUHGYIXXEAKAPYJG", "NIFINNLVERUIPAFYAQSNGHMKZROBROFALRRFSZYOLAYRHQMAAQCJEUNAEPFM", "OBVLJRLFTINFMCWBIMUYGTQXLQMASTQBWSJAGJINGBQFEUHMTRERFHZAWYMF", "QJXUTDVZIRWXDFFNYONKCBGTYYHACKURCGIBUUXNMDPAKWXSCXAUPWWDWQXD", "RJCVHVDONMZJQDDOYCBSNHBZACDDIHTXPVYFAROGTAECOQHWIHQCHCUFLALB", "RLGYBGHHIRLWPFROOIPBODBSBULBOIHGLGFMBADLOBMQAEADIJFUJOHFMJGC", "THERJOZSMPZCEDSSWCQOTXYBIAUBGLRBGUQXUBVJMDQDFWDNIZOMYKVFIDHH", "TWKEKERDUISBFHSQVAYXKUYBYVAAYVMEUVPJRHYYLBKOHTYDUQDPHERDFKWM", "XJFJZFMQXTIPJDYDGNWVZNQXKVJCXPWSCTKNFFZYWEOORJXQPOIJVIHFFONJ", "XUFVGFLQJJJYXETXUPWNBBQXNGDBNYRWXCNUFDMKDFVXYENNVDMZOSJESHVA", "YSNTNWOFRCTEPDYLVYHEUCVTBOOCHINIQDNXIDAZSCLVOJCBZMHMCYIEDPJJ", "ZOCNYXHMVCUHECDZECFXCUTOLDWAGFAJRBBANXKGNDVKJKXLYFGDZQTCOPJH", "ZRKKPXYSAJVKEBDRBQQGPWQYJZKDRNXXWXSNKRNFLBGTHJLXNUWTQKKDXPZK"];
+function renderLeaves(id, addrs) {
+  const el = document.getElementById(id);
+  el.innerHTML = addrs.map(a => `<span class="leaf" title="${a}">${a.slice(0,8)}</span>`).join('');
+}
+renderLeaves('ztqm-leaves', ZTQM_COMPUTORS);
+renderLeaves('tmnn-leaves', TMNN_COMPUTORS);
+</script>
