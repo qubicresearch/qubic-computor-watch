@@ -30,7 +30,7 @@
   .tier { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; width:100%; }
   .chain { display:flex; flex-direction:column; align-items:center; gap:0; max-width:420px; }
 
-  .leaf-box { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:14px 16px; width:100%; overflow-x:auto; }
+  .leaf-box { width:100%; overflow-x:auto; padding-bottom:4px; }
   .leaf-count { font-size:0.76rem; color:var(--dim); margin-bottom:10px; }
   .leaves { display:flex; flex-wrap:nowrap; gap:5px; }
   .leaf { font-size:0.68rem; color:var(--dim); background:#10151e; border:1px solid var(--line); border-radius:4px; padding:3px 6px; font-family:ui-monospace,monospace; }
@@ -38,7 +38,7 @@
 
   .section-lbl { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:center; width:100%; margin:6px 0 14px; }
 
-  .open-branch { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px; margin-top:14px; max-width:760px; margin-inline:auto; }
+  .open-branch { padding:16px 0; margin-top:14px; max-width:760px; margin-inline:auto; border-top:1px solid var(--line); }
   .open-branch .lane-title { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--dim); text-align:left; margin-bottom:10px; }
 
   footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.76rem; }
@@ -196,13 +196,13 @@
 
       <div class="open-branch">
         <div class="lane-title">YNRE, 50 computors</div>
-        <p style="color:var(--dim); font-size:0.85rem; margin:0 0 12px;">No real outgoing transaction &ge;1B QU found for YNRE within epoch 229's tick window.</p>
         <div class="leaf-box"><div class="leaf-count">50 computors &rarr; YNRE</div><div class="leaves" id="ynre-leaves"></div></div>
+        <p style="color:var(--dim); font-size:0.85rem; margin:12px 0 0;">No real outgoing transaction &ge;1B QU found for YNRE within epoch 229's tick window.</p>
       </div>
       <div class="open-branch">
         <div class="lane-title">MLABZ, 8 computors</div>
-        <p style="color:var(--dim); font-size:0.85rem; margin:0 0 12px;">MLABZ's only real epoch-229 destination is <strong style="color:var(--ink)">ETGB</strong> (1.47B QU), which itself sends to two unidentified addresses (PFNJQGWKUYOIECQXMOPF, XQZBTNQXGXJBJFWMLIYL) &mdash; not yet traced further.</p>
         <div class="leaf-box"><div class="leaf-count">8 computors &rarr; MLABZ</div><div class="leaves" id="mlabz-leaves"></div></div>
+        <p style="color:var(--dim); font-size:0.85rem; margin:12px 0 0;">MLABZ's only real epoch-229 destination is <strong style="color:var(--ink)">ETGB</strong> (1.47B QU), which itself sends to two unidentified addresses (PFNJQGWKUYOIECQXMOPF, XQZBTNQXGXJBJFWMLIYL) &mdash; not yet traced further.</p>
       </div>
       <div class="open-branch">
         <div class="lane-title">ZGIR &mdash; part of MLABD's split (16.98B of its 18.6B total)</div>
