@@ -15,8 +15,8 @@
 
   .flow { display:flex; flex-direction:column; align-items:center; gap:0; }
   .connector { display:flex; flex-direction:column; align-items:center; color:var(--dim); font-size:0.72rem; padding:6px 0; text-align:center; }
-  .connector .line { width:1px; height:20px; background:var(--line); }
-  .connector .arrow { line-height:1; }
+  .connector .line { width:2px; height:22px; background:var(--mj); opacity:0.55; }
+  .connector .arrow { line-height:1; color:var(--mj); font-size:1rem; }
 
   .node { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; min-width:150px; text-align:center; }
   .node.hub { border-left:3px solid var(--mj); text-align:left; }
@@ -54,7 +54,7 @@
   .top-grid .c2 { grid-column:2; }
   .top-grid .span2-4 { grid-row: 2 / 5; align-self:stretch; display:flex; flex-direction:column; align-items:center; justify-content:center; }
   .top-grid .connector { padding:6px 0; }
-  .tall-line { width:1px; background:var(--line); flex:1 1 auto; min-height:56px; }
+  .tall-line { width:2px; background:var(--mj); opacity:0.55; flex:1 1 auto; min-height:56px; }
 
   .lkbop-arrows { display:flex; gap:60px; justify-content:center; width:100%; margin-top:4px; }
   .lkbop-arrows .one { display:flex; flex-direction:column; align-items:center; }
@@ -97,6 +97,7 @@
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
         <div class="node hub"><div class="name">EJSX</div><div class="amt">3.17B QU of it &middot; exact pass-through relay</div></div>
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node exch"><div class="name">MEXC</div><div class="amt">via VUEY</div></div>
       </div>
       <div class="chain">
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
@@ -112,14 +113,8 @@
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
         <div class="node hub"><div class="name">FZSU</div><div class="amt">100% pass-through relay</div></div>
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA</div></div>
       </div>
-    </div>
-
-    <div class="section-lbl" style="margin-top:24px;">exchanges reached</div>
-
-    <div class="tier">
-      <div class="node exch"><div class="name">MEXC</div><div class="amt">via VUEY &middot; fed by EJSX</div></div>
-      <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA &middot; fed by FZSU</div></div>
     </div>
 
   </div>
