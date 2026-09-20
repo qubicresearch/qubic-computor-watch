@@ -26,6 +26,7 @@
   .node.center .name { font-size:1.2rem; color:var(--mj); }
   .node.exch { background:var(--exch-bg); border-color:#4a3a12; border-left:3px solid var(--exch); }
   .node.exch .name { color:var(--exch); }
+  .node.uniform { width:280px; min-height:66px; display:flex; flex-direction:column; justify-content:center; }
 
   .tier { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; width:100%; }
   .chain { display:flex; flex-direction:column; align-items:center; gap:0; max-width:420px; }
@@ -40,6 +41,23 @@
 
   footer { margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--dim); font-size:0.76rem; }
   footer a { color:var(--dim); }
+
+  /* top section: 2-column grid so TMNN's arrow runs straight down to UYIG's row,
+     skipping the ZTQM-hub row entirely, with both end nodes the same uniform size */
+  .top-grid { display:grid; grid-template-columns: 280px 280px; column-gap:60px; row-gap:0; justify-content:center; align-items:center; }
+  .top-grid .r1 { grid-row:1; }
+  .top-grid .r2 { grid-row:2; }
+  .top-grid .r3 { grid-row:3; }
+  .top-grid .r4 { grid-row:4; }
+  .top-grid .r5 { grid-row:5; }
+  .top-grid .c1 { grid-column:1; }
+  .top-grid .c2 { grid-column:2; }
+  .top-grid .span2-4 { grid-row: 2 / 5; align-self:stretch; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .top-grid .connector { padding:6px 0; }
+  .tall-line { width:1px; background:var(--line); flex:1 1 auto; min-height:56px; }
+
+  .lkbop-arrows { display:flex; gap:60px; justify-content:center; width:100%; margin-top:4px; }
+  .lkbop-arrows .one { display:flex; flex-direction:column; align-items:center; }
 </style>
 
 <div class="wrap">
@@ -51,56 +69,57 @@
 
     <div class="section-lbl">76 real computors, epoch 229</div>
 
-    <div class="tier">
-      <div class="chain">
-        <div class="leaf-box">
-          <div class="leaf-count">51 computors &rarr; ZTQM</div>
-          <div class="leaves" id="ztqm-leaves"></div>
-        </div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">ZTQM</div><div class="amt">collection hub</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">UYIG</div><div class="amt">100% fed by ZTQM &middot; 35.62B QU &rarr; LKBOP</div></div>
-      </div>
-      <div class="chain">
-        <div class="leaf-box">
-          <div class="leaf-count">25 computors &rarr; TMNN</div>
-          <div class="leaves" id="tmnn-leaves"></div>
-        </div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node hub"><div class="name">TMNN</div><div class="amt">13.13B QU &rarr; LKBOP directly</div></div>
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-      </div>
+    <div class="top-grid">
+      <div class="leaf-box r1 c1"><div class="leaf-count">51 computors &rarr; ZTQM</div><div class="leaves" id="ztqm-leaves"></div></div>
+      <div class="leaf-box r1 c2"><div class="leaf-count">25 computors &rarr; TMNN</div><div class="leaves" id="tmnn-leaves"></div></div>
+
+      <div class="connector r2 c1"><div class="line"></div><div class="arrow">&darr;</div></div>
+      <div class="span2-4 c2"><div class="tall-line"></div><div class="arrow">&darr;</div></div>
+
+      <div class="node hub uniform r3 c1"><div class="name">ZTQM</div><div class="amt">collection hub</div></div>
+
+      <div class="connector r4 c1"><div class="line"></div><div class="arrow">&darr;</div></div>
+
+      <div class="node hub uniform r5 c1"><div class="name">UYIG</div><div class="amt">100% fed by ZTQM &middot; 35.62B QU</div></div>
+      <div class="node hub uniform r5 c2"><div class="name">TMNN</div><div class="amt">13.13B QU direct</div></div>
     </div>
 
     <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
 
-    <div class="node center"><div class="name">LKBOP</div><div class="amt">epoch-229 real inflow: 48.75B QU &middot; outflow: 48.75B QU (off by 1 QU)</div></div>
-
-    <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+    <div class="node center" style="width:640px;"><div class="name">LKBOP</div><div class="amt">epoch-229 real inflow: 48.75B QU &middot; outflow: 48.75B QU (off by 1 QU)</div></div>
 
     <div class="section-lbl">4 real destinations, 7 transactions</div>
 
     <div class="tier">
       <div class="chain">
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
         <div class="node hub"><div class="name">JETSKIYUBUPF</div><div class="amt">48 recipients &middot; 41.0B QU</div></div>
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
         <div class="node hub"><div class="name">EJSX</div><div class="amt">3.17B QU of it &middot; exact pass-through relay</div></div>
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node exch"><div class="name">MEXC</div><div class="amt">via VUEY</div></div>
       </div>
-      <div class="node hub"><div class="name">JETSKIQRDEIV</div><div class="amt">50 recipients &middot; 4.0B QU</div></div>
-      <div class="node hub"><div class="name">JETSKIMZKTSL</div><div class="amt">32 recipients &middot; ~297M QU</div></div>
-    </div>
-
-    <div class="tier" style="margin-top:14px;">
       <div class="chain">
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">JETSKIQRDEIV</div><div class="amt">50 recipients &middot; 4.0B QU</div></div>
+      </div>
+      <div class="chain">
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="node hub"><div class="name">JETSKIMZKTSL</div><div class="amt">32 recipients &middot; ~297M QU</div></div>
+      </div>
+      <div class="chain">
+        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
         <div class="node hub"><div class="name">YAQ</div><div class="amt">3.41B QU &middot; real collector, ~44.9B QU balance</div></div>
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
         <div class="node hub"><div class="name">FZSU</div><div class="amt">100% pass-through relay</div></div>
         <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-        <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA &middot; confirmed exchange</div></div>
       </div>
+    </div>
+
+    <div class="section-lbl" style="margin-top:24px;">exchanges reached</div>
+
+    <div class="tier">
+      <div class="node exch"><div class="name">MEXC</div><div class="amt">via VUEY &middot; fed by EJSX</div></div>
+      <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA &middot; fed by FZSU</div></div>
     </div>
 
   </div>
