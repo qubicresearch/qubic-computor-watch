@@ -116,60 +116,82 @@
       <h2>Channel 2 &mdash; does not touch JETSKI &middot; 118 computors, real splits shown as-found</h2>
 
       <div class="flow">
-        <div class="tier">
-          <div class="chain">
-            <div class="leaf-box"><div class="leaf-count">50 computors &rarr; MLABN</div><div class="leaves" id="mlabn-leaves"></div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">MLABN</div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="tier" style="gap:10px;">
-              <div class="node hub"><div class="name">GXITF</div><div class="amt">6.8B QU &rarr; MEXC</div></div>
-              <div class="node hub"><div class="name">MYKZC</div><div class="amt">3.7B QU &rarr; Gate.io</div></div>
-            </div>
+
+        <div class="section-lbl">118 real computors, epoch 229 &middot; 5 separate hubs, each its own chain down to a real exchange</div>
+
+        <div class="chain">
+          <div class="leaf-box"><div class="leaf-count">50 computors &rarr; MLABN</div><div class="leaves" id="mlabn-leaves"></div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">MLABN</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="tier" style="gap:10px;">
+            <div class="node hub"><div class="name">GXITF</div><div class="amt">6.8B QU</div></div>
+            <div class="node hub"><div class="name">MYKZC</div><div class="amt">3.7B QU</div></div>
           </div>
-          <div class="chain">
-            <div class="leaf-box"><div class="leaf-count">23 computors &rarr; MLABR</div><div class="leaves" id="mlabr-leaves"></div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">MLABR</div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">SSEG</div><div class="amt">1.4B QU &rarr; Gate.io</div></div>
-          </div>
-          <div class="chain">
-            <div class="leaf-box"><div class="leaf-count">16 computors &rarr; MLABD</div><div class="leaves" id="mlabd-leaves"></div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">MLABD</div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="tier" style="gap:10px;">
-              <div class="node hub"><div class="name">ZGIR</div><div class="amt">17.0B QU &rarr; unresolved</div></div>
-              <div class="node hub"><div class="name">APUU</div><div class="amt">1.6B QU &rarr; Gate.io</div></div>
-            </div>
-          </div>
-          <div class="chain">
-            <div class="leaf-box"><div class="leaf-count">10 computors &rarr; MLABG</div><div class="leaves" id="mlabg-leaves"></div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">MLABG</div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="tier" style="gap:10px;">
-              <div class="node hub"><div class="name">GEGV</div><div class="amt">4.6B QU &rarr; Gate.io</div></div>
-              <div class="node hub"><div class="name">EKMS</div><div class="amt">1.2B QU &rarr; SafeTrade1</div></div>
-            </div>
-          </div>
-          <div class="chain">
-            <div class="leaf-box"><div class="leaf-count">19 computors &rarr; TKOG</div><div class="leaves" id="tkog-leaves"></div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">TKOG</div></div>
-            <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
-            <div class="node hub"><div class="name">ITGIP</div><div class="amt">3.6B QU &rarr; SafeTrade1</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="tier" style="gap:10px;">
+            <div class="node exch"><div class="name">MEXC</div><div class="amt">via GXITF &rarr; BBMMA &rarr; VUEY</div></div>
+            <div class="node exch"><div class="name">Gate.io</div><div class="amt">via MYKZC</div></div>
           </div>
         </div>
 
-        <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+        <div class="connector" style="padding:20px 0;"><div class="line" style="height:34px;"></div></div>
 
-        <div class="tier">
-          <div class="node exch"><div class="name">MEXC</div><div class="amt">via GXITF &rarr; BBMMA &rarr; VUEY</div></div>
+        <div class="chain">
+          <div class="leaf-box"><div class="leaf-count">23 computors &rarr; MLABR</div><div class="leaves" id="mlabr-leaves"></div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">MLABR</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">SSEG</div><div class="amt">1.4B QU</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
           <div class="node exch"><div class="name">Gate.io</div><div class="amt">BYBYFUMBVLPUCANX</div></div>
+        </div>
+
+        <div class="connector" style="padding:20px 0;"><div class="line" style="height:34px;"></div></div>
+
+        <div class="chain">
+          <div class="leaf-box"><div class="leaf-count">16 computors &rarr; MLABD</div><div class="leaves" id="mlabd-leaves"></div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">MLABD</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="tier" style="gap:10px;">
+            <div class="node hub"><div class="name">ZGIR</div><div class="amt">17.0B QU &rarr; unresolved</div></div>
+            <div class="node hub"><div class="name">APUU</div><div class="amt">1.6B QU</div></div>
+          </div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node exch"><div class="name">Gate.io</div><div class="amt">via APUU &middot; ZGIR still open</div></div>
+        </div>
+
+        <div class="connector" style="padding:20px 0;"><div class="line" style="height:34px;"></div></div>
+
+        <div class="chain">
+          <div class="leaf-box"><div class="leaf-count">10 computors &rarr; MLABG</div><div class="leaves" id="mlabg-leaves"></div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">MLABG</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="tier" style="gap:10px;">
+            <div class="node hub"><div class="name">GEGV</div><div class="amt">4.6B QU</div></div>
+            <div class="node hub"><div class="name">EKMS</div><div class="amt">1.2B QU</div></div>
+          </div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="tier" style="gap:10px;">
+            <div class="node exch"><div class="name">Gate.io</div><div class="amt">via GEGV</div></div>
+            <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">via EKMS</div></div>
+          </div>
+        </div>
+
+        <div class="connector" style="padding:20px 0;"><div class="line" style="height:34px;"></div></div>
+
+        <div class="chain">
+          <div class="leaf-box"><div class="leaf-count">19 computors &rarr; TKOG</div><div class="leaves" id="tkog-leaves"></div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">TKOG</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
+          <div class="node hub"><div class="name">ITGIP</div><div class="amt">3.6B QU</div></div>
+          <div class="connector"><div class="line"></div><div class="arrow">&darr;</div></div>
           <div class="node exch"><div class="name">SafeTrade1</div><div class="amt">CLJHHZVRWA</div></div>
         </div>
+
       </div>
 
       <div class="open-branch">
