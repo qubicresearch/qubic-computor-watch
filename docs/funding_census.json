@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-03T14:10:59.627474+00:00",
+  "updated": "2026-11-03T23:21:59.266550+00:00",
   "method": "Real first-ever transaction, then real 100M-999M outgoing transfer, checked against 69 known hub wallets (both MinerLab/JetSki and qli). Not a heuristic.",
   "totalComputors": 676,
   "counts": {
     "MinerLab/JetSki": 171,
-    "qli": 163,
-    "unattributed (not seeded by a known hub)": 254,
-    "lookup failed": 88
+    "qli": 157,
+    "unattributed (not seeded by a known hub)": 249,
+    "lookup failed": 99
   },
   "byIdentity": {
     "GXVBIOCUGVTJUFKCYQSJTTTOJHVASESIYTRCBUESKDUBVVYCPSNAZCACOZFD": {
@@ -20,7 +20,11 @@
       "tick": 77483265
     },
     "OTLUBCLYIKHMREREJFTLPNJXJSIDTVXPXSKQPLHTBEAWDKDZZWNMPRQGVBKK": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "MinerLab/JetSki",
+      "method": "outgoing-payout",
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "268701925",
+      "tick": 79309005
     },
     "CZJEFDBCMZCZDADMWQQLIYKWFWUCIUQUDLVUDHMMDCMANRWVRUUDJEHAQLDF": {
       "family": "MinerLab/JetSki",
@@ -147,6 +151,13 @@
       "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
       "amount": "3000000",
       "tick": 77958167
+    },
+    "ECYXHRMBRUZVCEXSPFZXDOCAUHKCMIMVYIWFTIAWECAFBTQHUASJEPNCNCFC": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
+      "amount": "2000000",
+      "tick": 79671097
     },
     "XHWLBNNLQVWEZDCTIVTEWGGLPCNBWDFNTJQDTQNZUBQZUQDLCFKMAIHHSQPM": {
       "family": "unattributed (not seeded by a known hub)"
@@ -347,10 +358,10 @@
       "amount": "2000000",
       "tick": 79670928
     },
-    "OGDKHPIJMKFDFBPQTMDTPSPKVSODTUREMXFKXXJPLDKMUGRFPMZTUYAGAIQM": {
+    "IYNUAUNFJGJCZFIAUQFSXMZGSZLCOEGPYPPYGJKYGGFBIHXMYLUPBOVESCRC": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "IYNUAUNFJGJCZFIAUQFSXMZGSZLCOEGPYPPYGJKYGGFBIHXMYLUPBOVESCRC": {
+    "OGDKHPIJMKFDFBPQTMDTPSPKVSODTUREMXFKXXJPLDKMUGRFPMZTUYAGAIQM": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "TETOPRBNWTTIOASLXZMWYPJZZTRCHTRDYQQZCJXRZDOIHYLMYKSXVXDCCWIK": {
@@ -366,6 +377,13 @@
       "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
       "amount": "3000000",
       "tick": 77956698
+    },
+    "TDQRLHPBCTQJMBAITRPLLQROZTIASQFUXLONAUJPODBFFQWJPPJZXFDBPJPK": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
+      "amount": "3000000",
+      "tick": 77957997
     },
     "FUIFFDAFBNQJPFTUJNRUGKNNUNNBJDFCNWPKSEXUOGKLLFORBUCATZAHLJFA": {
       "family": "unattributed (not seeded by a known hub)"
@@ -415,13 +433,6 @@
     },
     "GPXVXQDFXREUSFVNCFLGKLMTZFYCBCLNEFSIIHOBZFLLBUEZMBQPAWMDXDLG": {
       "family": "unattributed (not seeded by a known hub)"
-    },
-    "TDQRLHPBCTQJMBAITRPLLQROZTIASQFUXLONAUJPODBFFQWJPPJZXFDBPJPK": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
-      "amount": "3000000",
-      "tick": 77957997
     },
     "RHUZOZBWMXNUAHVZGGEWRKSUDPLCJONNKXRMQMBKTCVZQSRBELBNXIVETYVJ": {
       "family": "qli",
@@ -496,6 +507,13 @@
       "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
       "amount": "3000000",
       "tick": 77121947
+    },
+    "YDVFUIIVJVHPQEIAHGHWRKMJTWBAJRKGGHZVTFZCXGXJPENMFJMLVIOCFOPB": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77925248
     },
     "LJSIFESRTIUKQEORJIYLFUWGKVQBJFTRWKEOCXHCODDQCGAGPZMPTGLCMSSK": {
       "family": "unattributed (not seeded by a known hub)"
@@ -693,6 +711,13 @@
       "amount": "3000000",
       "tick": 77957987
     },
+    "NITWBFJLPGQYOAXWRYDLYHIGOQIBQPTYDORQTCKDDBUFUBYBCCYTIRHBSISG": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
+      "amount": "2000000",
+      "tick": 79671753
+    },
     "NEWPIVCKAORAHBURCKWSQKSLERDDHMWXOXVAQENZKAWZUVGNJOLMZBTBPDAC": {
       "family": "MinerLab/JetSki",
       "method": "first-tx",
@@ -770,6 +795,13 @@
     "ZCLWFSLHYCUVQDLLHNXVVIKCBIACZWICSTEDAIZBRATEPZHFEEKWACTGQBFL": {
       "family": "unattributed (not seeded by a known hub)"
     },
+    "DWDDBNFRDJIVHGJVPVHUUZFBCXUCPATRAOHUWMOCFDIYQLVCMPAWMGTGYZFG": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "10000000",
+      "tick": 56874934
+    },
     "IWLRNNJDYTSSNBAXCTCZVMZXBKHBUTDCUEERVSPEOAUAJOVPDGZQWOAGALNK": {
       "family": "MinerLab/JetSki",
       "method": "first-tx",
@@ -789,6 +821,13 @@
       "seededBy": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
       "amount": "2000000",
       "tick": 79675920
+    },
+    "HCBFTFPFNLQAQEURLLLDWKQYYCJAGQFXFQSKSWUXRFQJQYWBINDSWWYEHQBA": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
+      "amount": "3000000",
+      "tick": 77956904
     },
     "DNXJRUOIQAJPGALPXEPFUFOYRHQBUZCKPYEVBWQYSEUOTGKGDHSHCMGBIBLN": {
       "family": "MinerLab/JetSki",
@@ -848,12 +887,8 @@
       "amount": "10000000",
       "tick": 62854664
     },
-    "NITWBFJLPGQYOAXWRYDLYHIGOQIBQPTYDORQTCKDDBUFUBYBCCYTIRHBSISG": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
-      "amount": "2000000",
-      "tick": 79671753
+    "YXYPNJXYRNCAYBOKEZCNYRRXPQODQUIHQINJKRYDCAUGXQJIMRYBLKBEEFGM": {
+      "family": "unattributed (not seeded by a known hub)"
     },
     "QQTUBJEWSNDDGFGKXWZBIRGTYEXAGMMGFEROMWWHQCCBGMBFHFZQFXACYUJF": {
       "family": "MinerLab/JetSki",
@@ -927,19 +962,19 @@
     "BYZYJEGQBGBZOFDKIEXKDJROVDWCZMVFJLUGKRTVYDKUCWIMSABGRXBEJNWC": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "OPENPJYQAQVZBHAWTDEPSQERXIPASYTLROZXROFVNCVIYBHRUNBLDYAAUMJE": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
-      "amount": "3000000",
-      "tick": 77957599
-    },
     "ONLRBHMKUVFZNAOFXQYHEHKPZOFAMMEREWPNNMQSFDAAZTDRNVULGOECSVDN": {
       "family": "MinerLab/JetSki",
       "method": "first-tx",
       "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
       "amount": "2000000",
       "tick": 79671853
+    },
+    "OPENPJYQAQVZBHAWTDEPSQERXIPASYTLROZXROFVNCVIYBHRUNBLDYAAUMJE": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
+      "amount": "3000000",
+      "tick": 77957599
     },
     "AFARWVBPAQYAQDBRRZDUBEJYSGXBGWOHYYIDEOASFBVCVCDSEMEGUTKAKBSE": {
       "family": "unattributed (not seeded by a known hub)"
@@ -967,6 +1002,9 @@
       "amount": "3000000",
       "tick": 77957558
     },
+    "JKWBBYTEQEUSDCKQPZQKWVXSVHLBJTMHHTRISBUNSFQOUYCKRNPCMMNEOADI": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "EDYSZPSUOFCOCAAIMZRGRMLKYVMAZVMNSIVQMZEIVCWOUTNFAOTEGCZBAEHI": {
       "family": "unattributed (not seeded by a known hub)"
     },
@@ -978,6 +1016,9 @@
       "tick": 79671029
     },
     "CMXYDMOVKSDFNCVPDEKHIQXKGEPCFWZKZBHNNPMINESXIWSVEEHIVJLBAJDD": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
+    "EAWZEXVOMOZZKFWZXXOPRRWJAKHDYHGIQLWJWJUIPDBCQASSCXVJLDPGTAKG": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "USFHODCPJYEECANQNDRXUBOMVPCDCFCDSSXSHJVHMDTAISFIGGWXYTOCFUIN": {
@@ -1012,6 +1053,13 @@
     },
     "PCJSLIHRILRQOAJUVKRWJORITXOBZTHQEQJRKWLELBCFJMJWRHZKMAFBAYCM": {
       "family": "unattributed (not seeded by a known hub)"
+    },
+    "UJGEUFKEFBFMXENGYRCMUWXOUOJCCSWMNYDBXDJMRASZIWSWHMPKXOYCLBXN": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
+      "amount": "268701925",
+      "tick": 77781557
     },
     "FJTYNGATIAVJLBAIAGQONYSJHWYAVREXKMVKJYWQSGVONEXNDLBJMGLEMBVH": {
       "family": "MinerLab/JetSki",
@@ -1079,6 +1127,13 @@
       "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
       "amount": "3000000",
       "tick": 77956770
+    },
+    "IWDDDRTDOZSKUCGILDUVUXERCABATRFYDKOYGPEMSFYSMYONPNHRZEBAXQQI": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
+      "amount": "268701925",
+      "tick": 77801662
     },
     "JDEDIDVLURWWRBKTOSNWZVXYFKSDZKFFHPDLIELKZDOHUMPCTSNNMQYBXISM": {
       "family": "unattributed (not seeded by a known hub)"
@@ -1164,22 +1219,8 @@
     "JTFAOTDLYFGOCBOCKZKMEVNGNREDFMGSFHVGTIRTWFQWVZFPBGAPSHUENOXK": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "ECYXHRMBRUZVCEXSPFZXDOCAUHKCMIMVYIWFTIAWECAFBTQHUASJEPNCNCFC": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
-      "amount": "2000000",
-      "tick": 79671097
-    },
     "RVACHOGUHGJAWESUHMOGMNGINCDCYNRXWZJHMOHOTGFCLDXVJVERCVACITXO": {
       "family": "unattributed (not seeded by a known hub)"
-    },
-    "DWDDBNFRDJIVHGJVPVHUUZFBCXUCPATRAOHUWMOCFDIYQLVCMPAWMGTGYZFG": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
-      "amount": "10000000",
-      "tick": 56874934
     },
     "DBOWOFDRWXCWGCDOOIQQCVKOLUJBGJDLXIBSLTBDQEORUZZDDAUKDVADIQMN": {
       "family": "unattributed (not seeded by a known hub)"
@@ -1227,6 +1268,9 @@
       "sentTo": "QLIKKBOCYDIMXBAOKUTENUUOYTHAJRHMBUMUXWNAYFDWXVDRUPUOSTTCERRB",
       "amount": "278701925",
       "tick": 76936100
+    },
+    "YFGVZADSQPEHLFLVFXIAZCXQJALACDGJKKRORJQRLATRUQKZGMMSQWNCGXXH": {
+      "family": "unattributed (not seeded by a known hub)"
     },
     "JTWUVMSXDLBWIAYATHBKQEMIJHQCHOYWOHNIGBFQHHNYQHYJHASVCPICIDYD": {
       "family": "qli",
@@ -1305,6 +1349,13 @@
     "HVGPDFUOXVBRSEQMYENTQBUDWOEBUKYDAWVTUOBIEANKLBMPCWIGVKVBTAUI": {
       "family": "lookup failed"
     },
+    "AYADNRQSYAVBLDMLQHEQQRMZEGHDJXTXIGFSBMXCOCSKKTGMGZWQNYTGENIJ": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
+      "amount": "268701925",
+      "tick": 77727923
+    },
     "APSOGIXDDCMNHGSXUGAOFLBCNUOCLVEWBUMZCGFSKEAPSNQWISFPBJJHDZSD": {
       "family": "qli",
       "method": "outgoing-payout",
@@ -1322,6 +1373,9 @@
       "amount": "268701925",
       "tick": 77760725
     },
+    "MAAFNNVIFBLZCDOHUAGFLYBRREDDOWMNEULHBTTWNDPVEEMEOBYMPQNETQVO": {
+      "family": "lookup failed"
+    },
     "TIIABECMKPJACCQJHXKFRWISSPGDEUDHUWFGKHFZOEWAIYGAFCXQBVLFKNZI": {
       "family": "MinerLab/JetSki",
       "method": "outgoing-payout",
@@ -1330,6 +1384,9 @@
       "tick": 79931361
     },
     "GVERRVMMKXXBVAWDSXQYDDLNGRSCKPYGHXBVXZRUABIOOUHKMVUQGPSGQJRM": {
+      "family": "lookup failed"
+    },
+    "XWHXCAXMYYGSRBBNUMOMVIMZMXHDGONCNZSWVKMDIFVTKXITJWSKAHGFMVNB": {
       "family": "lookup failed"
     },
     "KNOYTFLIAZPVIBLGMNXGFUQYCRICRZONTNKFSAGCLAGUXPVYGTNEJYRCXHMA": {
@@ -1341,13 +1398,6 @@
     },
     "EAJECUOVAGEFWFYBNCZYUZFXMSLDZOMEYRTFSBDMYEGMJCGKTNUSPQGBTKND": {
       "family": "lookup failed"
-    },
-    "AYADNRQSYAVBLDMLQHEQQRMZEGHDJXTXIGFSBMXCOCSKKTGMGZWQNYTGENIJ": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
-      "amount": "268701925",
-      "tick": 77727923
     },
     "ZRIKHWUGFSPTDACNEENESHKIZLHAEUHXCSZFPOLFRDJHUZXKRGAMFEEBOYWI": {
       "family": "qli",
@@ -1401,6 +1451,9 @@
       "family": "lookup failed"
     },
     "TYCPUUWCQKHATGOFSLWPWTNLULWBSSMZZZMHVULHZBFDDYNLGUFFFTJBAITB": {
+      "family": "lookup failed"
+    },
+    "JBSIAWEDKMAYSGPICKNSNHGHUIJCXRKSSRMTMEJIYABKDLGEYQLUYGJHILEA": {
       "family": "lookup failed"
     },
     "XKCEABBDCDTMLERZXPTJGMABIUKCXYMNSCMRFZUVTDVIEYATWCLABSSEYCAO": {
@@ -1483,9 +1536,6 @@
     "QWGICMTHAPTYCATZBWCMDWIPDTHAYAXNYQFZXIJRVBKJKKLSRBFYXHZANVBH": {
       "family": "lookup failed"
     },
-    "XWHXCAXMYYGSRBBNUMOMVIMZMXHDGONCNZSWVKMDIFVTKXITJWSKAHGFMVNB": {
-      "family": "lookup failed"
-    },
     "ZXIGFLXAYNATXAHMWQVVPIXDIJIAPSFLHEOKQCHHPBXYUOCYITEVCUGCOWNI": {
       "family": "qli",
       "method": "outgoing-payout",
@@ -1513,6 +1563,13 @@
       "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
       "amount": "255431898",
       "tick": 81404298
+    },
+    "PJSLPCVWLHJYFGKXELXOZVSXEXIDUDDZACBITKNQSANQLEZEIATZKQSGJAIK": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
+      "amount": "268701925",
+      "tick": 77808564
     },
     "WSPYKLCXXLJQUBPWIKEOHMRTMTBBFPZCUAFENLJHTEBZHROSSPCAVJRCUCJD": {
       "family": "lookup failed"
@@ -1551,10 +1608,14 @@
       "amount": "268701925",
       "tick": 77832962
     },
-    "XZXAUFHGNGWQFEWJVOOWPUQORFPDQYLXWGOPWLDMADXZBTDKRTNWULDDMIRA": {
-      "family": "lookup failed"
+    "JVECUDNDXTQSXFSKQOYNGHXIKUHBADUTUBYQSYARZBFENZTOZNIUXJMDVPXN": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL",
+      "amount": "268701925",
+      "tick": 77830090
     },
-    "YFGVZADSQPEHLFLVFXIAZCXQJALACDGJKKRORJQRLATRUQKZGMMSQWNCGXXH": {
+    "XZXAUFHGNGWQFEWJVOOWPUQORFPDQYLXWGOPWLDMADXZBTDKRTNWULDDMIRA": {
       "family": "lookup failed"
     },
     "CWSPPDOJPYLQTESSGTTOWNTXCDTBYFZJJLDHOHIWAFGITMONULRHYMACBNJB": {
@@ -1607,12 +1668,18 @@
     "DRHMCOXVPLGVNFEIPFVAWAPCQIYBONXSGJQNENUTDBAZPAFIMEYUAVVAJSRN": {
       "family": "lookup failed"
     },
-    "JKWBBYTEQEUSDCKQPZQKWVXSVHLBJTMHHTRISBUNSFQOUYCKRNPCMMNEOADI": {
+    "MSOURLWFPQRANEZKJRCSGENKDIPATZNUHTUVKMOCFCCGFAAJKSIWUVUFMSYI": {
+      "family": "lookup failed"
+    },
+    "XBTSETFHNBVAVEVJPENXJRVWTXIATQAHMEAODDXVUBLVOCWIQOBCFSRBOSFL": {
       "family": "qli",
       "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
       "amount": "268701925",
-      "tick": 77830140
+      "tick": 77814950
+    },
+    "XCQPEGBDTFJWOAHCBZRFGUEMOHVCAJIPQLOIWFKUNGEXGBHDQFVUIVWDHTCN": {
+      "family": "lookup failed"
     },
     "EUMMNPBKBGILPAMWKHENNMUDPPNDKROFHOJIXIXWBHVCVRNVXZOXJOCEENAK": {
       "family": "MinerLab/JetSki",
@@ -1678,10 +1745,10 @@
       "amount": "268701925",
       "tick": 77823335
     },
-    "XCQPEGBDTFJWOAHCBZRFGUEMOHVCAJIPQLOIWFKUNGEXGBHDQFVUIVWDHTCN": {
+    "JSISZOGHEZRXECHMVMJSOBYWROBDOECKUZMMJELNBGDEJOVKONIVTSOAGBIO": {
       "family": "lookup failed"
     },
-    "JSISZOGHEZRXECHMVMJSOBYWROBDOECKUZMMJELNBGDEJOVKONIVTSOAGBIO": {
+    "SLGEFOWFOBNBTGHHXJODWUNVTJXBVUKGPOMDRHVEJFRFZHHORQRNJTPATLJG": {
       "family": "lookup failed"
     },
     "ERWNSVXGZEOHZEKDWOTQUMUKCKGDVDHAATGLMGRLPFQIWSGRGJCDOPPGICCJ": {
@@ -1699,6 +1766,13 @@
       "sentTo": "PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL",
       "amount": "268701925",
       "tick": 77763363
+    },
+    "DLXBIKXYGYSFHAIJWTSCWUPDSKSCPVLZNFFYIBFZQEKTLAEFXCHWQRSEUOSO": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL",
+      "amount": "278701925",
+      "tick": 76939094
     },
     "FTDFOMIBDDMCQETSAIULPNPSAQUCTJLTWJOBLTKAFAMAYGLSECZMTHTFSIKL": {
       "family": "lookup failed"
@@ -1737,6 +1811,9 @@
     "EFUVSNKQIPBCNBLPXGRTHJVBXYHAYXUYXSBHRREEREWPRLBMDWGCGHGAZZKO": {
       "family": "lookup failed"
     },
+    "FTIGKNYGHXCIHHDUSUNXOOXQKKDBIIAORVLRVREZAFHNWXJSDLRTVKMEHXBL": {
+      "family": "lookup failed"
+    },
     "KBGFUFOUAACTBEWWBFMMNEXXQZECKHEAKNFPLERDECVBPGSAOQUGNASFBCNA": {
       "family": "lookup failed"
     },
@@ -1747,6 +1824,9 @@
       "amount": "268701925",
       "tick": 77730027
     },
+    "JSYVHFYDFYXVAHANVEFHLHUZGAPAAUDPWUYZYVERVBAGYUYYPREMAMMCUJUB": {
+      "family": "lookup failed"
+    },
     "FBTLGMUCFXVWIHBDACGZCDWSWRNCDGAYHZGTHIGCUATYVHKTYKECJCXGBPNG": {
       "family": "qli",
       "method": "outgoing-payout",
@@ -1754,18 +1834,21 @@
       "amount": "268701925",
       "tick": 77795682
     },
-    "JSYVHFYDFYXVAHANVEFHLHUZGAPAAUDPWUYZYVERVBAGYUYYPREMAMMCUJUB": {
-      "family": "lookup failed"
-    },
     "MAMWBDOEAGUVQCNLOHATRBJBTRUAJWPKJREGPETBBGPDLVRNSOOVVGFBCVRB": {
       "family": "MinerLab/JetSki",
-      "method": "outgoing-payout",
-      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
-      "amount": "263191436",
-      "tick": 87500517
+      "method": "first-tx",
+      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
+      "amount": "3000000",
+      "tick": 77957340
+    },
+    "MTIIWALKYYALMFMJTZNHPVXAGDIBAGZYRUOQDGEPHCCFYWABVCHUJAOGWQPC": {
+      "family": "unattributed (not seeded by a known hub)"
     },
     "WPVPIZLAZZCXGEJGRQMVPYEISYEAQCEMKPOLYHCCOAQIWXUIZDEVGFFGOHNH": {
-      "family": "lookup failed"
+      "family": "unattributed (not seeded by a known hub)"
+    },
+    "YDNFNNFRHPVDJCIKZUWMHLKZCCPDDVDVBBCLQNVYBAGKMHDIITGMUQTGONXE": {
+      "family": "unattributed (not seeded by a known hub)"
     },
     "LBLOHFEOACDYIGUPNCHWYYDKCTDDSCAZTWDOXMEORGGNUGTGSQLIHXJGNDRN": {
       "family": "qli",
@@ -1773,6 +1856,20 @@
       "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
       "amount": "268701925",
       "tick": 77759379
+    },
+    "KEFZUSDHSOIMIFLKUJDMANZSZEBCZIXAXWQVKPNRGCJTBXMRDWCYRLRCWWYG": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77776073
+    },
+    "OXWTWVQOPRNYTBRZOMPNJRWAQUTCEPMQWCZMJGJCBCJOVMDEPVEJBZVBVONN": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL",
+      "amount": "268701925",
+      "tick": 77828038
     },
     "OIKIPJYGVJMFJEFSEMRFHEYAUWWAKTRNSGYPYYBYQDJFCGXJDRVDHIHBBCPH": {
       "family": "qli",
@@ -1789,10 +1886,14 @@
       "tick": 77801681
     },
     "BPEYHRQRSRBIUBKGEUVOGFMWRMDCSOXVVOGJIEIGACWAEQCNIEBYAUQBXNDC": {
-      "family": "lookup failed"
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "2000000",
+      "tick": 79674195
     },
     "UZPJOIRZSOPAWFSGUYOXKBRKBZVBDHFYNSFECTXHSEZFXEWQNFDBFPVBZPRG": {
-      "family": "lookup failed"
+      "family": "unattributed (not seeded by a known hub)"
     },
     "CTGQMBMNCOQFVEDCLTGXNSTGMRPDEUJVTTCVSQZXAGPBJUEAZLRZECFCVNMM": {
       "family": "qli",
@@ -1808,6 +1909,9 @@
       "amount": "268701925",
       "tick": 77724340
     },
+    "KDQOIHSLFJUYQEGSKCPKERNCQYUBSBIJVHKZRUVIWFGLDMIPXVXZONDBOYYF": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "KXIICFXDLIETCEYVPURKEUTBDNRBEJYXQFTHTBBVJHURKNZTSGTRMLICDDYM": {
       "family": "qli",
       "method": "outgoing-payout",
@@ -1815,7 +1919,13 @@
       "amount": "278701925",
       "tick": 76939523
     },
+    "RBECBQGYQFTPYEUNJYQQJMCLYHHBQLJOHRRZQGEGFFZPHMCUKNVWAIDFYZQG": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "PVXAMFOZOMBITBQIVUURYEIOFHBAYCSSZRQFIHLZGDBJKONOQBQMQZGASFMG": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
+    "YNHYSMBOIVKCVGZELKNVMOYUGRDCDHIJHMGZSQEOLGWYPVUYRRVFMQJFUBPG": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "TOOSJUINWAKBXBEJQHFJCZLERELBEBTBGCNMXDNEYAPHMIJGMTKPRSVDOBBC": {
@@ -1825,7 +1935,7 @@
       "amount": "268701925",
       "tick": 77797811
     },
-    "YNHYSMBOIVKCVGZELKNVMOYUGRDCDHIJHMGZSQEOLGWYPVUYRRVFMQJFUBPG": {
+    "WQIAYHVMJMQXNEKUVZZLJTQXJGACMZQCCJCHIWNDYAGZIMZHVCPTICDGMOID": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "UNQGNAELCIPWOAKZPYQURDNNKECBTAMFXUTNZJGSADMNYGVZEEZZEWKHCWPD": {
@@ -1835,15 +1945,15 @@
       "amount": "268701925",
       "tick": 77823193
     },
-    "SXDSZSKDDFJAUDOIJXOEKMUMZVKDNKPACLGPKBPNMCAVUWKFROMEKLKCHWIG": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "WHWBXTWHPDNKOBXXUWFFZDZTLOTBXTUCBCBSZILPPCABSPRRAQWKUUAGVGGG": {
       "family": "qli",
       "method": "outgoing-payout",
       "sentTo": "QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL",
       "amount": "278701925",
       "tick": 76939587
+    },
+    "SXDSZSKDDFJAUDOIJXOEKMUMZVKDNKPACLGPKBPNMCAVUWKFROMEKLKCHWIG": {
+      "family": "unattributed (not seeded by a known hub)"
     },
     "LMGVNMTBMVCPDDRUUUUGPGCPUGBDWUDFCSCQCPMOKBTEEGODSLUPPUEBZZUD": {
       "family": "qli",
@@ -1873,7 +1983,7 @@
       "amount": "268701925",
       "tick": 77759287
     },
-    "MTIIWALKYYALMFMJTZNHPVXAGDIBAGZYRUOQDGEPHCCFYWABVCHUJAOGWQPC": {
+    "MUAJWAWMWDYBVCUEEXPMINDAAOXBZIDVGCYEVUXKXGPTBTSJQNNOMQICNOEF": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "GOUVWCRPKWGDSECGFSCJMOJEIKLCOPIZHSBTLFRKHBVAEBZSRFMVGNMDNKMA": {
@@ -1886,7 +1996,7 @@
     "UGBLEWLMMMRICDTLIVWQYSLDAHZAKKMUTYRYOLNISAPVZMIMCHQPMLFFYHNJ": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "YDNFNNFRHPVDJCIKZUWMHLKZCCPDDVDVBBCLQNVYBAGKMHDIITGMUQTGONXE": {
+    "XTJGRHJJEIAIPEAHDYRQQTSISDOCIRDJAXOESIMDKBAHMLNMOOXZJOJGSIFI": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "CAEZYEXDUVZPBGTEQFCAOABPGBOCJMMAXLJILKQTRFUBVMTCWBZRPMPDDPBF": {
@@ -1949,21 +2059,12 @@
       "amount": "268701925",
       "tick": 77836035
     },
-    "FTIGKNYGHXCIHHDUSUNXOOXQKKDBIIAORVLRVREZAFHNWXJSDLRTVKMEHXBL": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "KBAUCCCPKCENBEKQQCUSQBAMZVVBHMSSMKUKVJFKBCRNLIYODUNRQAPDISSM": {
       "family": "qli",
       "method": "outgoing-payout",
       "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
       "amount": "268701925",
       "tick": 77847627
-    },
-    "MSOURLWFPQRANEZKJRCSGENKDIPATZNUHTUVKMOCFCCGFAAJKSIWUVUFMSYI": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "KDQOIHSLFJUYQEGSKCPKERNCQYUBSBIJVHKZRUVIWFGLDMIPXVXZONDBOYYF": {
-      "family": "unattributed (not seeded by a known hub)"
     },
     "IZRZYEYIOJDRLFXUJOFZCWUBMMACRMKKNMITDUERAGSWRIFQOEUFJBQAJLWF": {
       "family": "unattributed (not seeded by a known hub)"
@@ -1979,66 +2080,31 @@
       "family": "unattributed (not seeded by a known hub)"
     },
     "GQHWNMALVUBEEEWXIHDUDNXLEEIAAFDHRMBYBNKIAHZYAXTHLDULDIZCNAYE": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
-      "amount": "268701925",
-      "tick": 77814849
+      "family": "unattributed (not seeded by a known hub)"
     },
     "SXQEYKERIPFEJBKSWVHHYUTZSVVCHUWCEPZMKVRFECBVSSSBKQFYFBPEHFXE": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
-      "amount": "268701925",
-      "tick": 77816616
+      "family": "unattributed (not seeded by a known hub)"
     },
     "HOIOXRGLLLDOJDFZCUAOMFNFRCCCQYUXYEFJOUGFUBRWJKKTATDKNOLDHITG": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
-      "amount": "268701925",
-      "tick": 77813502
-    },
-    "MAAFNNVIFBLZCDOHUAGFLYBRREDDOWMNEULHBTTWNDPVEEMEOBYMPQNETQVO": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "GHIVJYSXKPJTNBRKCTHTBBMHCWTAHWGCIWKMNDIGOEJWEPQBATWXEXNCTWUG": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
-      "amount": "268701925",
-      "tick": 77840032
+      "family": "unattributed (not seeded by a known hub)"
     },
     "HYRHEZTQNWLUOFPRONIXJDIHUEQDGPVKYPSFUDFYOCOXIPUROTFSCTNCXGDG": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
-      "amount": "268701925",
-      "tick": 77776115
+      "family": "unattributed (not seeded by a known hub)"
     },
     "OTPTECRMRWKTSAEBIPGMCLLZKIVCXJPWFAIFQQKOQFKTGLVROJCPCXREHVXE": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL",
-      "amount": "268701925",
-      "tick": 77784993
+      "family": "unattributed (not seeded by a known hub)"
     },
     "OZHJYNYMLSSUICSKIDPRHTGYLQODPDFDNCITCQHRTCEFGDTEZOHHWMOABZBC": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "FTSXDITFIJXOXBLNBEAOUBHWOHVCGFUHDAQDXWLVLAAJIHCCMLWJGSJBCISG": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
-      "amount": "268701925",
-      "tick": 77825528
+      "family": "unattributed (not seeded by a known hub)"
     },
-    "UJGEUFKEFBFMXENGYRCMUWXOUOJCCSWMNYDBXDJMRASZIWSWHMPKXOYCLBXN": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
-      "amount": "268701925",
-      "tick": 77781557
+    "XAWLUUKGPEZYVDKBOQKRQNUUXWHDFDLDDRQJWTAKTAAYCRYHXQUZQVAFESCD": {
+      "family": "unattributed (not seeded by a known hub)"
     },
     "KOCRCFPDEVMZAGHSDQHYUNXCFBCDPJJPILEGNENZIAHOVDRVEDMDZDYBHODJ": {
       "family": "unattributed (not seeded by a known hub)"
@@ -2046,22 +2112,17 @@
     "MDJPGQJPFBIQDAWCHFKATMCIPLYAANSXULAAONCBBFPBUTNRGMUEGHJHIRZD": {
       "family": "unattributed (not seeded by a known hub)"
     },
+    "EIDDQQTITTSRVAPJGVCOQYASNXCANQYHGNRVPXFOWCHAFWAWBFLLEZEGAOEM": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "EKLNMGLNCVBIKAOBHMBJVEOBGBVCISUQVIQSBPGWDAEADCRCQYZIDGIAFQDE": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
-      "amount": "268701925",
-      "tick": 77832755
+      "family": "unattributed (not seeded by a known hub)"
     },
     "GKKFQGJBJUKJQEXXIMPWBSMCXROBBREFWGOMXXRQODPCLPLWZGZFNTAHLSXJ": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "JRTVBFPAZKVIVGTAJNGQPKGQXUQAPFRLEUJWTLFBSAAACOGVXLLWZTLDIHAG": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL",
-      "amount": "278701925",
-      "tick": 76939195
+      "family": "unattributed (not seeded by a known hub)"
     },
     "EYRUXQWTLSFZCCZSDTNCCZLXPSHDTYNFPHUXFAUUKBLHVCULDZSKJQEAHUZI": {
       "family": "unattributed (not seeded by a known hub)"
@@ -2069,22 +2130,17 @@
     "AXMGLDFEYLFUZCJHGSOWAUESJJPBWFNPICIQFDZGZFUZIWNLFCIZMBMDEFVA": {
       "family": "unattributed (not seeded by a known hub)"
     },
+    "XBVXFALVBFTUCCWKRGTRUKJYGCWBFALNPKXAWNSRODRVJVESFQFEMIRFDTIF": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "UUNIXTGBEUQTFAHSAYRUEFFGXYDBWEGFJOGJLASBVBTKLZEFFRWMZEVEBTDC": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
-      "amount": "268701925",
-      "tick": 77735163
+      "family": "unattributed (not seeded by a known hub)"
     },
     "NCAVWLUXRPGHQETNTXEENXZGFBAAOHTKAMDHLFBQTFJCFVZUFWWVHKAHKVOO": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "WJIWIWEYXJIGYCYZVQLZBFZUKLMDIKMILZNQRATHEGSHCHMZTENQKNNDIMZE": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL",
-      "amount": "268701925",
-      "tick": 77783535
+      "family": "unattributed (not seeded by a known hub)"
     },
     "TCAROMBCOFCDUBLEUYPSPJBZZFABGCCKXXREXQBFRCIYQEDAYZXOZFEHOKKC": {
       "family": "unattributed (not seeded by a known hub)"
@@ -2092,22 +2148,16 @@
     "VHHQYHDDXQYFJAJDVLQQIFABHRGDQHBPGRIYUPMESDXRCAOTPPYCLRKBJKJH": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "SLGEFOWFOBNBTGHHXJODWUNVTJXBVUKGPOMDRHVEJFRFZHHORQRNJTPATLJG": {
+    "ACWDBAJPKJFGKEPUVCMFSYQNXCUCFBYAFCVJDYFYOGMHMUPOHFASDYNDLOVI": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "XEHNSCFCVAUPJATSUWHYJQSJBTTCYDEBDZTNLZXRRFRSKYBPRFQDDZOEOZSD": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "ACWDBAJPKJFGKEPUVCMFSYQNXCUCFBYAFCVJDYFYOGMHMUPOHFASDYNDLOVI": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "LPAWZKJJNJTAYBZBACILBNYXWUSAIWERWFWEQTICNDETSTISDUGEQGACLGGO": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "DBAIPPRTGFVDSARSDBAOWQGFYVSCTFEGRPZKHNLVQACQGEXISFLKPBWFWDPL": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "OXWTWVQOPRNYTBRZOMPNJRWAQUTCEPMQWCZMJGJCBCJOVMDEPVEJBZVBVONN": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "DETAIRTEJWDYKAMWELTERTIWALSDSCFENJVVGGMSQCCUAJAJHLRNBKKBRUFC": {
@@ -2117,10 +2167,10 @@
       "amount": "3000000",
       "tick": 77280181
     },
-    "JBSIAWEDKMAYSGPICKNSNHGHUIJCXRKSSRMTMEJIYABKDLGEYQLUYGJHILEA": {
+    "FFWHBVUWXUJLSAUUDQWFHMBFMEGACHWEERSMEFAXDDSZUGBPKJQASZUFZEBK": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "FFWHBVUWXUJLSAUUDQWFHMBFMEGACHWEERSMEFAXDDSZUGBPKJQASZUFZEBK": {
+    "ANYXCVULQIQCEDXAWOPIWIVAVHKAXGOQMEDOGZBLRBBNVPJFSCSYNJVBVHKH": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "AGUIOMDYPUEWSERPZXPPUTNYRZFCDUCJFGLKBLTHMFXWCUNOABQTZYPDJBRG": {
@@ -2138,18 +2188,8 @@
     "MIHHUQLFPSRYRDXUFITXAJXVVWYCSWBYFEDKPNXSADVPHCHYZKMHAUWAQLFG": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "WQIAYHVMJMQXNEKUVZZLJTQXJGACMZQCCJCHIWNDYAGZIMZHVCPTICDGMOID": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "YKLLECSYXYEVMDFALJHAMGRPCDSBINLSRLOMVRPSTFOVIXSTROBNVIUATWXB": {
       "family": "unattributed (not seeded by a known hub)"
-    },
-    "HCBFTFPFNLQAQEURLLLDWKQYYCJAGQFXFQSKSWUXRFQJQYWBINDSWWYEHQBA": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
-      "amount": "3000000",
-      "tick": 77956904
     },
     "BZDLBNBVIWABFGXDEBXXHYLUDNJCUVEAVNHPLUSZWGBRYSVOKSFKASDAQLJE": {
       "family": "MinerLab/JetSki",
@@ -2167,13 +2207,7 @@
     "IRSRPOAZUVUXSEURVPLMDJCWDDACROGTIZRPWIKCJHHZNFMBKZURAXCETZPM": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "YXYPNJXYRNCAYBOKEZCNYRRXPQODQUIHQINJKRYDCAUGXQJIMRYBLKBEEFGM": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "LMAUHWCICGFRKFIHDFJTTHPQNBOBOZYJNTOQGEXSYGTBHQMVJGMKWREAZECG": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "EAWZEXVOMOZZKFWZXXOPRRWJAKHDYHGIQLWJWJUIPDBCQASSCXVJLDPGTAKG": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "MKMUFXQMAFBBFGCINTSPTSMKJAMCBFAUPVRJBWYSDHTKRHBHYTJYKYSCPKEC": {
@@ -2198,9 +2232,6 @@
       "family": "unattributed (not seeded by a known hub)"
     },
     "LRXLHXCGRFVPUDHDRDKBPXGRQKKASXXFAFAODWLHVFPICXFFWDMJKPDANOHE": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "ANYXCVULQIQCEDXAWOPIWIVAVHKAXGOQMEDOGZBLRBBNVPJFSCSYNJVBVHKH": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "TQJUGEFUODFLSGUCNHVABOGVKEGDDBXZQEVGNDUZQBXCPQAZFKPEBWCBZQYD": {
@@ -2231,22 +2262,16 @@
       "amount": "20000000",
       "tick": 42546982
     },
-    "XBVXFALVBFTUCCWKRGTRUKJYGCWBFALNPKXAWNSRODRVJVESFQFEMIRFDTIF": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "XOAYXXAFUZQFQFOSAMWCVTDIXWNAFOWPAFYAIJODDHCNJCYYJGXFVJVCMZVO": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "XBTSETFHNBVAVEVJPENXJRVWTXIATQAHMEAODDXVUBLVOCWIQOBCFSRBOSFL": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "XROMPGEQPRIPRCVXKXDFYCBDZSUCXSKAPYKAJOXUEGEPKHVRZXSLEDPBEJFB": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "GPINEXNKJNSKNCHYETRSPYTQSFQDYYIWERCLUZBWTGBCLGUBXGYIYZGBDUGJ": {
+    "HEBBSGVUITPMBDSJKKBRODNGTLTCHAKFDVFMKWXMUCGYVWXAANNPUUDHGVVE": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "HEBBSGVUITPMBDSJKKBRODNGTLTCHAKFDVFMKWXMUCGYVWXAANNPUUDHGVVE": {
+    "GPINEXNKJNSKNCHYETRSPYTQSFQDYYIWERCLUZBWTGBCLGUBXGYIYZGBDUGJ": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "RYVLPSLZPGLYJHRLQUCFJNABIYKBIYYAWOYAUCAHAHYLFRZGRVUAQOPEMVCB": {
@@ -2264,17 +2289,15 @@
     "KCVXNRVCIMWNJDQUEQSJHJZLDVPAPNUQHDBBWQKKHEPMVGVIHSPBOCBAOUCD": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "MUAJWAWMWDYBVCUEEXPMINDAAOXBZIDVGCYEVUXKXGPTBTSJQNNOMQICNOEF": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "TCLIYXKNSDGUCHIDRCEWEDKLMPFANUMJVDDCYGIBHBVWJGRRHCBZIKWFLDMJ": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "YKVJOAMCHCPRYDYVFMUCBOFOEYHDRYELDHBDXVYUZEITWXBACYCARGBFUODG": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "JVECUDNDXTQSXFSKQOYNGHXIKUHBADUTUBYQSYARZBFENZTOZNIUXJMDVPXN": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77724467
     },
     "IEVRZDRTUILXUGLJPUQSFGGGHPADVBKSJQHHOOTQYGSGVJRNBOFEBGKCXMMF": {
       "family": "MinerLab/JetSki",
@@ -2293,7 +2316,11 @@
       "family": "unattributed (not seeded by a known hub)"
     },
     "YJCZUZZIIGJXPCRQVIURQHWUHKHAVUYUYEQQDEBTIHOQHMXFKZXMLZVFIXJB": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "QLIKKBOCYDIMXBAOKUTENUUOYTHAJRHMBUMUXWNAYFDWXVDRUPUOSTTCERRB",
+      "amount": "278701925",
+      "tick": 76935031
     },
     "MZVUFZUADCGJADZHYXJNPRFZZKCDGICTMCYVWUUHFHNLXOLYOWHPMJFGKHXH": {
       "family": "unattributed (not seeded by a known hub)"
@@ -2305,9 +2332,20 @@
       "family": "unattributed (not seeded by a known hub)"
     },
     "BTBSHUGQWBCLGBOJVKSXITTDMVCDQDIEYXXXTVVAHCUVXTBIWZKDYCBHLYBF": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
+      "amount": "268701925",
+      "tick": 77759258
     },
     "GWPDNYESBYBYYBHHXELCTETKXJFANAFYCVPQGTHJIEMIRNOIMUIMIZNBYUTE": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77743054
+    },
+    "TJFCBLIBXUYCWBZPUBUJNYRRIPCAIERVNIPXZRJSXBELVGXJROLRCKJETVDD": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "YKJRZUAJBIZUOFWUGKVGPDGMWHCAMAJVDSRHWJIOWDDFTQJPQWCSWLWAOXLK": {
@@ -2328,6 +2366,9 @@
       "tick": 77770423
     },
     "IPPPMLVGTLVDKHVUEMYNJTECKWTAZKTBCYWHTVEZWASVGNTDLHAPLJUGKGIK": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
+    "RANERNNEXAXYYBLGSUTTJNQEIFRCXXUQWIJBLYDKWFNSNOFITVRXZSAAZXAM": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "TYXJSNQGFATJSDMFCIBAESHRAYODBYELBYUGSFPQWCUKPTBSPQPBNUCGYSNH": {
@@ -2354,9 +2395,6 @@
       "amount": "268701925",
       "tick": 77727844
     },
-    "EIDDQQTITTSRVAPJGVCOQYASNXCANQYHGNRVPXFOWCHAFWAWBFLLEZEGAOEM": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "KSOKWGMHOFVOLGEJMMRWKQGQJZRDQIIGESZACWEXEBHIPYJXXCGEVZMFZKHJ": {
       "family": "qli",
       "method": "outgoing-payout",
@@ -2374,12 +2412,12 @@
     "YJQHJYQTIBNZMBHQNCBGEYDVGGEDKGRNSFIVDOHKVDWGQQHQZMKTRLHATDPH": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "VOHIKSGRSTXMGFYUQBIFGDIKZPLAAFFXWMNKFNSNHDUCFPEUXOIYNAMFYVOC": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "MLABGELELEHTSGAVZVMTWEGARDGBSJXFLAQTAJWTXEKDUPAKSSLLNKDGPIUB",
-      "amount": "20000000",
-      "tick": 17983428
+    "LJZYNYVAKTZOZBACPVKYNHRPBIRBJVISTVYTGVLIHDJYGSEWRFECOLZBKZOL": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77728097
     },
     "FWYYTKLDTGPLDBYJBXWRPBKZXLCCUCHWHAHPEEDBYGCWLZYIPKVBATYFZFJB": {
       "family": "qli",
@@ -2388,10 +2426,23 @@
       "amount": "268701925",
       "tick": 77850221
     },
+    "VOHIKSGRSTXMGFYUQBIFGDIKZPLAAFFXWMNKFNSNHDUCFPEUXOIYNAMFYVOC": {
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "MLABGELELEHTSGAVZVMTWEGARDGBSJXFLAQTAJWTXEKDUPAKSSLLNKDGPIUB",
+      "amount": "20000000",
+      "tick": 17983428
+    },
+    "TPODCZYGBEXVHHUOVJPAMJZLXRICSRJKPMEYAWCLGCLHWPOTPNEGPZAGBSGF": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "AQAMCYHKTFFVYBHNXWGZOXZHEVKDOXRCCQFTKFQYVDWTYCIOIRRKZHEFDWZF": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "ZVVDIZVGDTPFSCCYBKJPXDMTOKRDRTKADJOHFPTABFSLJSXTINAQJWHDFTOO": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
+    "YDOTJWNAYIWJTEYWJKVVJVTNTSHBOKIRSDKGNIQKMBCTQVKHRMQUMPICWWXM": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "HVWDKCFWETJCKEMMJBOGUOPIUSLBSQATYBFQVXHLJAOYGOKKZMDWJQNCMXBH": {
@@ -2428,6 +2479,9 @@
       "amount": "268701925",
       "tick": 77925248
     },
+    "VYWJGHYWAMEQIAHFTBSAQCWHGUIDVOINIJIITOSTUBUQODJTEOOAKSICSXTB": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "CISGZAGVNRXSVAUAGEJFXZIVCHSAMULMDPSDQSSIJCZBATCDYOMGNAGEICSL": {
       "family": "unattributed (not seeded by a known hub)"
     },
@@ -2445,18 +2499,12 @@
       "amount": "268701925",
       "tick": 77783669
     },
-    "XTJGRHJJEIAIPEAHDYRQQTSISDOCIRDJAXOESIMDKBAHMLNMOOXZJOJGSIFI": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "ITTHWDSZYUTMAGCZRBLAZXEJOWWAWNSRBGIMFBKDPCTUFVZWOHVLVFBGTXPI": {
       "family": "qli",
       "method": "outgoing-payout",
       "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
       "amount": "268701925",
       "tick": 77805186
-    },
-    "RANERNNEXAXYYBLGSUTTJNQEIFRCXXUQWIJBLYDKWFNSNOFITVRXZSAAZXAM": {
-      "family": "unattributed (not seeded by a known hub)"
     },
     "MDKSIVIWKMZUQBMOTXZYYVPRLWICBHHJFJXRENUXOAEYLLFCXBWZCRTGVVPN": {
       "family": "qli",
@@ -2523,12 +2571,12 @@
     "QTJLHFZGZCRSFBWKWGKREVYVYMBBWFIBTNJUAPHJABSXGEEAZKUXKLCBZPCF": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "YDVFUIIVJVHPQEIAHGHWRKMJTWBAJRKGGHZVTFZCXGXJPENMFJMLVIOCFOPB": {
+    "LCRLCBAFSRNIKGYOQXFWDSZCQHMCFFIDABUNULTVYADZSJQUTDLTGMJEPENE": {
       "family": "qli",
       "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
-      "amount": "268701925",
-      "tick": 77925248
+      "sentTo": "QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL",
+      "amount": "278701925",
+      "tick": 76941012
     },
     "UXRYNPABYVTRZGORYSNVGKVLHVBBPRWASFQOEFLUEGMNNJSKPSCWAKMDKJVI": {
       "family": "qli",
@@ -2543,9 +2591,6 @@
       "sentTo": "PCUTRGWYFCMGGGVLFRPLNNEJQRABPKPOQYYYDUFAPAKPIJYQVJJMDUKAKZFL",
       "amount": "268701925",
       "tick": 77731190
-    },
-    "VYWJGHYWAMEQIAHFTBSAQCWHGUIDVOINIJIITOSTUBUQODJTEOOAKSICSXTB": {
-      "family": "unattributed (not seeded by a known hub)"
     },
     "MRSKVGMJAMXALFASOBVVSADZNGQCMBVTBCCYIFGWSAYLCAVZDUOHOEFFUHOG": {
       "family": "qli",
@@ -2567,19 +2612,15 @@
     "XWGLKSDUDBSUCFGFKYZQXZYDDUGAVHICQNJEIALYADZYQHWFTZMKXUVBLFVH": {
       "family": "unattributed (not seeded by a known hub)"
     },
+    "UGAOUJXHNXLKECSHEWSZGNXYGLHCLBTIXVHKLZBFJDKAIXEVFYXQJUKDMAXC": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "CMKNDBCBVBCUSBXAXHJDOLDMXZSBNUMCXMVATAUXRAQFYPQNSNVHAYPFSMVF": {
       "family": "qli",
       "method": "outgoing-payout",
       "sentTo": "IHDRUFFVQWVCAHXXJSXVCYKDHLKAOJDPETLKJUHVFEHRXOSGMDYAJTPFDJVJ",
       "amount": "268701925",
       "tick": 77823249
-    },
-    "DLXBIKXYGYSFHAIJWTSCWUPDSKSCPVLZNFFYIBFZQEKTLAEFXCHWQRSEUOSO": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL",
-      "amount": "278701925",
-      "tick": 76939094
     },
     "ZJUZAERUPJTDAFWNWKDHUOIAWCBAKITZHPQQOLXFYDVBOZORXIXOXGJHYUTE": {
       "family": "qli",
@@ -2661,9 +2702,6 @@
     "FGZPZKUNAGFXPDRPQGCRIRCSFSGDRHDVTNPIPPLBOCXUCYBFQSXJEVHGNRXL": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "TJFCBLIBXUYCWBZPUBUJNYRRIPCAIERVNIPXZRJSXBELVGXJROLRCKJETVDD": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "YJUHPAVLSYUWYAPAQXUWFXMRYOPDTBAUPNRGUSIABCMQQZIFEDCLUZXDTKDL": {
       "family": "unattributed (not seeded by a known hub)"
     },
@@ -2680,15 +2718,15 @@
     "SNHGGJBNIIMUXGAMRATTVHPCXJBARKPPDZGPBFJGADYBZVPQALUBLBWGOJAB": {
       "family": "unattributed (not seeded by a known hub)"
     },
+    "TBKELKWOZFROLDBEMHDXWSXSPKIALALXXGFJBWMGTEEQIYNACGEODTYFRNUA": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "PHCGBAXJLDNNTGWOQGVWQHROEUXCDCMGMNSVDGBOJGQVTORGLRPYBPJFJKYD": {
       "family": "MinerLab/JetSki",
       "method": "first-tx",
       "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
       "amount": "3000000",
       "tick": 77957681
-    },
-    "TBKELKWOZFROLDBEMHDXWSXSPKIALALXXGFJBWMGTEEQIYNACGEODTYFRNUA": {
-      "family": "unattributed (not seeded by a known hub)"
     },
     "CZEANVGCELXHHFJVHXNKBRWBRXMBIVWXILGQDGQKDFKGVTNNQYMQXDBBVYIB": {
       "family": "MinerLab/JetSki",
@@ -2717,22 +2755,12 @@
       "amount": "268701925",
       "tick": 77750140
     },
-    "UGAOUJXHNXLKECSHEWSZGNXYGLHCLBTIXVHKLZBFJDKAIXEVFYXQJUKDMAXC": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "EPBSVADUSFSMCHFVFUUIXLYURCJAFAKHRMCZZHDQQEGQZDYRNCIGBHBBTIQF": {
       "family": "qli",
       "method": "outgoing-payout",
       "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
       "amount": "268701925",
       "tick": 77736700
-    },
-    "LJZYNYVAKTZOZBACPVKYNHRPBIRBJVISTVYTGVLIHDJYGSEWRFECOLZBKZOL": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
-      "amount": "268701925",
-      "tick": 77728097
     },
     "RQBMGBCABJFTUGODOWSJCQICUDYCTBPCTCMNWRUELCSURMAERZMEFDOEVSNL": {
       "family": "qli",
@@ -2741,18 +2769,14 @@
       "amount": "268701925",
       "tick": 77784825
     },
+    "YFTFZWIRKDUROGYSTORSVTUKMWNAKKLQFRSLZQLPNFGFIYICAIIXWVZDRCJG": {
+      "family": "unattributed (not seeded by a known hub)"
+    },
     "RSWYGNMOYEKIJDVNYMBKYCBRXVXCYNQUBPAMOFFDWAANEYVHIWQVNYPAYQRH": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "HBGXNMHSHKUCNCJJNFGGFUVBBGUAVBUELEFBQEHHHCVVLXSEVMMYOTNAOOHO": {
       "family": "unattributed (not seeded by a known hub)"
-    },
-    "XAWLUUKGPEZYVDKBOQKRQNUUXWHDFDLDDRQJWTAKTAAYCRYHXQUZQVAFESCD": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
-      "amount": "268701925",
-      "tick": 77799659
     },
     "NOLXGCQNXGDEWBIVLDGUATXEAYVCTCBQMJOPIZKPLBDBXMOGMGIPVUZFMLHM": {
       "family": "qli",
@@ -2768,20 +2792,20 @@
       "amount": "268701925",
       "tick": 77727743
     },
-    "IWDDDRTDOZSKUCGILDUVUXERCABATRFYDKOYGPEMSFYSMYONPNHRZEBAXQQI": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
-      "amount": "268701925",
-      "tick": 77801662
-    },
     "DRCITBGBOSMBCCBTVZBWINSMTAWCOZDWKUYYWQHEKEJSYHPZDBKUYBRGKKVK": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "SEOCKRJLPDEMEFXMODEQCNRHWONANMZONUFXOMAZPDOZWPCRCTRSKEQBZYUN": {
+    "NJYFRMMVKQDRWCBNKCVOOQKACBUBXLVOJVRICYCMGHZTPKZZFRODKLJAAIXO": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "QLIKKBOCYDIMXBAOKUTENUUOYTHAJRHMBUMUXWNAYFDWXVDRUPUOSTTCERRB",
+      "amount": "278701925",
+      "tick": 76935798
+    },
+    "PNZRTFVAEUXMNGRKZNLCVPKOVYDCLQDUSVCJFAQLOAFAKENXZWYZQGWFMHYF": {
       "family": "unattributed (not seeded by a known hub)"
     },
-    "YDOTJWNAYIWJTEYWJKVVJVTNTSHBOKIRSDKGNIQKMBCTQVKHRMQUMPICWWXM": {
+    "SEOCKRJLPDEMEFXMODEQCNRHWONANMZONUFXOMAZPDOZWPCRCTRSKEQBZYUN": {
       "family": "unattributed (not seeded by a known hub)"
     },
     "APDPFCKTFHBKNASTHQSFSGXTYYGAGFNGLUOPVBTSBDJQHSWZDAWEPWJDQIUC": {
@@ -2794,8 +2818,22 @@
       "amount": "3000000",
       "tick": 77238117
     },
+    "VAFASDEHJSLTEEYZOSTMKMCRAPUCDLDLBOOIRZHPWAGBQLEJLCWSACEFDMSC": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77825605
+    },
     "VMWRRWHRTNGWHCNWRFNHKEVIKNHDFJCIPSRWTEARDHBZYUQBOCSVJQIBTVNA": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
+    },
+    "WXRLGGJZTETWOEYVSLXQQMBCBPVCPFQBNWLVKXDRLGGCOHDSDWITQXRAZCIF": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
+      "amount": "268701925",
+      "tick": 77844151
     },
     "NWZTIZFWOLLDFBEEWIADDGUHAGRCRWOLOLMIUYYPZDMYLIHBXJKKGKIDJHAH": {
       "family": "qli",
@@ -2811,25 +2849,11 @@
       "amount": "268701925",
       "tick": 77757147
     },
-    "TPODCZYGBEXVHHUOVJPAMJZLXRICSRJKPMEYAWCLGCLHWPOTPNEGPZAGBSGF": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
     "OXHGZTTXQVSKKAGABUOWHFVICQMARPQGNWTTJWQKJFHJPJDGFDIIUFRGZWUE": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "HBXYQQRJTUXIOEKWQMFQALHMCHYAWZTRHNRGEMDUXBHTPNCKZMFRPEUEQWOL": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
-      "amount": "2000000",
-      "tick": 79671283
-    },
-    "PJSLPCVWLHJYFGKXELXOZVSXEXIDUDDZACBITKNQSANQLEZEIATZKQSGJAIK": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "KOYOTPJVZIONSFEZLVAYHVZANCHDILVZJOADLOIMAATEMBIIPCLMAUKFLYFB",
-      "amount": "268701925",
-      "tick": 77808564
+      "family": "lookup failed"
     },
     "UUZVVDPTZXTCZBUBPKFTDWAATAGDEHDLSYUJDGUDBBICCZVBTYTJQGLELUYB": {
       "family": "qli",
@@ -2839,7 +2863,7 @@
       "tick": 77816440
     },
     "YRVYCKZXFBAGUFIRTXNMFNETXIDDSRJCJHEHWUXBYFIJBHABOZLPCQXBEDGM": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "MURMDRPVYLTNAENXXSPCVSEVELABQCJOKZYTDKSNWDEKMHRDDGGDWBXAZGSK": {
       "family": "qli",
@@ -2849,7 +2873,7 @@
       "tick": 76939883
     },
     "FGKBJBVIJNNTPFKMIWWLHPQJHAMDAGHHHLWGBTRNHDEGTUARYYUOMKYDURSO": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "PIMYXNCOYAZRRBXDRLQILGTMUFBBTTKFAZDHFRUDCFCFGRDDMNXGSDJAJNKL": {
       "family": "qli",
@@ -2859,42 +2883,20 @@
       "tick": 77822981
     },
     "GYYXAQKMHSLSGCLWRWHHLHGSEXBAVTQIZRMTDLWWQEFNTYSCFWOSMNHDSTPC": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
-      "amount": "2000000",
-      "tick": 79674554
-    },
-    "NJYFRMMVKQDRWCBNKCVOOQKACBUBXLVOJVRICYCMGHZTPKZZFRODKLJAAIXO": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "QLIKKBOCYDIMXBAOKUTENUUOYTHAJRHMBUMUXWNAYFDWXVDRUPUOSTTCERRB",
-      "amount": "278701925",
-      "tick": 76935798
+      "family": "lookup failed"
     },
     "RJCVHVDONMZJQDDOYCBSNHBZACDDIHTXPVYFAROGTAECOQHWIHQCHCUFLALB": {
       "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
-      "amount": "3000000",
-      "tick": 77555592
+      "method": "outgoing-payout",
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "248293333",
+      "tick": 83653353
     },
     "OVDTBDOWBRIJHEYQHPMTLPFSRJLCMSNTFEESKALIWGIIHCMFCHZEXEZAYEPJ": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "RUYXRWTUOXWJPAMLTJWANDDKVGGDSSOGCNEUEGUWZGHRYPCPOIQISDBFNHVE": {
-      "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
-      "amount": "2000000",
-      "tick": 79672098
-    },
-    "KEFZUSDHSOIMIFLKUJDMANZSZEBCZIXAXWQVKPNRGCJTBXMRDWCYRLRCWWYG": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
-      "amount": "268701925",
-      "tick": 77776073
+      "family": "lookup failed"
     },
     "EPXNMFQHJNIFQAFJQLRJPUUHIGDDWGIFYOPFRADQXDUXIGTDGWCUGJODCNDB": {
       "family": "qli",
@@ -2912,50 +2914,43 @@
     },
     "QJUQANBAYWHTFCISLXVCYAFUZPRDFSZHNFOIQUWGICDVVMTBNGWVVYTFDOID": {
       "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
-      "amount": "3000000",
-      "tick": 77957765
+      "method": "outgoing-payout",
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "262404223",
+      "tick": 87500517
     },
     "QJMKFQCZZECEKGSFGZXZCOHKWUFAEUMOCKHYNLZVGFZBHXLQCTJSMZCDTHBL": {
       "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
-      "amount": "2000000",
-      "tick": 79675305
+      "method": "outgoing-payout",
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "248980767",
+      "tick": 83653353
     },
     "UBHBBPDPQTSMXFIQIQSZNAUXULBAQSODUMTNUPDULBLFZRSQFKLLPWUANBFD": {
       "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG",
-      "amount": "10000000",
-      "tick": 53497023
+      "method": "outgoing-payout",
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "263453839",
+      "tick": 87500517
     },
     "EAEUGAKCDYNQNBXIHGKWVWKBOVCBXZIDJTCUSFBTLGDFXWPOXXYYSYEAHZBB": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "EGHYJBKCOOVTXFYHGKUQODTRFBMDMPGDXVQCRHOBLEVOWAEAMVHOEAOCYWNA": {
-      "family": "unattributed (not seeded by a known hub)"
-    },
-    "YFTFZWIRKDUROGYSTORSVTUKMWNAKKLQFRSLZQLPNFGFIYICAIIXWVZDRCJG": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "FXBHVMMTYBEUGDBDLTNPNBNBDRIDGUTDTPFICYYPJCQDUKLYJCWJRUKFDXUC": {
       "family": "MinerLab/JetSki",
-      "method": "first-tx",
-      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
-      "amount": "3000000",
-      "tick": 77956821
-    },
-    "WXRLGGJZTETWOEYVSLXQQMBCBPVCPFQBNWLVKXDRLGGCOHDSDWITQXRAZCIF": {
-      "family": "qli",
       "method": "outgoing-payout",
-      "sentTo": "JBWFGUWXGRIQJAIRKIEXMTEEQETAWDSMWENEHVFXTFFJDKZMMQVCYMGHBVMJ",
-      "amount": "268701925",
-      "tick": 77844151
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "249633799",
+      "tick": 83653353
+    },
+    "FQUUBSFNOIGZDBOKLZQUSYETYBADWYEMUJEHYKQXZANQORKNEGWWQKXDSXBI": {
+      "family": "lookup failed"
     },
     "FPFMFURCSONABDKOSZLWIIBQIZTARTLMCTBDZMQDFFXVXVFGQYLRHUEEVUKJ": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "BNSGIAGNSCAESGJKNOXAVBGLXCTCTLKBHKEYGTXPGGBWKRKVYLYZZWLALMFJ": {
       "family": "qli",
@@ -2965,7 +2960,7 @@
       "tick": 77803479
     },
     "XBWPKQQQTREKUCPKDYPJGXGZXAGBIEDQSBMIGHLMFGLBGHVDUOEWVEXBMLKM": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "DKOJEZIQPDMRHDLZKRJLCCTDWWCAFQHJMJXUMZDGUGFPBZTCETGZWRXBIQRB": {
       "family": "qli",
@@ -2975,7 +2970,7 @@
       "tick": 77746163
     },
     "JLIKRVEXTQPLOEOHOQHKNPKJKRHBTZDZJNZINIMXDHCJTZNMXQDJMTJCVTLI": {
-      "family": "unattributed (not seeded by a known hub)"
+      "family": "lookup failed"
     },
     "SPGLIUCGECTRBDKALHAVCBGCQEUBVHNJJACIHZNEAHJAFXDYRBIHPFFHSEHH": {
       "family": "qli",
@@ -2984,18 +2979,21 @@
       "amount": "278701925",
       "tick": 76941765
     },
-    "VAFASDEHJSLTEEYZOSTMKMCRAPUCDLDLBOOIRZHPWAGBQLEJLCWSACEFDMSC": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
-      "amount": "268701925",
-      "tick": 77825605
+    "RTRDLKEBFRTRHBQHRFWNDWWUGULBARIKLAWBCGDFGGCOMPEYHJUNWUDAWOLK": {
+      "family": "lookup failed"
     },
     "ABBAOVRFXNBXTGPFCARDDGNUFEUCKOMTAFNCSZMCXDVKKKFYPOIERMXFFKBL": {
       "family": "lookup failed"
     },
     "SSUNQQHVARMBSAZTWWRGQLTUBBPAAFWVOMAPAJPECGZVSUOJEQWZBDSEXZPA": {
       "family": "lookup failed"
+    },
+    "XPXNWSSQARGSPCUXZYIJYDWBKNJAQKQXQMGOZAUULFWYSVVWCNDCBRAEGIRO": {
+      "family": "qli",
+      "method": "outgoing-payout",
+      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
+      "amount": "268701925",
+      "tick": 77795740
     },
     "OWGQOIHHUQWTPAKGVVWGOETVOUNAJEFXHHYLBYUVECKCTRYSPTNEENACBBNM": {
       "family": "MinerLab/JetSki",
@@ -3021,13 +3019,10 @@
       "amount": "268701925",
       "tick": 77839917
     },
-    "PNZRTFVAEUXMNGRKZNLCVPKOVYDCLQDUSVCJFAQLOAFAKENXZWYZQGWFMHYF": {
+    "HMCITKPDIGFYJDMLXCLZGVEWYFJCBEOMDMEUFKQDBBRRUYGNDTBODGPFUBOH": {
       "family": "lookup failed"
     },
-    "RBECBQGYQFTPYEUNJYQQJMCLYHHBQLJOHRRZQGEGFFZPHMCUKNVWAIDFYZQG": {
-      "family": "lookup failed"
-    },
-    "RTRDLKEBFRTRHBQHRFWNDWWUGULBARIKLAWBCGDFGGCOMPEYHJUNWUDAWOLK": {
+    "NVMBVSOULNQVDFYJVGGNHQDUMPJBGMXWVAPYTJBYLALZFFEKADONQEDGVTKI": {
       "family": "lookup failed"
     },
     "MOELMCBXWTWCCBDEJTWEQPWLFIHAJNBOEKOQWWTDNFTDKGXUYUCOEHLAIWJB": {
@@ -3036,16 +3031,6 @@
       "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
       "amount": "259866632",
       "tick": 81404298
-    },
-    "NVMBVSOULNQVDFYJVGGNHQDUMPJBGMXWVAPYTJBYLALZFFEKADONQEDGVTKI": {
-      "family": "lookup failed"
-    },
-    "XPXNWSSQARGSPCUXZYIJYDWBKNJAQKQXQMGOZAUULFWYSVVWCNDCBRAEGIRO": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "VAQAOZKHUDRSXEKASNTYIPMABNVAWHORIXGNCURPDFUKJOMFAMBMLJSCVSSJ",
-      "amount": "268701925",
-      "tick": 77795740
     },
     "THZDWFROMLMJWGUJJTYXFACNFVNBSUSNXQLYDJYWBCXAPJEDAZJGVKWFBAMG": {
       "family": "qli",
@@ -3063,6 +3048,9 @@
       "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
       "amount": "263716243",
       "tick": 87500517
+    },
+    "DDKGQJJRWAMCIFZHDDLZAHNVVQNBLDFTWILCXCIGEBZKBYMDGTZIBRWGYBSN": {
+      "family": "lookup failed"
     },
     "QCPUVVSAWPKNKDLSLPWFJEGHUCSCHBDVPQQPESTCUDYTZMQFJLYEJVDDJOEK": {
       "family": "MinerLab/JetSki",
@@ -3093,13 +3081,6 @@
     },
     "PUPXYUWUVOTDWDCASROJXZWKVZRBZABEZNSSDYPCDCTGEFMPLSVJGIRBDBDJ": {
       "family": "lookup failed"
-    },
-    "LCRLCBAFSRNIKGYOQXFWDSZCQHMCFFIDABUNULTVYADZSJQUTDLTGMJEPENE": {
-      "family": "qli",
-      "method": "outgoing-payout",
-      "sentTo": "QLINAMIOESDCZCCDTMIITIDHKYWASFKWANCFWJUMEHVHUSBLDXFJKUHASONL",
-      "amount": "278701925",
-      "tick": 76941012
     },
     "CCVIAPRPHGTKNAIRJANMSBSVUVDBLTMLCYGCWFQITFZOVKTOOATZOIWBCXIK": {
       "family": "MinerLab/JetSki",
@@ -3154,12 +3135,6 @@
     "LQHSXQSSHHXFMCCQKTKPEJQNTWBAFHBPHCEZDTQABFWJXKZOGSHRAJLCFAUI": {
       "family": "lookup failed"
     },
-    "HMCITKPDIGFYJDMLXCLZGVEWYFJCBEOMDMEUFKQDBBRRUYGNDTBODGPFUBOH": {
-      "family": "lookup failed"
-    },
-    "DDKGQJJRWAMCIFZHDDLZAHNVVQNBLDFTWILCXCIGEBZKBYMDGTZIBRWGYBSN": {
-      "family": "lookup failed"
-    },
     "QYLIDWMTWARWACKATJBKTBHHGWPCOJLRFUWERTGTFFSWCZPRUZUYULVCSGGC": {
       "family": "MinerLab/JetSki",
       "method": "outgoing-payout",
@@ -3176,9 +3151,6 @@
       "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
       "amount": "263978648",
       "tick": 87500517
-    },
-    "FQUUBSFNOIGZDBOKLZQUSYETYBADWYEMUJEHYKQXZANQORKNEGWWQKXDSXBI": {
-      "family": "lookup failed"
     },
     "YOIMVRPAQKQPYAPNVDOZPOZYTKEAOBJMAGGATKGZLFYLGRQZEPHZIWIHOZGB": {
       "family": "MinerLab/JetSki",
@@ -3323,18 +3295,18 @@
       "amount": "268701925",
       "tick": 80371927
     },
-    "KAIYIMSAYLQYFCMCFKLBMTDUPYJAHZLJZBDFVFFYTBBLPVZBPOBGMJTEEYAC": {
-      "family": "MinerLab/JetSki",
-      "method": "outgoing-payout",
-      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
-      "amount": "263191436",
-      "tick": 87500517
-    },
     "NNUCYGGZORHOJAWVCILHZAYEPPJDBJOGLSXYFVAVHDQWCDKWIQILQLOCEZFO": {
       "family": "MinerLab/JetSki",
       "method": "outgoing-payout",
       "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
       "amount": "264503457",
+      "tick": 87500517
+    },
+    "KAIYIMSAYLQYFCMCFKLBMTDUPYJAHZLJZBDFVFFYTBBLPVZBPOBGMJTEEYAC": {
+      "family": "MinerLab/JetSki",
+      "method": "outgoing-payout",
+      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
+      "amount": "263191436",
       "tick": 87500517
     },
     "WKEGSPONARMOUCVBOVNOCDAWIVHBYMYJKLYBSTYKYFBEINQMFSCKIQRFDXHK": {
@@ -3365,13 +3337,17 @@
     },
     "LXMFLESJPWBZECTQUXVGSCTMEITAQTFSLUXJXYRQJFIQUFMHJDVIOQDFSSRM": {
       "family": "MinerLab/JetSki",
-      "method": "outgoing-payout",
-      "sentTo": "ZTQMSNBHXHOKQFXAULPQJPAMLMXANZCEUEWAYTCHUGNOEZNZFVFQORUDIIWC",
-      "amount": "263191436",
-      "tick": 87500517
+      "method": "first-tx",
+      "seededBy": "YNREMHVGUYWANGCMAUIKYAKFLPBANLNGSSYXSMHVJBPMBGMFTCWKEBWENPQN",
+      "amount": "3000000",
+      "tick": 77122825
     },
     "YJKQRPLIQCGDSECNMBRCPHANLPRBLULIJDTOVVGOZGZTBOTMZEWKPKVFMVVJ": {
-      "family": "lookup failed"
+      "family": "MinerLab/JetSki",
+      "method": "first-tx",
+      "seededBy": "TKOGFEQBANSKPBSLDXZXDKVCAKUANUSCAFCWOPQWKEZTCXRTVGYLKBHGLVIJ",
+      "amount": "3000000",
+      "tick": 82860270
     }
   }
 }
